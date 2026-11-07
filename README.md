@@ -11,7 +11,9 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Cafe24 Admin API](https://img.shields.io/badge/Cafe24-Admin%20API-1a1a1a)](https://developers.cafe24.com)
 
-<img src="docs/ui-fill.jpg" alt="채우기 화면: 상품 개수, 상품분류, 메인진열·상품후기 함께 채우기, 옵션을 고르는 화면" width="640" />
+<img src="docs/demo.gif" alt="시연: 화면에서 상품 6개·메인진열·상품후기를 채우고, 쇼핑몰 분류 목록과 상품 상세에서 등록된 더미 상품을 확인하는 모습" width="720" />
+
+<sub>실제 테스트 쇼핑몰에 등록하는 모습이에요 (1.6배속, 쇼핑몰 정보는 가렸어요)</sub>
 
 </div>
 
@@ -96,16 +98,18 @@ cafe24-dummy ui
 
 <table>
   <tr>
+    <td><img src="docs/ui-fill.jpg" alt="채우기 화면: 상품 개수, 상품분류, 메인진열·상품후기 함께 채우기, 옵션을 고르는 화면" /></td>
     <td><img src="docs/ui-progress.jpg" alt="채우기 진행 화면: 상품 등록, 메인진열 채우기, 상품후기 달기가 단계별로 완료된 결과" /></td>
     <td><img src="docs/ui-cleanup.jpg" alt="현황·정리 화면: 배치별 상품·메인진열·후기 개수와 정리 미리보기 버튼" /></td>
   </tr>
   <tr>
+    <td align="center"><sub>채우기 옵션</sub></td>
     <td align="center"><sub>단계별 진행과 결과</sub></td>
     <td align="center"><sub>배치별 현황과 정리</sub></td>
   </tr>
 </table>
 
-<sub>스크린샷은 카페24를 흉내 낸 테스트용 목 서버에 연결한 화면이에요.</sub>
+<sub>위 세 장은 카페24를 흉내 낸 테스트용 목 서버에 연결한 화면이에요.</sub>
 
 > [!TIP]
 > 중간 단계가 실패해도 앞 단계 결과는 그대로 남고, 어느 단계가 "완료 / 일부 실패 / 멈춤 / 건너뜀"인지 숫자와 함께 알려 줘요. 멈춘 배치도 "현황·정리"에서 정리할 수 있어요.
