@@ -1,0 +1,36 @@
+{
+  "name": "cafe24-dummy-products",
+  "version": "0.1.0",
+  "description": "카페24 Admin API로 스킨 테스트용 더미 상품·메인진열·상품후기를 일괄 등록하고 정리하는 CLI",
+  "keywords": [
+    "cafe24",
+    "카페24",
+    "dummy-data",
+    "seed",
+    "skin",
+    "cli"
+  ],
+  "author": "Youngwoo Kim",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimyoungwopo/cafe24-dummy-products.git"
+  },
+  "type": "module",
+  "bin": {
+    "cafe24-dummy": "src/cli.js"
+  },
+  "files": [
+    "src",
+    ".env.example",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18.3"
+  }
+}

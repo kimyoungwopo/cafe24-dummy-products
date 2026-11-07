@@ -1,0 +1,7 @@
+node_modules/
+.env
+.cafe24-token.json
+.cafe24-token.json.tmp
+logs/
+.omc/
+.DS_Store
