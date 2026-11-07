@@ -81,6 +81,7 @@ fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px
 legend { padding: 0 6px; color: var(--muted); font-size: 13px; }
 .form label.radio, .form label.check { display: flex; gap: 8px; align-items: center; font-weight: 400; }
 
+input.small { width: 64px; padding: 4px 6px; display: inline-block; }
 .category-list { max-height: 280px; overflow: auto; border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 4px; }
 .category-list label { font-weight: 400; display: flex; gap: 8px; align-items: center; }
 .category-list .dim { color: var(--muted); }
@@ -104,6 +105,7 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 500; }
 td.num { text-align: right; font-variant-numeric: tabular-nums; }
+#job-result { white-space: pre-wrap; }
 .notes { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
 
 .progress { height: 8px; background: var(--bg); border-radius: 999px; overflow: hidden; border: 1px solid var(--line); }

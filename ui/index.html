@@ -91,6 +91,12 @@
               <div id="category-list" class="category-list" hidden></div>
             </fieldset>
             <fieldset>
+              <legend>함께 채우기 (이번에 등록한 상품으로)</legend>
+              <label class="check"><input type="checkbox" name="mainsEnabled" checked /> 메인진열(추천상품·신상품 등)에 올리기 — 메인분류마다 <input class="small" type="number" name="mainsPerGroup" min="1" max="50" value="8" /> 개</label>
+              <label class="check"><input type="checkbox" name="reviewsEnabled" /> 상품후기 달기 — 상품당 최대 <input class="small" type="number" name="reviewsMax" min="1" max="10" value="3" /> 개</label>
+              <small id="reviews-hint"></small>
+            </fieldset>
+            <fieldset>
               <legend>옵션</legend>
               <label class="check"><input type="checkbox" name="withOptions" checked /> 색상·사이즈 옵션 넣기</label>
               <label class="check"><input type="checkbox" name="withImage" checked /> 번호가 찍힌 상품 이미지 올리기</label>

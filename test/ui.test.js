@@ -254,3 +254,102 @@ test('UI 후속: 설정을 바꾸면 이후 토큰 갱신은 새 Client ID·Secr
     await mock.close();
   }
 });
+
+test('UI 4단계: 한 번의 채우기로 상품 → 메인진열 → 후기, 정리는 후기 → 메인진열 → 상품', async () => {
+  const mock = await startMockServer();
+  const ui = await startUi(mock);
+  try {
+    await connectAndLogin(ui);
+    const seed = await ui.call('POST', '/api/jobs/seed', { count: 4, categoryMode: 'none', withImage: false, mains: { enabled: true, perGroup: 2 }, reviews: { enabled: true, maxPerProduct: 2 } });
+    assert.equal(seed.status, 200, seed.text);
+    const job = await waitJob(ui);
+    assert.equal(job.status, 'done', JSON.stringify(job));
+    const st = Object.fromEntries(job.result.stages.map((s) => [s.name, s]));
+    assert.deepEqual(job.result.stages.map((s) => s.status), ['done', 'done', 'done']);
+    assert.equal(st['상품 등록'].counts.created, 4);
+    assert.equal(st['메인진열 채우기'].counts.added, 4); // 메인분류 2곳 × 2개
+    assert.ok(st['상품후기 달기'].counts.created >= 4);
+    assert.ok(job.logs.some((l) => /2\/3 메인진열/.test(l)) && job.logs.some((l) => /3\/3 상품후기/.test(l)));
+
+    const b = (await ui.call('GET', '/api/batches')).data.batches[0];
+    assert.equal(b.products, 4);
+    assert.equal(b.mains, 4);
+    assert.equal(b.reviews, st['상품후기 달기'].counts.created);
+
+    const plan = await ui.call('POST', '/api/cleanup/plan', { runId: job.result.runId });
+    assert.deepEqual(plan.data.counts, { reviews: b.reviews, mains: 4, products: 4 });
+    await ui.call('POST', '/api/jobs/cleanup', { planId: plan.data.planId });
+    const cj = await waitJob(ui);
+    assert.equal(cj.result.products, 4);
+    assert.equal(cj.result.reviews, b.reviews);
+    assert.equal(b.reviews, st['상품후기 달기'].counts.created);
+    assert.equal(cj.result.mains, 4);
+    const deletes = mock.state.calls.filter((c) => c.method === 'DELETE').map((c) => c.path.split('/')[4]);
+    assert.ok(deletes.lastIndexOf('boards') < deletes.indexOf('mains') && deletes.lastIndexOf('mains') < deletes.indexOf('products'), deletes.join(','));
+  } finally {
+    ui.stop();
+    await mock.close();
+  }
+});
+
+test('UI 4단계: 중간 단계가 실패해도 앞 단계 결과는 남고, 다음 단계는 진행하며, 결과에 알린다', async () => {
+  const mock = await startMockServer({ failMainsList: true });
+  const ui = await startUi(mock);
+  try {
+    await connectAndLogin(ui);
+    await ui.call('POST', '/api/jobs/seed', { count: 2, categoryMode: 'none', withImage: false, mains: { enabled: true, perGroup: 2 }, reviews: { enabled: true, maxPerProduct: 1 } });
+    const job = await waitJob(ui);
+    assert.equal(job.status, 'done');
+    const st = Object.fromEntries(job.result.stages.map((s) => [s.name, s]));
+    assert.equal(st['상품 등록'].counts.created, 2);
+    assert.equal(st['메인진열 채우기'].status, 'stopped');
+    assert.match(st['메인진열 채우기'].error, /mains unavailable/);
+    assert.equal(st['상품후기 달기'].counts.created, 2, '후기 단계는 진행됨');
+    assert.equal((await ui.call('GET', '/api/batches')).data.batches[0].products, 2, '상품 소유 기록은 남음');
+  } finally {
+    ui.stop();
+    await mock.close();
+  }
+});
+
+test('UI 4단계: 터미널에서 쓰기 작업 중이면 UI 작업은 시작하지 않는다', async () => {
+  const mock = await startMockServer();
+  const ui = await startUi(mock);
+  try {
+    await connectAndLogin(ui);
+    const lockFile = path.join(ui.env.CAFE24_HOME, 'cafe24-dummy.write.lock');
+    fs.mkdirSync(`${lockFile}.d`, { recursive: true });
+    const ticket = path.join(`${lockFile}.d`, `${process.pid}.held`);
+    fs.writeFileSync(ticket, JSON.stringify({ pid: process.pid, label: 'create', at: 'now' }));
+    const r = await ui.call('POST', '/api/jobs/seed', { count: 1, categoryMode: 'none', withImage: false });
+    assert.equal(r.status, 409);
+    assert.match(r.data.error, /다른 쓰기 작업이 실행 중입니다 \(create/);
+    fs.rmSync(ticket);
+    const ok = await ui.call('POST', '/api/jobs/seed', { count: 1, categoryMode: 'none', withImage: false });
+    assert.equal(ok.status, 200);
+    await waitJob(ui);
+    assert.deepEqual(fs.readdirSync(`${lockFile}.d`), [], '작업이 끝나면 잠금 해제');
+  } finally {
+    ui.stop();
+    await mock.close();
+  }
+});
+
+test('UI 4단계 회귀: 후기가 일부 등록된 뒤 권한 오류로 멈추면 "멈춤"과 숫자를 그대로 알린다', async () => {
+  const mock = await startMockServer({ articlesPostLimit: 1 });
+  const ui = await startUi(mock);
+  try {
+    await connectAndLogin(ui);
+    // 6개 상품 × 1~3개 = 12개 → 10개씩 두 번 보냄, 두 번째에서 403
+    await ui.call('POST', '/api/jobs/seed', { count: 6, categoryMode: 'none', withImage: false, reviews: { enabled: true, maxPerProduct: 3 } });
+    const job = await waitJob(ui);
+    const rv = job.result.stages.find((s) => s.name === '상품후기 달기');
+    assert.equal(rv.status, 'stopped');
+    assert.equal(rv.counts.created, 10);
+    assert.ok(rv.counts.failed > 0);
+    assert.match(rv.error, /권한 오류/);
+  } finally {
+    ui.stop();
+    await mock.close();
+  }
+});

@@ -29,6 +29,7 @@ export class Cafe24ApiError extends Error {
  * - 5xx·네트워크 오류는 GET/DELETE만 최대 3회 재시도 (POST는 중복 등록 위험 때문에 재시도 안 함)
  * - 401이면 토큰을 한 번 갱신하고 재시도
  * - 요청당 30초 타임아웃
+ * - 같은 클라이언트의 요청은 한 줄로 세워 하나씩 보낸다 (동시에 불러도 간격·순서가 지켜짐)
  */
 export class Cafe24Client {
   constructor(cfg, { minIntervalMs = Number(process.env.CAFE24_MIN_INTERVAL_MS) || 500, getToken = getAccessToken, timeoutMs = 30000 } = {}) {
@@ -38,12 +39,13 @@ export class Cafe24Client {
     this.getToken = getToken;
     this.lastCallAt = 0;
     this.extraWaitMs = 0;
+    this._chain = Promise.resolve();
   }
 
+  /** 직전 요청 시작 시각으로부터 최소 간격이 지날 때까지 기다린다. */
   async throttle() {
     const wait = this.lastCallAt + this.minIntervalMs + this.extraWaitMs - Date.now();
     if (wait > 0) await sleep(wait);
-    this.lastCallAt = Date.now();
   }
 
   updateBucket(header) {
@@ -64,7 +66,14 @@ export class Cafe24Client {
     return url;
   }
 
-  async request(method, path, { query, body } = {}) {
+  /** 요청을 줄에 세운다: 앞 요청(재시도 포함)이 끝나야 다음 요청이 시작된다. */
+  request(method, path, opts = {}) {
+    const run = this._chain.then(() => this._requestNow(method, path, opts));
+    this._chain = run.catch(() => {});
+    return run;
+  }
+
+  async _requestNow(method, path, { query, body } = {}) {
     const url = this.buildUrl(path, query);
     // POST(상품 등록 등)는 서버에서 성공했는데 응답만 잃었을 수 있으므로,
     // 중복 생성을 막기 위해 429(처리 안 됨이 확실한 경우)만 재시도한다.
@@ -82,6 +91,7 @@ export class Cafe24Client {
       if (this.cfg.apiVersion) headers['X-Cafe24-Api-Version'] = this.cfg.apiVersion;
 
       let res;
+      this.lastCallAt = Date.now(); // 실제 요청을 보내는 시각 기준으로 간격을 잰다
       try {
         res = await fetch(url, {
           method,
@@ -117,7 +127,7 @@ export class Cafe24Client {
 
       if (res.status === 401 && !refreshed) {
         refreshed = true;
-        await this.getToken(this.cfg, { forceRefresh: true });
+        await this.getToken(this.cfg, { forceRefresh: true, staleToken: token });
         continue;
       }
       if (res.status === 429 && rateRetries < 5) {

@@ -4,7 +4,7 @@ import http from 'node:http';
  * 카페24 Admin API를 흉내 내는 테스트용 서버.
  * 요청 형식(Bearer 토큰, shop_no/request 래퍼, 필수 필드)을 검사한다.
  */
-export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full', redirectTo = null, echoAuthInErrors = false } = {}) {
+export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full', redirectTo = null, echoAuthInErrors = false, refreshDelayMs = 0, failMainsList = false, slowAdminMs = 0, articlesPostLimit = Infinity } = {}) {
   const state = {
     products: new Map(),
     nextNo: 100,
@@ -31,10 +31,15 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
   state.products.set(3, { product_no: 3, product_name: '사람이 붙인 코드', custom_product_code: 'DUMMY-SHIRT', display: 'T' });
 
   const server = http.createServer(async (req, res) => {
+    const startedAt = Date.now();
+    state.inflight = (state.inflight || 0) + 1;
+    state.maxInflight = Math.max(state.maxInflight || 0, state.inflight);
+    res.on('finish', () => (state.inflight -= 1));
     let raw = '';
     for await (const c of req) raw += c;
     const url = new URL(req.url, 'http://x');
-    state.calls.push({ method: req.method, path: url.pathname, query: Object.fromEntries(url.searchParams), raw, authorization: req.headers.authorization });
+    if (slowAdminMs && url.pathname.startsWith('/api/v2/admin/')) await new Promise((r) => setTimeout(r, slowAdminMs));
+    state.calls.push({ at: startedAt, method: req.method, path: url.pathname, query: Object.fromEntries(url.searchParams), raw, authorization: req.headers.authorization });
     const send = (status, body, headers = {}) => {
       res.writeHead(status, { 'Content-Type': 'application/json', 'X-Api-Call-Limit': '1/40', ...headers });
       res.end(JSON.stringify(body));
@@ -60,6 +65,7 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
       }
       if (!req.headers.authorization?.startsWith('Basic ')) return send(401, { error: 'invalid_client' });
       if (params.get('grant_type') === 'refresh_token' && params.get('refresh_token') === 'refresh-1') {
+        if (refreshDelayMs) await new Promise((r) => setTimeout(r, refreshDelayMs));
         state.refreshCount++;
         state.validToken = `access-${state.refreshCount + 1}`;
         return send(200, {
@@ -78,7 +84,7 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
           refresh_token: 'refresh-1',
           refresh_token_expires_at: '2026-11-21T12:00:00.000',
           mall_id: 'testmall',
-          scopes: ['mall.read_product', 'mall.write_product'],
+          scopes: ['mall.read_product', 'mall.write_product', 'mall.read_category', 'mall.read_community', 'mall.write_community'],
           shop_no: '1',
         });
       }
@@ -149,6 +155,9 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
     }
 
     // ---- 메인진열 ----
+    if (failMainsList && req.method === 'GET' && url.pathname === '/api/v2/admin/mains') {
+      return send(400, { error: { code: 400, message: 'mains unavailable' } });
+    }
     if (req.method === 'GET' && url.pathname === '/api/v2/admin/mains') {
       return send(200, { mains: [...state.mains.keys()].map((g) => ({ display_group: g, group_name: g === 2 ? '추천상품' : '신상품', module_code: `product_listmain_${g - 1}` })) });
     }
@@ -177,6 +186,8 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
     if (bm) {
       const boardNo = Number(bm[1]);
       if (req.method === 'POST') {
+        state.articlePosts = (state.articlePosts || 0) + 1;
+        if (state.articlePosts > articlesPostLimit) return send(403, { error: { code: 403, message: 'No authority to access.' } });
         if (body.requests.length > 10) return send(422, { error: { code: 422, message: 'max 10' } });
         for (const r of body.requests) {
           if (!r.writer || !r.title || !r.content || !r.client_ip) return send(422, { error: { code: 422, message: 'missing' } });

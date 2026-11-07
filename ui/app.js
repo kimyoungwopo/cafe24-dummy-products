@@ -117,6 +117,7 @@ async function refreshState() {
     f.redirectUri.value = c.redirectUri;
   }
   f.clientSecret.placeholder = c.secret === 'none' ? '' : '비워 두면 저장된 값 유지';
+  updateSeedForm();
   if (current.configError) showBanner(current.configError, 'err');
   else if (current.tokenError) showBanner(current.tokenError, 'err');
   if (job) watchJob(job);
@@ -197,8 +198,14 @@ async function loadCategories() {
   }
 }
 
+const hasCommunity = () => ['mall.read_community', 'mall.write_community'].every((s) => current?.login?.scopes?.includes(s));
+
 function updateSeedForm() {
   const f = $('#seed-form');
+  const canReview = hasCommunity();
+  f.reviewsEnabled.disabled = !canReview;
+  if (!canReview) f.reviewsEnabled.checked = false;
+  $('#reviews-hint').textContent = canReview ? '' : '후기는 게시판(Community) 권한이 필요해요. 개발자센터 앱 권한에 추가하고 다시 로그인하세요.';
   $('#category-list').hidden = f.categoryMode.value !== 'pick';
   const n = Math.max(0, Number(f.count.value) || 0);
   const secs = Math.ceil(n * (f.withImage.checked ? 2 : 1) * 0.5);
@@ -213,7 +220,16 @@ $('#seed-form').addEventListener('submit', async (e) => {
   const mode = f.categoryMode.value;
   const picked = [...document.querySelectorAll('#category-list input:checked')].map((i) => Number(i.value));
   if (mode === 'pick' && !picked.length) return showBanner('분류를 하나 이상 고르세요.', 'err');
-  const body = { count: Number(f.count.value), categoryMode: mode, categoryNos: picked, withOptions: f.withOptions.checked, withImage: f.withImage.checked, hidden: f.hidden.checked };
+  const body = {
+    count: Number(f.count.value),
+    categoryMode: mode,
+    categoryNos: picked,
+    withOptions: f.withOptions.checked,
+    withImage: f.withImage.checked,
+    hidden: f.hidden.checked,
+    mains: { enabled: f.mainsEnabled.checked, perGroup: Number(f.mainsPerGroup.value) },
+    reviews: { enabled: f.reviewsEnabled.checked, maxPerProduct: Number(f.reviewsMax.value) },
+  };
   const ok = await ask({
     title: '더미 상품을 등록할까요?',
     body: el(
@@ -222,6 +238,8 @@ $('#seed-form').addEventListener('submit', async (e) => {
       el('li', {}, `쇼핑몰: ${current?.config.mallId}`),
       el('li', {}, `상품 ${body.count}개, ${{ spread: '진열 중인 분류 전체에 고르게', pick: `고른 분류 ${picked.length}곳`, none: '분류 없이' }[mode]}`),
       el('li', {}, body.hidden ? '진열안함·판매안함 (손님 화면에 안 보임)' : '진열함·판매함 (손님 화면에 보임)'),
+      body.mains.enabled ? el('li', {}, `메인진열: 메인분류마다 ${body.mains.perGroup}개${body.hidden ? ' (숨김 상품은 메인에 올리지 않아요)' : ''}`) : null,
+      body.reviews.enabled ? el('li', {}, `상품후기: 상품당 1~${body.reviews.maxPerProduct}개`) : null,
       el('li', {}, '나중에 "현황·정리"에서 이 배치만 지울 수 있어요.'),
     ),
     ok: '등록 시작',
@@ -247,7 +265,7 @@ async function loadBatches() {
         el(
           'table',
           {},
-          el('thead', {}, el('tr', {}, el('th', {}, '만든 시각'), el('th', {}, '배치 ID'), el('th', {}, '상품'), el('th', {}, '후기'), el('th', {}, ''))),
+          el('thead', {}, el('tr', {}, el('th', {}, '만든 시각'), el('th', {}, '배치 ID'), el('th', {}, '상품'), el('th', {}, '메인진열'), el('th', {}, '후기'), el('th', {}, ''))),
           el(
             'tbody',
             {},
@@ -258,6 +276,7 @@ async function loadBatches() {
                 el('td', {}, b.createdAt || '-'),
                 el('td', {}, b.runId),
                 el('td', { class: 'num' }, b.products),
+                el('td', { class: 'num' }, b.mains),
                 el('td', { class: 'num' }, b.reviews),
                 el('td', {}, el('button', { type: 'button', onclick: () => previewCleanup(b.runId) }, '정리 미리보기…')),
               ),
@@ -340,7 +359,23 @@ function renderJob(job) {
   const r = job.result;
   let text = '';
   if (job.status === 'failed') text = `멈췄어요: ${job.error}`;
-  else if (r && job.type === 'seed') text = `등록 ${r.created}개, 실패 ${r.failed}개${r.unknown ? `, 결과 불명 ${r.unknown}개` : ''} · 배치 ${r.runId}`;
+  else if (r && job.type === 'seed') {
+    const label = { done: '완료', partial: '일부 실패', stopped: '멈춤', skipped: '건너뜀' };
+    const c = (st) => {
+      const k = st.counts || {};
+      const parts = [];
+      if (k.created !== undefined) parts.push(`${k.created}개 등록`);
+      if (k.added !== undefined) parts.push(`${k.added}개 추가`);
+      if (k.failed) parts.push(`실패 ${k.failed}`);
+      if (k.imageFailed) parts.push(`이미지 실패 ${k.imageFailed}`);
+      if (k.unknown) parts.push(`결과 불명 ${k.unknown}`);
+      return parts.join(', ');
+    };
+    text = `배치 ${r.runId}\n` + r.stages.map((st) => `· ${st.name}: ${label[st.status] || st.status}${c(st) ? ` (${c(st)})` : ''}${st.note ? ` — ${st.note}` : ''}${st.error ? `\n  ${st.error}` : ''}`).join('\n');
+    if (r.stages.some((st) => st.status !== 'done' && st.status !== 'skipped')) {
+      text += '\n앞 단계에서 만든 것은 그대로 남아 있어요. "현황·정리"에서 이 배치를 정리하거나, 원인을 해결한 뒤 다시 채울 수 있어요.';
+    }
+  }
   else if (r) text = `삭제: 상품 ${r.products}개, 후기 ${r.reviews}개, 메인진열 ${r.mains}개 · 실패 ${r.failed}개${r.skippedChanged ? ` · 달라져서 건너뜀 ${r.skippedChanged}개` : ''}${r.reappeared ? ` · 다시 나타나 건너뜀 ${r.reappeared}개` : ''}`;
   $('#job-result').textContent = text;
   for (const b of document.querySelectorAll('button.primary, button.danger')) {

@@ -1433,3 +1433,132 @@ test('후속: 토큰 길이 경계 — 7자는 저장하지 않고 8자는 저�
     await mock.close();
   }
 });
+
+test('회귀: 미리보기가 없는 명령에 --dry-run을 붙이면 거부한다 (잠금을 건너뛰고 지우는 일이 없도록)', async () => {
+  const mock = await startMockServer();
+  try {
+    const { env } = setup(mock.base);
+    await cli(['create', '-n', '1', '--no-image'], env);
+    for (const cmd of ['delete', 'clear-mains', 'clear-reviews']) {
+      await assert.rejects(cli([cmd, '--dry-run', '--yes'], env), /--dry-run을 지원하지 않습니다/, cmd);
+    }
+    assert.ok(!mock.state.calls.some((c) => c.method === 'DELETE'));
+  } finally {
+    await mock.close();
+  }
+});
+
+test('회귀: seedWorkflow — 뒤 단계에서 기록 쓰기가 실패하면 복구 정보(ID)를 자르지 않고 남기고 다음 단계로 가지 않는다', async () => {
+  const mock = await startMockServer();
+  try {
+    const { core, ctx } = await coreCtx(mock, 'c24-sw-');
+    const realAppend = ctx.manifest.append.bind(ctx.manifest);
+    ctx.manifest.append = (...args) => {
+      if (args[0] === 'main' && args[1] === 'added') throw Object.assign(new Error('disk full'), { manifestWrite: true });
+      return realAppend(...args);
+    };
+    const out = await core.seedWorkflow(ctx, { count: 3, withImage: false, mainsPerGroup: 2, reviewsMax: 1 });
+    const mains = out.stages.find((s) => s.name === '메인진열 채우기');
+    assert.equal(mains.status, 'stopped');
+    assert.ok(mains.stopsWorkflow);
+    assert.match(mains.error, /기록하지 못한 항목 \d+개/);
+    assert.match(mains.error, /"product_no":\d+/);
+    assert.match(mains.error, /직접 확인/);
+    assert.equal(mains.counts.added, 2, '멈추기 전까지 카페24에 반영된 숫자는 남는다');
+    const reviews = out.stages.find((s) => s.name === '상품후기 달기');
+    assert.equal(reviews.status, 'skipped', '다음 단계로 가지 않음');
+    assert.match(reviews.note, /앞 단계가 멈춰서/);
+    assert.ok(!mock.state.calls.some((c) => c.method === 'POST' && /articles/.test(c.path)));
+  } finally {
+    delete process.env.CAFE24_OWNED_DIR;
+    await mock.close();
+  }
+});
+
+test('회귀: seedWorkflow — 상품 단계 도중 기록 쓰기가 실패해도 그때까지의 숫자를 남기고, 요청한 뒤 단계는 "건너뜀"과 이유로 알린다', async () => {
+  const mock = await startMockServer();
+  try {
+    const { core, ctx } = await coreCtx(mock, 'c24-swp-');
+    const realAppend = ctx.manifest.append.bind(ctx.manifest);
+    let n = 0;
+    ctx.manifest.append = (...args) => {
+      if (args[0] === 'product' && args[1] === 'created' && ++n === 3) throw Object.assign(new Error('disk full'), { manifestWrite: true });
+      return realAppend(...args);
+    };
+    const out = await core.seedWorkflow(ctx, { count: 5, withImage: false, mainsPerGroup: 1, reviewsMax: 1 });
+    const [products, mains, reviews] = out.stages;
+    assert.equal(products.status, 'stopped');
+    assert.deepEqual(products.counts, { created: 3, failed: 0, unknown: 0 }, '세 번째까지 카페24에 등록됨');
+    assert.match(products.error, /disk full/);
+    assert.equal(mock.state.calls.filter((c) => c.method === 'POST' && c.path === '/api/v2/admin/products').length, 3, '네 번째부터는 등록하지 않음');
+    assert.deepEqual([mains.status, reviews.status], ['skipped', 'skipped']);
+    assert.match(mains.note, /앞 단계가 멈춰서/);
+  } finally {
+    delete process.env.CAFE24_OWNED_DIR;
+    await mock.close();
+  }
+});
+
+test('회귀: seedWorkflow — 결과 불명 기록 쓰기가 실패해도 결과 불명 숫자는 남는다 (상품·후기)', async () => {
+  const mock = await startMockServer();
+  try {
+    const { core, ctx } = await coreCtx(mock, 'c24-swu-');
+    const realAppend = ctx.manifest.append.bind(ctx.manifest);
+    ctx.manifest.append = (...args) => {
+      if (args[1] === 'unknown') throw Object.assign(new Error('disk full'), { manifestWrite: true });
+      return realAppend(...args);
+    };
+    // 상품: 두 번째 등록 요청이 시간 초과(실제로 등록됐을 수 있음)
+    const realCreate = ctx.client.createProduct.bind(ctx.client);
+    let n = 0;
+    ctx.client.createProduct = (...args) => (++n === 2 ? Promise.reject(Object.assign(new Error('timeout'), { status: 0 })) : realCreate(...args));
+    const a = await core.seedWorkflow(ctx, { count: 3, withImage: false });
+    assert.equal(a.stages[0].status, 'stopped');
+    assert.deepEqual(a.stages[0].counts, { created: 1, failed: 0, unknown: 1 });
+
+    // 후기: 등록 요청이 시간 초과
+    ctx.client.createProduct = realCreate;
+    ctx.client.createArticles = () => Promise.reject(Object.assign(new Error('timeout'), { status: 0 }));
+    const b = await core.seedWorkflow(ctx, { count: 1, withImage: false, reviewsMax: 1 });
+    const reviews = b.stages.find((st) => st.key === 'reviews');
+    assert.equal(reviews.status, 'stopped');
+    assert.equal(reviews.counts.unknown, 1);
+    assert.equal(reviews.counts.created, 0);
+  } finally {
+    delete process.env.CAFE24_OWNED_DIR;
+    await mock.close();
+  }
+});
+
+test('회귀: seedWorkflow — 상품은 등록됐지만 이미지 업로드가 실패하면 "완료"가 아니라 "일부 실패"와 이미지 실패 수', async () => {
+  const mock = await startMockServer();
+  try {
+    const { core, ctx } = await coreCtx(mock, 'c24-swi-');
+    const realUpload = ctx.client.uploadProductImage.bind(ctx.client);
+    let n = 0;
+    ctx.client.uploadProductImage = (...args) => (++n === 2 ? Promise.reject(Object.assign(new Error('bad image'), { status: 422 })) : realUpload(...args));
+    const out = await core.seedWorkflow(ctx, { count: 3, withImage: true });
+    assert.equal(out.stages[0].status, 'partial');
+    assert.deepEqual(out.stages[0].counts, { created: 3, failed: 0, unknown: 0, imageFailed: 1 });
+    // 이미지를 함께 올리지 않으면 이미지 실패도 없음
+    const plain = await core.seedWorkflow(ctx, { count: 1, withImage: false });
+    assert.equal(plain.stages[0].status, 'done');
+  } finally {
+    delete process.env.CAFE24_OWNED_DIR;
+    await mock.close();
+  }
+});
+
+test('회귀: seedWorkflow — 등록된 상품이 없으면 뒤 단계는 "건너뜀"과 이유', async () => {
+  const mock = await startMockServer();
+  try {
+    const { core, ctx } = await coreCtx(mock, 'c24-swn-');
+    ctx.client.createProduct = () => Promise.reject(Object.assign(new Error('invalid'), { status: 422 }));
+    const out = await core.seedWorkflow(ctx, { count: 2, withImage: false, reviewsMax: 1 });
+    assert.equal(out.stages[0].status, 'partial');
+    assert.deepEqual(out.stages[1], { key: 'reviews', name: '상품후기 달기', status: 'skipped', note: '등록된 상품이 없어서 실행하지 않았어요' });
+  } finally {
+    delete process.env.CAFE24_OWNED_DIR;
+    await mock.close();
+  }
+});

@@ -37,6 +37,7 @@ import {
   resolveReviewBoard,
   validateRunId,
   verifyProducts,
+  withWriteLock,
 } from './core.js';
 
 const HELP = `카페24 테스트용 더미 데이터 도구
@@ -550,6 +551,14 @@ async function main() {
   if (command === undefined) return console.log(HELP);
   const fn = commands[command];
   if (!fn) throw new Error(`알 수 없는 명령: ${command}\n\n${HELP}`);
+  // 카페24 데이터나 소유 기록을 바꾸는 명령은 쓰기 잠금을 잡고 실행한다 (UI 작업·다른 터미널과 동시에 못 돌게)
+  const WRITE_COMMANDS = new Set(['create', 'delete', 'fill-mains', 'clear-mains', 'reviews', 'clear-reviews', 'purge-legacy']);
+  // 실제로 아무것도 바꾸지 않는 미리보기를 지원하는 명령만 --dry-run을 받는다 (그때만 잠금 없이 실행)
+  const DRY_RUN_COMMANDS = new Set(['create', 'fill-mains', 'reviews', 'purge-legacy']);
+  if (values['dry-run'] && !DRY_RUN_COMMANDS.has(command)) {
+    throw new Error(`${command} 명령은 --dry-run을 지원하지 않습니다. (지우기 전에 대상을 보여 주고 확인을 받으니, --yes 없이 실행해 확인하세요)`);
+  }
+  if (WRITE_COMMANDS.has(command) && !values['dry-run']) return withWriteLock(command, () => fn(values));
   return fn(values);
 }
 

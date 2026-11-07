@@ -20,12 +20,14 @@ import { makeRunId } from './dummy.js';
 import {
   createContext,
   createProducts,
+  seedWorkflow,
   resolveCategories,
   planCleanup,
   executeCleanup,
   toCategory,
   categoryLabel,
   validateRunId,
+  acquireWriteLock,
 } from './core.js';
 
 /**
@@ -217,6 +219,13 @@ export async function startServer({ port = 0 } = {}) {
 
   function startJob(type, cfg, run, summarize) {
     notDuringJob();
+    // 다른 프로세스(터미널 명령 등)가 쓰기 작업 중이면 시작하지 않는다
+    let release;
+    try {
+      release = acquireWriteLock(`ui:${type}`);
+    } catch (e) {
+      throw new HttpError(409, e.message);
+    }
     const job = { id: crypto.randomBytes(8).toString('hex'), type, status: 'running', startedAt: new Date().toISOString(), progress: { done: 0, total: 0 }, logs: [] };
     state.job = job;
     const ctx = createContext(clientFor(cfg), cfg, {
@@ -240,6 +249,7 @@ export async function startServer({ port = 0 } = {}) {
       })
       .finally(() => {
         job.finishedAt = new Date().toISOString();
+        release();
       });
     return jobView(job);
   }
@@ -365,8 +375,10 @@ export async function startServer({ port = 0 } = {}) {
       for (const p of s.products.values()) byRun.set(p.runId, (byRun.get(p.runId) || 0) + 1);
       const reviewsByRun = new Map();
       for (const r of s.reviews.values()) reviewsByRun.set(r.runId, (reviewsByRun.get(r.runId) || 0) + 1);
+      const mainsByRun = new Map();
+      for (const m of s.mains.values()) mainsByRun.set(m.runId, (mainsByRun.get(m.runId) || 0) + 1);
       const batches = [...byRun]
-        .map(([runId, products]) => ({ runId, products, reviews: reviewsByRun.get(runId) || 0, createdAt: runIdToDate(runId) }))
+        .map(([runId, products]) => ({ runId, products, reviews: reviewsByRun.get(runId) || 0, mains: mainsByRun.get(runId) || 0, createdAt: runIdToDate(runId) }))
         .sort((a, b) => b.runId.localeCompare(a.runId));
       return { batches, unknown: s.unknown.length, legacy: s.legacy.length, invalidLines: s.invalidLines, manifest: ctx.manifest.file };
     },
@@ -429,7 +441,12 @@ export async function startServer({ port = 0 } = {}) {
 
     'POST /api/jobs/seed': exclusive(async (body) => {
       const cfg = configOrThrow();
-      loggedIn(cfg);
+      const token = loggedIn(cfg);
+      const mains = body.mains?.enabled ? Number(body.mains.perGroup ?? 8) : 0;
+      if (body.mains?.enabled && (!Number.isInteger(mains) || mains < 1 || mains > 50)) throw new HttpError(400, '메인진열 개수는 1~50 사이로 입력하세요.');
+      const maxReviews = body.reviews?.enabled ? Number(body.reviews.maxPerProduct ?? 3) : 0;
+      if (body.reviews?.enabled && (!Number.isInteger(maxReviews) || maxReviews < 1 || maxReviews > 10)) throw new HttpError(400, '상품당 후기 수는 1~10 사이로 입력하세요.');
+      if (maxReviews && !hasScopes(token, COMMUNITY)) throw new HttpError(400, '후기를 달려면 게시판 권한이 필요합니다. 개발자센터에서 게시판(Community) 읽기+쓰기를 켜고 다시 로그인하세요.');
       const count = Number(body.count);
       if (!Number.isInteger(count) || count < 1 || count > 500) throw new HttpError(400, '상품 개수는 1~500 사이로 입력하세요.');
       const mode = body.categoryMode;
@@ -448,15 +465,21 @@ export async function startServer({ port = 0 } = {}) {
         'seed',
         cfg,
         (ctx) =>
-          createProducts(ctx, {
+          seedWorkflow(ctx, {
             count,
             categories,
             runId,
             hidden: Boolean(body.hidden),
             withOptions: Boolean(body.withOptions),
             withImage: body.withImage !== false,
+            mainsPerGroup: mains,
+            reviewsMax: maxReviews,
           }),
-        (r) => ({ runId: r.runId, created: r.created.length, failed: r.failed.length, unknown: r.unknown.length, stoppedByAuth: r.stoppedByAuth }),
+        (o) => ({
+          runId: o.runId,
+          stages: o.stages, // 단계별 상태: done | partial | stopped | skipped, counts, error(전체 메시지)
+          created: o.stages.find((st) => st.key === 'products')?.counts?.created ?? 0, // 도중에 멈춰도 그때까지 등록한 수
+        }),
       );
     }),
 

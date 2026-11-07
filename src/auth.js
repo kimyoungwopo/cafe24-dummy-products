@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { TOKEN_FILE, SCOPES, writeFileAtomic } from './config.js';
 import { askHidden } from './prompt.js';
+import { withLock } from './lock.js';
 
 const ACCESS_TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 카페24 Access Token 유효시간 2시간
 const REFRESH_MARGIN_MS = 5 * 60 * 1000; // 만료 5분 전에 미리 갱신
@@ -210,14 +211,48 @@ export async function refresh(cfg, token) {
 }
 
 /** 유효한 access token을 돌려준다. 만료가 가까우면 자동 갱신한다. */
-export async function getAccessToken(cfg, { forceRefresh = false } = {}) {
+const isStale = (t) => !t?.access_expires_ms || Date.now() > t.access_expires_ms - REFRESH_MARGIN_MS;
+let refreshInFlight = null; // 이 프로세스 안에서 진행 중인 갱신 (동시에 여러 요청이 와도 한 번만)
+
+/**
+ * 갱신을 한 번만 한다.
+ * - 프로세스 안: 진행 중인 갱신이 있으면 그 결과를 같이 기다린다.
+ * - 프로세스 사이: 토큰 파일 옆의 잠금 파일로 한 프로세스씩 갱신하고, 잠금을 잡은 뒤 파일을 다시 읽어
+ *   다른 프로세스가 이미 새 토큰을 받아 두었으면 그걸 쓴다 (카페24는 갱신할 때마다 refresh token을 바꾸므로).
+ */
+function refreshOnce(cfg, staleAccessToken) {
+  if (!refreshInFlight) {
+    refreshInFlight = withLock(
+      `${TOKEN_FILE}.lock`,
+      'token-refresh',
+      async () => {
+        const latest = readToken();
+        if (latest && latest.access_token !== staleAccessToken && !isStale(latest)) return latest;
+        return refresh(cfg, latest);
+      },
+      { waitMs: 30000, busyMessage: () => '다른 프로세스가 토큰을 갱신하는 중이라 기다렸지만 끝나지 않았습니다. 잠시 후 다시 시도하세요.' },
+    ).finally(() => {
+      refreshInFlight = null;
+    });
+  }
+  return refreshInFlight;
+}
+
+/** 유효한 access token을 돌려준다. 만료가 가까우면(또는 forceRefresh면) 자동 갱신한다. */
+export async function getAccessToken(cfg, { forceRefresh = false, staleToken } = {}) {
   let token = readToken();
   if (!token) throw new AuthError('로그인 정보가 없습니다. 먼저 `login` 명령을 실행하세요.');
   if (token.mall_id && cfg.mallId && token.mall_id !== cfg.mallId) {
     throw new AuthError(`저장된 로그인은 ${token.mall_id} 쇼핑몰용입니다. 지금 설정(${cfg.mallId})으로 다시 login 하세요.`);
   }
-  if (forceRefresh || !token.access_expires_ms || Date.now() > token.access_expires_ms - REFRESH_MARGIN_MS) {
-    token = await refresh(cfg, token);
+  // 401을 받은 토큰과 지금 파일의 토큰이 다르면, 그사이 다른 곳에서 이미 갱신한 것이므로 새로 갱신하지 않는다.
+  if (forceRefresh && staleToken && token.access_token !== staleToken && !isStale(token)) return token.access_token;
+  if (forceRefresh || isStale(token)) {
+    try {
+      token = await refreshOnce(cfg, staleToken ?? token.access_token);
+    } catch (e) {
+      throw e.isAuthError ? e : new AuthError(e.message);
+    }
   }
   return token.access_token;
 }

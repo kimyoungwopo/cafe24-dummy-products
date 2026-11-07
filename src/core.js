@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
-import { LOG_DIR, DUMMY_CODE_PREFIX } from './config.js';
+import { LOG_DIR, DUMMY_CODE_PREFIX, TOKEN_FILE } from './config.js';
+import { withLock, acquireNow } from './lock.js';
 import { Manifest } from './manifest.js';
 import { buildDummyProduct, makeRunId, isDummyCode, RUN_ID_PATTERN } from './dummy.js';
 import { buildReviews, isDummyReview } from './review.js';
@@ -24,6 +25,34 @@ const noop = () => {};
 const isPosInt = (v) => Number.isInteger(v) && v > 0;
 export const contentDigest = (text) => crypto.createHash('sha256').update(String(text ?? ''), 'utf8').digest('hex');
 const chunk = (arr, size) => Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
+
+/**
+ * 쓰기 작업 잠금: 같은 설정 폴더를 쓰는 다른 프로세스(UI와 터미널 명령 등)가 동시에
+ * 카페24 데이터를 바꾸거나 소유 기록을 쓰지 못하게 한다.
+ */
+export const writeLockFile = () => path.join(path.dirname(TOKEN_FILE), 'cafe24-dummy.write.lock');
+const busyMessage = (h) =>
+  `다른 쓰기 작업이 실행 중입니다${h ? ` (${h.label || '작업'}, pid ${h.pid}, ${h.at} 시작)` : ''}. 끝난 뒤에 다시 시도하세요.`;
+export const withWriteLock = (label, fn) => withLock(writeLockFile(), label, fn, { waitMs: 0, busyMessage });
+/** 잠금을 바로 잡아 해제 함수를 돌려준다. 못 잡으면 오류. (UI 작업처럼 요청이 끝난 뒤에도 이어지는 작업용) */
+export function acquireWriteLock(label) {
+  const r = acquireNow(writeLockFile(), label);
+  if (!r.release) throw Object.assign(new Error(busyMessage(r.holder)), { lockBusy: true });
+  return r.release;
+}
+
+/**
+ * fn이 도중에 예외를 던지면, 그때까지 쌓인 결과(result)를 오류의 partial로 붙여 다시 던진다.
+ * (예: 세 번째 상품의 소유 기록 쓰기가 실패해도 앞의 두 개가 등록됐다는 숫자가 사라지지 않도록)
+ */
+export async function keepPartial(result, fn) {
+  try {
+    return await fn();
+  } catch (e) {
+    if (e && typeof e === 'object' && e.partial === undefined) e.partial = result;
+    throw e;
+  }
+}
 
 export const isAuthFailure = (e) => Boolean(e?.isAuthError || e?.status === 401 || e?.status === 403);
 /** 응답을 못 받았거나 서버 오류라 실제로 처리됐는지 알 수 없는 경우 */
@@ -118,7 +147,13 @@ export async function createProducts(ctx, { count, categories = [], prefix = '[�
   const { client, manifest, log, progress } = ctx;
   manifest.ensureWritable();
   const result = { runId, created: [], failed: [], unknown: [], stoppedByAuth: false };
+  await keepPartial(result, () => createProductsLoop(ctx, result, { count, categories, prefix, hidden, withOptions, withImage, runId }));
+  progress(result.created.length + result.failed.length + result.unknown.length, count);
+  return result;
+}
 
+async function createProductsLoop(ctx, result, { count, categories, prefix, hidden, withOptions, withImage, runId }) {
+  const { client, manifest, log, progress } = ctx;
   for (let i = 1; i <= count; i++) {
     const { category, request } = planProduct(i, { runId, categories, prefix, hidden, withOptions });
     const code = request.custom_product_code;
@@ -132,8 +167,9 @@ export async function createProducts(ctx, { count, categories = [], prefix = '[�
       if (!isPosInt(productNo)) throw Object.assign(new Error('응답에 상품번호가 없습니다'), { status: 0 });
     } catch (e) {
       if (isAmbiguous(e)) {
-        manifest.append('product', 'unknown', { code, runId, reason: String(e.message).slice(0, 200) });
+        // 기록 쓰기가 실패해도 "결과 불명" 숫자는 남도록 먼저 센다
         result.unknown.push({ index: i, code, product_name: request.product_name, error: e.message });
+        manifest.append('product', 'unknown', { code, runId, reason: String(e.message).slice(0, 200) });
         log(`⚠️ ${label} — 결과를 알 수 없습니다 (${e.message}). 실제로 등록됐을 수 있어 "결과 불명"으로 기록했고, 자동 삭제하지 않습니다.`);
       } else {
         result.failed.push({ index: i, product_name: request.product_name, error: e.message });
@@ -147,10 +183,11 @@ export async function createProducts(ctx, { count, categories = [], prefix = '[�
       continue;
     }
 
-    // 성공 응답을 받은 즉시 기록한다 (이미지 업로드 중에 멈춰도 소유 기록은 남도록).
-    manifest.append('product', 'created', { product_no: productNo, code, runId });
+    // 카페24에는 이미 등록됐으므로 먼저 센다 (기록 쓰기가 실패해도 숫자는 실제 상태를 따름).
     const entry = { index: i, product_no: productNo, code, product_name: request.product_name, category_no: category?.no };
     result.created.push(entry);
+    // 성공 응답을 받은 즉시 기록한다 (이미지 업로드 중에 멈춰도 소유 기록은 남도록).
+    manifest.append('product', 'created', { product_no: productNo, code, runId });
 
     if (withImage) {
       try {
@@ -169,9 +206,10 @@ export async function createProducts(ctx, { count, categories = [], prefix = '[�
     }
     log(`✅ ${label} → 상품번호 ${productNo}${entry.image === false ? ` (이미지 실패: ${entry.image_error})` : ''}`);
   }
-  progress(result.created.length + result.failed.length + result.unknown.length, count);
-  return result;
 }
+
+/** 등록은 됐지만 대표 이미지 업로드가 실패한 상품 수 */
+export const imageFailedCount = (r) => r.created.filter((e) => e.image === false).length;
 
 // ---------------------------------------------------------------- 소유 확인
 
@@ -451,6 +489,12 @@ export async function fillMains(ctx, { perGroup = 8, groups: wanted, runId, dryR
   const runOf = new Map(candidates.map((p) => [p.product_no, p.runId]));
 
   const summary = [];
+  await keepPartial(summary, () => fillMainsLoop(ctx, { groups, candidates, runOf, perGroup, dryRun, summary }));
+  return summary;
+}
+
+async function fillMainsLoop(ctx, { groups, candidates, runOf, perGroup, dryRun, summary }) {
+  const { client, manifest, log } = ctx;
   for (const [gi, m] of groups.entries()) {
     const g = Number(m.display_group);
     const existing = new Set((await client.listMainProducts(g)).map((p) => Number(p.product_no)));
@@ -468,8 +512,9 @@ export async function fillMains(ctx, { perGroup = 8, groups: wanted, runId, dryR
       log(`(dry-run) ${m.group_name}(${g}) ← ${picked.length}개: ${picked.join(', ')}`);
       continue;
     }
-    let added = 0;
-    let unknown = 0;
+    // 그룹 결과를 먼저 summary에 넣고 채워 간다 (도중에 예외가 나도 그때까지의 숫자가 남도록)
+    const entry = { display_group: g, added: 0, unknown: 0, failed: 0 };
+    summary.push(entry);
     for (const part of chunk(picked, 20)) {
       let confirmed = [];
       let unresolved = part;
@@ -486,6 +531,7 @@ export async function fillMains(ctx, { perGroup = 8, groups: wanted, runId, dryR
         if (!isAmbiguous(e)) {
           log(`❌ ${m.group_name}(${g}) — ${e.message}`);
           if (isAuthFailure(e)) throw e;
+          entry.failed += part.length;
           continue;
         }
         log(`⚠️ ${m.group_name}(${g}) — 결과를 알 수 없습니다 (${e.message})`);
@@ -495,14 +541,103 @@ export async function fillMains(ctx, { perGroup = 8, groups: wanted, runId, dryR
         const runIds = [...new Set(unresolved.map((no) => runOf.get(no)).filter(Boolean))];
         records.push(['main', 'unknown', { display_group: g, product_nos: unresolved, runIds }]);
       }
+      // 카페24에는 이미 반영됐으므로 기록 쓰기 전에 센다 (기록 쓰기가 실패해도 숫자는 실제 상태를 따름)
+      entry.added += confirmed.length;
+      entry.unknown += unresolved.length;
       appendAll(manifest, records);
-      added += confirmed.length;
-      unknown += unresolved.length;
     }
-    log(`✅ ${m.group_name}(${g}) ← 더미 상품 ${added}개 추가${unknown ? ` (결과 불명 ${unknown}개)` : ''}`);
-    summary.push({ display_group: g, added, unknown });
+    log(`✅ ${m.group_name}(${g}) ← 더미 상품 ${entry.added}개 추가${entry.unknown ? ` (결과 불명 ${entry.unknown}개)` : ''}${entry.failed ? ` (실패 ${entry.failed}개)` : ''}`);
   }
-  return summary;
+}
+
+// ---------------------------------------------------------------- 한 번에 채우기 (상품 → 메인진열 → 후기)
+
+/**
+ * 한 배치를 상품 → 메인진열 → 후기 순서로 채운다.
+ * - 메인진열·후기는 이번 배치(runId)의 상품에만 붙는다.
+ * - 뒤 단계가 실패해도 앞 단계 결과(소유 기록 포함)는 그대로 두고, 단계별 상태를 그대로 돌려준다.
+ * - 오류 메시지는 자르지 않는다 (기록하지 못한 항목의 ID 등 복구 정보가 들어 있을 수 있음).
+ * - 권한 오류나 소유 기록 쓰기 실패가 나면 다음 단계로 넘어가지 않는다.
+ */
+export async function seedWorkflow(ctx, { count, categories = [], runId = makeRunId(), hidden = false, withOptions = false, withImage = true, mainsPerGroup = 0, reviewsMax = 0 }) {
+  const { log } = ctx;
+  const requested = [['products', '상품 등록'], ...(mainsPerGroup ? [['mains', '메인진열 채우기']] : []), ...(reviewsMax ? [['reviews', '상품후기 달기']] : [])];
+  const total = requested.length;
+  const out = { runId, stages: [] };
+  let n = 0;
+  const stage = async (key, name, fn, judge) => {
+    log(`── ${++n}/${total} ${name}`);
+    const st = { key, name, status: 'done' };
+    out.stages.push(st);
+    try {
+      const r = await fn();
+      Object.assign(st, judge(r));
+      return r;
+    } catch (e) {
+      // 도중에 멈춰도 그때까지 한 일의 숫자는 남긴다 (keepPartial이 붙인 e.partial)
+      if (e?.partial !== undefined) st.counts = judge(e.partial).counts;
+      st.status = 'stopped';
+      st.error = String(e.message); // 전체 메시지 (복구 정보 포함)
+      st.stopsWorkflow = Boolean(isAuthFailure(e) || e.manifestWrite); // 권한 오류·소유 기록 쓰기 실패면 다음 단계로 가지 않는다
+      log(`❌ ${name} 단계가 멈췄습니다:\n${e.message}`);
+      return undefined;
+    }
+  };
+  // 요청했지만 실행하지 않은 단계도 결과에 "건너뜀"과 이유로 남긴다
+  const finish = (reason) => {
+    for (const [key, name] of requested) if (!out.stages.some((s) => s.key === key)) out.stages.push({ key, name, status: 'skipped', note: reason });
+    return out;
+  };
+  const stopped = () => out.stages.some((s) => s.stopsWorkflow);
+  const STOP_NOTE = '앞 단계가 멈춰서 실행하지 않았어요';
+
+  out.products = await stage(
+    'products',
+    '상품 등록',
+    () => createProducts(ctx, { count, categories, runId, hidden, withOptions, withImage }),
+    (r) => {
+      const imageFailed = imageFailedCount(r);
+      return {
+        status: r.stoppedByAuth ? 'stopped' : r.failed.length || r.unknown.length || imageFailed ? 'partial' : 'done',
+        stopsWorkflow: r.stoppedByAuth,
+        counts: { created: r.created.length, failed: r.failed.length, unknown: r.unknown.length, ...(imageFailed ? { imageFailed } : {}) },
+      };
+    },
+  );
+  if (stopped()) return finish(STOP_NOTE);
+  if (!out.products?.created.length) return finish('등록된 상품이 없어서 실행하지 않았어요');
+
+  if (mainsPerGroup) {
+    if (hidden) {
+      log('── 메인진열은 건너뜁니다 (숨김으로 등록한 상품은 메인에 올리지 않아요)');
+      out.stages.push({ key: 'mains', name: '메인진열 채우기', status: 'skipped', note: '숨김 상품' });
+    } else {
+      out.mains = await stage('mains', '메인진열 채우기', () => fillMains(ctx, { perGroup: mainsPerGroup, runId }), (r) => {
+        const counts = r.reduce((a, g) => ({ added: a.added + (g.added || 0), unknown: a.unknown + (g.unknown || 0), failed: a.failed + (g.failed || 0) }), { added: 0, unknown: 0, failed: 0 });
+        return { status: counts.failed || counts.unknown ? 'partial' : 'done', counts };
+      });
+      if (stopped()) return finish(STOP_NOTE);
+    }
+  }
+  if (reviewsMax) {
+    out.reviews = await stage(
+      'reviews',
+      '상품후기 달기',
+      async () => {
+        const board = await resolveReviewBoard(ctx.client);
+        const { requests } = await planReviews(ctx, { maxPerProduct: reviewsMax, runId });
+        log(`게시판: ${board.board_name}(${board.board_no}) — 후기 ${requests.length}개`);
+        return postReviews(ctx, board, requests);
+      },
+      (r) => ({
+        status: r.stoppedByAuth ? 'stopped' : r.failed || r.unknown ? 'partial' : 'done',
+        stopsWorkflow: r.stoppedByAuth,
+        error: r.stoppedByAuth ? '권한 오류로 중간에 멈췄습니다. 게시판 쓰기 권한과 로그인 상태를 확인하세요.' : undefined,
+        counts: { created: r.created, failed: r.failed, unknown: r.unknown },
+      }),
+    );
+  }
+  return finish(STOP_NOTE);
 }
 
 // ---------------------------------------------------------------- 상품후기
@@ -538,6 +673,12 @@ export async function postReviews(ctx, board, requests) {
   const result = { created: 0, failed: 0, unknown: 0, stoppedByAuth: false };
   const parts = chunk(requests, 10);
 
+  await keepPartial(result, () => postReviewsLoop(ctx, { boardNo, runOf, runIdsOf, result, parts, total: requests.length }));
+  return result;
+}
+
+async function postReviewsLoop(ctx, { boardNo, runOf, runIdsOf, result, parts, total }) {
+  const { client, manifest, log, progress } = ctx;
   for (const [ci, part] of parts.entries()) {
     const range = `${ci * 10 + 1}~${ci * 10 + part.length}번째`;
     // 응답의 각 글을 (상품번호, 제목, 작성자)로 우리가 보낸 요청과 짝지어서, 짝이 맞는 것만 "등록됨"으로 기록한다.
@@ -551,8 +692,8 @@ export async function postReviews(ctx, board, requests) {
       data = await client.createArticles(boardNo, part);
     } catch (e) {
       if (isAmbiguous(e)) {
+        result.unknown += part.length; // 기록 쓰기 전에 센다
         manifest.append('review', 'unknown', { board_no: boardNo, product_nos: part.map((r) => r.product_no), runIds: runIdsOf(part), reason: String(e.message).slice(0, 200) });
-        result.unknown += part.length;
         log(`\n⚠️ ${range} — 결과를 알 수 없습니다 (${e.message}). 자동 삭제하지 않습니다.`);
       } else {
         result.failed += part.length;
@@ -594,15 +735,13 @@ export async function postReviews(ctx, board, requests) {
     if (unresolved.length) {
       records.push(['review', 'unknown', { board_no: boardNo, product_nos: unresolved.map((r) => r.product_no), runIds: runIdsOf(unresolved), reason: '응답에서 확인되지 않음' }]);
     }
-    appendAll(manifest, records);
+    // 카페24에는 이미 반영됐으므로 기록 쓰기 전에 센다
     result.created += records.filter(([, ev]) => ev === 'created').length;
-    if (unresolved.length) {
-      result.unknown += unresolved.length;
-      log(`\n⚠️ ${range} — ${unresolved.length}개는 응답에서 확인되지 않아 "결과 불명"으로 기록했습니다.`);
-    }
-    progress(Math.min((ci + 1) * 10, requests.length), requests.length);
+    result.unknown += unresolved.length;
+    appendAll(manifest, records);
+    if (unresolved.length) log(`\n⚠️ ${range} — ${unresolved.length}개는 응답에서 확인되지 않아 "결과 불명"으로 기록했습니다.`);
+    progress(Math.min((ci + 1) * 10, total), total);
   }
-  return result;
 }
 
 // ---------------------------------------------------------------- 예전 버전 데이터 (소유 기록 도입 전)

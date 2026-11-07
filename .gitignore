@@ -6,3 +6,6 @@ logs/
 owned/
 .omc/
 .DS_Store
+*.lock
+*.tmp
+*.lock.d/
