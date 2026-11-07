@@ -87,7 +87,13 @@ export class Cafe24Client {
       }
       this.updateBucket(res.headers.get('x-api-call-limit'));
 
-      const text = await res.text();
+      let text;
+      try {
+        text = await res.text();
+      } catch (e) {
+        // 응답 본문을 다 못 읽음 → 서버에서 처리됐는지 알 수 없음 (status 0 = 결과 불명)
+        throw new Cafe24ApiError(0, `응답을 끝까지 받지 못했습니다: ${e.message}`);
+      }
       let data = null;
       try {
         data = text ? JSON.parse(text) : null;
@@ -146,10 +152,13 @@ export class Cafe24Client {
     return this.delete(`/products/${productNo}`, { shop_no: this.cfg.shopNo });
   }
 
-  /** 자체상품코드에 code가 포함된 상품을 전부 가져온다 (offset 최대 5000 제한 내). */
+  /**
+   * 자체상품코드에 code가 포함된 상품을 가져온다.
+   * offset 최대 5000 제한 때문에 끝까지 못 읽으면 truncated=true를 돌려준다 (전부 찾았다고 말하면 안 됨).
+   */
   async findProductsByCustomCode(code) {
     const limit = 100;
-    const all = [];
+    const items = [];
     for (let offset = 0; offset <= 5000; offset += limit) {
       const data = await this.get('/products', {
         shop_no: this.cfg.shopNo,
@@ -157,11 +166,66 @@ export class Cafe24Client {
         limit,
         offset,
       });
-      const items = data?.products || [];
-      all.push(...items);
-      if (items.length < limit) break;
+      const page = data?.products || [];
+      items.push(...page);
+      if (page.length < limit) return { items, truncated: false };
     }
-    return all;
+    return { items, truncated: true };
+  }
+
+  /** 상품번호로 현재 상태를 조회한다. 없는 상품은 결과에서 빠진다. 목록 API 캐시로 빠진 건 하나씩 다시 확인한다. */
+  async getProductsByNos(productNos) {
+    const found = new Map();
+    for (let i = 0; i < productNos.length; i += 100) {
+      const part = productNos.slice(i, i + 100);
+      const data = await this.get('/products', { shop_no: this.cfg.shopNo, product_no: part, limit: 100 });
+      if (!Array.isArray(data?.products)) throw new Cafe24ApiError(0, '상품 조회 응답 형식이 올바르지 않습니다 (결과 불명)');
+      for (const p of data.products) found.set(Number(p.product_no), p);
+    }
+    // 여러 건 조회에서 빠진 상품은 단건 조회로 확인한다. "없음"으로 인정하는 건
+    // 빈 객체({"product":{}}, 카페24의 없는 상품 응답)나 404뿐이고, 그 밖의 이상한 응답은 오류(결과 불명)로 본다.
+    for (const no of productNos) {
+      if (found.has(no)) continue;
+      let data;
+      try {
+        data = await this.get(`/products/${no}`, { shop_no: this.cfg.shopNo });
+      } catch (e) {
+        if (e.status === 404) continue;
+        throw e;
+      }
+      const one = data?.product;
+      if (!one || typeof one !== 'object' || Array.isArray(one)) throw new Cafe24ApiError(0, `상품 ${no} 조회 응답 형식이 올바르지 않습니다 (결과 불명)`);
+      if (Object.keys(one).length === 0) continue; // 없음
+      if (Number(one.product_no) !== no) throw new Cafe24ApiError(0, `상품 ${no} 조회 결과의 상품번호가 다릅니다 (결과 불명)`);
+      found.set(no, one);
+    }
+    return found;
+  }
+
+  /** 게시물 번호로 현재 상태를 조회한다. 없는(또는 삭제된) 게시물은 결과에서 빠진다. */
+  async getArticlesByNos(boardNo, articleNos) {
+    const found = new Map();
+    for (let i = 0; i < articleNos.length; i += 100) {
+      const part = articleNos.slice(i, i + 100);
+      const data = await this.get(`/boards/${boardNo}/articles`, { shop_no: this.cfg.shopNo, article_no: part, limit: 100 });
+      if (!Array.isArray(data?.articles)) throw new Cafe24ApiError(0, '게시물 조회 응답 형식이 올바르지 않습니다 (결과 불명)');
+      for (const a of data.articles) {
+        if (a.deleted !== 'T') found.set(Number(a.article_no), a);
+      }
+    }
+    // 여러 건 조회에서 빠진 글은 한 건씩 다시 확인한다 (목록이 불완전할 수 있으므로).
+    for (const no of articleNos) {
+      if (found.has(no)) continue;
+      try {
+        const data = await this.get(`/boards/${boardNo}/articles`, { shop_no: this.cfg.shopNo, article_no: no });
+        if (!Array.isArray(data?.articles)) throw new Cafe24ApiError(0, `게시물 ${no} 조회 응답 형식이 올바르지 않습니다 (결과 불명)`);
+        const a = data.articles.find((x) => Number(x.article_no) === no);
+        if (a && a.deleted !== 'T') found.set(no, a);
+      } catch (e) {
+        if (e.status !== 404) throw e;
+      }
+    }
+    return found;
   }
 
   // ---- 메인진열 (추천상품, 신상품 등) ----
@@ -191,10 +255,10 @@ export class Cafe24Client {
     return (await this.get('/boards', { shop_no: this.cfg.shopNo }))?.boards || [];
   }
 
-  /** 게시물 등록. 한 번에 최대 10건. */
+  /** 게시물 등록. 한 번에 최대 10건. 응답 본문을 그대로 돌려준다 (검증은 호출하는 쪽에서). */
   async createArticles(boardNo, requests) {
     if (requests.length > 10) throw new Error('게시물은 한 번에 10건까지 등록할 수 있습니다.');
-    return (await this.post(`/boards/${boardNo}/articles`, { shop_no: this.cfg.shopNo, requests }))?.articles || [];
+    return this.post(`/boards/${boardNo}/articles`, { shop_no: this.cfg.shopNo, requests });
   }
 
   /** 게시물 검색 (offset 최대 8000). */

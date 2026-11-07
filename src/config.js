@@ -1,10 +1,22 @@
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const TOKEN_FILE = process.env.CAFE24_TOKEN_FILE || path.join(ROOT_DIR, '.cafe24-token.json');
-export const LOG_DIR = process.env.CAFE24_LOG_DIR || path.join(ROOT_DIR, 'logs');
+
+/**
+ * 설정·토큰·로그를 두는 폴더.
+ * - CAFE24_HOME 환경변수가 있으면 그 폴더
+ * - 예전처럼 도구 폴더에 .env가 있으면 도구 폴더 (기존 사용자 호환)
+ * - 그 외에는 ~/.config/cafe24-dummy (npx로 실행해도 설정이 남도록)
+ */
+export const DATA_DIR =
+  process.env.CAFE24_HOME ||
+  (fs.existsSync(path.join(ROOT_DIR, '.env')) ? ROOT_DIR : path.join(os.homedir(), '.config', 'cafe24-dummy'));
+export const ENV_FILE = process.env.CAFE24_ENV_FILE || path.join(DATA_DIR, '.env');
+export const TOKEN_FILE = process.env.CAFE24_TOKEN_FILE || path.join(DATA_DIR, '.cafe24-token.json');
+export const LOG_DIR = process.env.CAFE24_LOG_DIR || path.join(DATA_DIR, 'logs');
 
 // 더미 상품 식별용 자체상품코드 접두어. 삭제는 이 접두어가 붙은 상품만 대상으로 한다.
 export const DUMMY_CODE_PREFIX = 'DUMMY-';
@@ -21,7 +33,7 @@ export const SCOPES = [
 export const DUMMY_REVIEW_PREFIX = '[더미] ';
 
 /** .env 파일을 읽어 process.env에 없는 값만 채운다 (외부 의존성 없이). */
-export function loadEnvFile(file = process.env.CAFE24_ENV_FILE || path.join(ROOT_DIR, '.env')) {
+export function loadEnvFile(file = ENV_FILE) {
   if (!fs.existsSync(file)) return;
   for (const raw of fs.readFileSync(file, 'utf8').split(/\r?\n/)) {
     const line = raw.trim();
@@ -62,7 +74,10 @@ export function getConfig({ requireOAuth = true } = {}) {
       ['CAFE24_REDIRECT_URI', cfg.redirectUri],
     ].filter(([, v]) => !v).map(([k]) => k);
     if (missing.length) {
-      throw new Error(`.env에 다음 값이 비어 있습니다: ${missing.join(', ')}\n.env.example을 복사해 .env를 만들고 채워 주세요.`);
+      throw new Error(
+        `설정에 다음 값이 비어 있습니다: ${missing.join(', ')}\n` +
+          `${ENV_FILE} 파일을 만들고 채워 주세요 (.env.example 참고).`,
+      );
     }
   }
   return cfg;

@@ -3,5 +3,6 @@ node_modules/
 .cafe24-token.json
 .cafe24-token.json.tmp
 logs/
+owned/
 .omc/
 .DS_Store

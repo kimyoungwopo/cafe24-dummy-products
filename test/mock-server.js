@@ -4,7 +4,7 @@ import http from 'node:http';
  * 카페24 Admin API를 흉내 내는 테스트용 서버.
  * 요청 형식(Bearer 토큰, shop_no/request 래퍼, 필수 필드)을 검사한다.
  */
-export function startMockServer({ fail429Once = false, fail500OnPostOnce = false } = {}) {
+export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full' } = {}) {
   const state = {
     products: new Map(),
     nextNo: 100,
@@ -14,6 +14,8 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
     sent429: !fail429Once,
     sent500: !fail500OnPostOnce,
     hideFromList: false, // true면 목록 API가 새 상품을 못 보여 줌 (캐시 흉내)
+    hiddenMainNos: new Set(), // 메인진열 목록 조회에서 빠지는 상품 (캐시 흉내)
+    malformedDetail: false, // true면 상품 단건 조회가 product 키 없는 이상한 응답을 줌
     mains: new Map([[2, new Set([1])], [3, new Set()]]), // 추천상품엔 진짜 상품 1이 이미 있음
     articles: new Map(),
     nextArticle: 500,
@@ -21,6 +23,8 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
   // 진짜 고객 후기 (지우면 안 됨): 제목은 [더미]로 시작하지만 작성자가 더미 목록에 없음
   state.articles.set(1, { article_no: 1, board_no: 4, writer: '실제고객', title: '[더미] 라고 쓴 진짜 후기', content: 'x' });
   state.articles.set(2, { article_no: 2, board_no: 4, writer: '김민지', title: '진짜 후기', content: 'x' });
+  // 표시(제목 접두어 + 더미 작성자 이름)까지 똑같지만 이 도구가 만든 기록이 없는 진짜 후기
+  state.articles.set(3, { article_no: 3, board_no: 4, writer: '김민지', title: '[더미] 정말 만족해요', content: 'x', product_no: 1 });
   // 더미가 아닌 기존 상품 (삭제되면 안 됨)
   state.products.set(1, { product_no: 1, product_name: '진짜 상품', custom_product_code: 'REAL-001', display: 'T' });
   state.products.set(2, { product_no: 2, product_name: '코드에 DUMMY- 포함', custom_product_code: 'X-DUMMY-1', display: 'T' });
@@ -94,17 +98,26 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
 
     if (req.method === 'GET' && url.pathname === '/api/v2/admin/products') {
       const code = url.searchParams.get('custom_product_code') || '';
+      const nos = url.searchParams.get('product_no')?.split(',').map(Number);
       const limit = Number(url.searchParams.get('limit') || 10);
       const offset = Number(url.searchParams.get('offset') || 0);
       const list = [...state.products.values()]
-        .filter((p) => !(state.hideFromList && p.product_no >= 100))
+        .filter((p) => !(state.hideFromList && p.product_no >= 100)) // 목록 API 캐시 흉내
+        .filter((p) => !nos || nos.includes(p.product_no))
         .filter((p) => (p.custom_product_code || '').includes(code));
       return send(200, { products: list.slice(offset, offset + limit) });
+    }
+
+    if (req.method === 'GET' && m?.[1] && !m[2]) {
+      if (state.malformedDetail) return send(200, { something: 'else' });
+      // 카페24처럼 없는 상품은 404가 아니라 빈 객체
+      return send(200, { product: state.products.get(Number(m[1])) ?? {} });
     }
 
     if (req.method === 'DELETE' && m?.[1] && !m[2]) {
       const no = Number(m[1]);
       if (!state.products.delete(no)) return send(404, { error: { code: 404, message: 'not found' } });
+      for (const set of state.mains.values()) set.delete(no); // 상품을 지우면 메인진열에서도 빠짐
       return send(200, { product: { product_no: no } });
     }
 
@@ -116,10 +129,12 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
     if (mm) {
       const set = state.mains.get(Number(mm[1]));
       if (!set) return send(404, { error: { code: 404, message: 'no main' } });
-      if (req.method === 'GET') return send(200, { products: [...set].map((no) => ({ product_no: no, product_name: state.products.get(no)?.product_name })) });
+      if (req.method === 'GET') return send(200, { products: [...set].filter((no) => !state.hiddenMainNos.has(no)).map((no) => ({ product_no: no, product_name: state.products.get(no)?.product_name })) });
       if (req.method === 'POST') {
         for (const no of body.request.product_no) set.add(Number(no));
-        return send(201, { product: { product_no: body.request.product_no } });
+        // mainsResponse='subset': 실제로는 다 넣었지만 응답에는 첫 번째만 실림
+        const listed = mainsResponse === 'subset' ? body.request.product_no.slice(0, 1) : body.request.product_no;
+        return send(201, { product: { product_no: listed } });
       }
       if (req.method === 'DELETE') {
         set.delete(Number(mm[2]));
@@ -141,13 +156,17 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
         }
         const created = body.requests.map((r) => ({ article_no: state.nextArticle++, board_no: boardNo, ...r }));
         for (const a of created) state.articles.set(a.article_no, a);
+        // articlesResponse: 'none' = 등록은 됐는데 응답 본문에 articles가 없음 / 'partial' = 일부만 실림
+        if (articlesResponse === 'none') return send(201, {});
+        if (articlesResponse === 'partial') return send(201, { articles: created.slice(0, 1) });
         return send(201, { articles: created });
       }
       if (req.method === 'GET') {
         const kw = url.searchParams.get('keyword') || '';
+        const nos = url.searchParams.get('article_no')?.split(',').map(Number);
         const limit = Number(url.searchParams.get('limit') || 10);
         const offset = Number(url.searchParams.get('offset') || 0);
-        const list = [...state.articles.values()].filter((a) => a.board_no === boardNo && a.title.includes(kw));
+        const list = [...state.articles.values()].filter((a) => a.board_no === boardNo && a.title.includes(kw) && (!nos || nos.includes(a.article_no)));
         return send(200, { articles: list.slice(offset, offset + limit) });
       }
       if (req.method === 'DELETE') {
