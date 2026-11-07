@@ -27,6 +27,22 @@ export const ENV_FILE = fromEnv('CAFE24_ENV_FILE', path.join(DATA_DIR, '.env'));
 export const TOKEN_FILE = fromEnv('CAFE24_TOKEN_FILE', path.join(DATA_DIR, '.cafe24-token.json'));
 export const LOG_DIR = fromEnv('CAFE24_LOG_DIR', path.join(DATA_DIR, 'logs'));
 
+export const NPX_CMD = 'npx github:kimyoungwopo/cafe24-dummy-products';
+/**
+ * 안내 문구에 보여 줄 실행 명령. 사용자가 실제로 실행한 방식과 같게 보여 준다.
+ * npx로 실행 → npx 명령 / 전역 설치(cafe24-dummy) → cafe24-dummy / 소스 폴더에서 실행 → node src/cli.js
+ */
+export function commandName(script = process.argv[1] || '', cwd = process.cwd()) {
+  if (/[\\/]_npx[\\/]/.test(script)) return NPX_CMD;
+  if (path.basename(script) === 'cafe24-dummy') return 'cafe24-dummy';
+  const rel = path.relative(cwd, script);
+  if (!script || !/\.js$/.test(script)) return 'cafe24-dummy';
+  const shown = rel && !rel.startsWith('..') && !path.isAbsolute(rel) ? rel : script;
+  // 그대로 복사해 붙여도 안전하도록, 일반 문자가 아닌 것이 있으면 작은따옴표로 감싼다
+  return `node ${/^[\w./@-]+$/.test(shown) ? shown : `'${shown.replace(/'/g, `'\\''`)}'`}`;
+}
+export const CMD = commandName();
+
 // 더미 상품 식별용 자체상품코드 접두어
 export const DUMMY_CODE_PREFIX = 'DUMMY-';
 
@@ -211,7 +227,7 @@ export function getConfig({ requireOAuth = true } = {}) {
       ['Redirect URI(CAFE24_REDIRECT_URI)', cfg.redirectUri],
     ].filter(([, v]) => !v).map(([k]) => k);
     if (missing.length) {
-      throw new Error(`설정이 비어 있습니다: ${missing.join(', ')}\n\`node src/cli.js setup\`으로 입력하세요 (설정 파일: ${ENV_FILE}).`);
+      throw new Error(`설정이 비어 있습니다: ${missing.join(', ')}\n\`${CMD} setup\`으로 입력하세요 (설정 파일: ${ENV_FILE}).`);
     }
   }
   return cfg;

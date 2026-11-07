@@ -52,8 +52,10 @@ test('요청은 하나씩, 최소 간격을 두고 보낸다 (동시에 불러�
     await Promise.all(Array.from({ length: 6 }, () => client.get('/categories', {})));
     const times = mock.state.calls.filter((c) => c.path === '/api/v2/admin/categories').map((c) => c.at);
     assert.equal(times.length, 6);
-    // 보낸 시각 기준 100ms 간격. 서버가 받은 시각은 네트워크 지연만큼 흔들리므로 여유를 둔다.
-    for (let i = 1; i < times.length; i++) assert.ok(times[i] - times[i - 1] >= 80, `간격 ${times[i] - times[i - 1]}ms`);
+    // 보낸 시각 기준 100ms 간격. 서버가 받은 시각은 연결 준비 등으로 한 건씩 흔들릴 수 있으므로
+    // 전체 길이(5간격 ≈ 500ms)로 확인하고, 개별 간격은 넉넉한 하한만 본다.
+    assert.ok(times.at(-1) - times[0] >= 450, `전체 ${times.at(-1) - times[0]}ms`);
+    for (let i = 1; i < times.length; i++) assert.ok(times[i] - times[i - 1] >= 40, `간격 ${times[i] - times[i - 1]}ms`);
     assert.equal(mock.state.maxInflight, 1, '동시에 둘 이상 보내지 않음');
   } finally {
     await mock.close();

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './quiet.js'; // Node 18의 fetch 실험 기능 경고 숨김 (가장 먼저)
 import { parseArgs } from 'node:util';
 import { spawn } from 'node:child_process';
 import {
@@ -13,6 +14,7 @@ import {
   DATA_DIR_SOURCE,
   ENV_FILE,
   TOKEN_FILE,
+  CMD,
 } from './config.js';
 import { login, readToken, openBrowser } from './auth.js';
 import { Cafe24Client } from './api.js';
@@ -42,7 +44,7 @@ import {
 
 const HELP = `카페24 테스트용 더미 데이터 도구
 
-사용법: node src/cli.js <명령> [옵션]
+사용법: ${CMD} <명령> [옵션]
 
 명령:
   ui                    브라우저 화면으로 쓰기 (연결 · 채우기 · 현황·정리)
@@ -74,7 +76,7 @@ create 옵션:
       --hidden           진열안함·판매안함으로 등록
       --no-image         이미지 업로드 생략
       --prefix <문자열>  상품명 앞에 붙일 문구 (기본 "[더미] ")
-      --dry-run          API 호출 없이 보낼 내용만 출력
+      --dry-run          등록하지 않고 보낼 내용만 출력 (조회만 함)
 
 list / delete 옵션:
       --run <배치ID>     특정 배치만 (create 결과에 표시됨)
@@ -110,7 +112,7 @@ function requireScopes(scopes, what) {
   if (t?.scopes && missing.length) {
     throw new Error(
       `${what}에 필요한 권한(${missing.join(', ')})이 현재 로그인에 없습니다.\n` +
-        '개발자센터 앱 권한에 추가했는지 확인하고 `node src/cli.js login`을 다시 실행하세요.',
+        `개발자센터 앱 권한에 추가했는지 확인하고 \`${CMD} login\`을 다시 실행하세요.`,
     );
   }
 }
@@ -159,7 +161,7 @@ async function cmdCreate(values) {
   console.log(`배치 ${runId}: 더미 상품 ${count}개 등록 시작 (예상 소요 약 ${Math.ceil((count * (withImage ? 2 : 1) * 0.5) / 60)}분 이상)\n`);
   const r = await createProducts(ctx, { count, categories, withImage, runId, ...opts });
   console.log(`\n완료: 성공 ${r.created.length}개, 실패 ${r.failed.length}개${r.unknown.length ? `, 결과 불명 ${r.unknown.length}개` : ''}`);
-  console.log(`배치 ID: ${runId}  (이 배치만 지우기: node src/cli.js delete --run ${runId})`);
+  console.log(`배치 ID: ${runId}  (이 배치만 지우기: ${CMD} delete --run ${runId})`);
   console.log(`소유 기록: ${ctx.manifest.file}`);
 }
 
@@ -179,7 +181,7 @@ async function cmdList(values) {
   const un = await findUnverifiedProducts(ctx, values.run);
   if (un.items.length) {
     console.log(`\n기록에 없는 더미 형식 상품 ${un.items.length}개 — 이 도구가 만들었다는 근거가 없어 자동으로 지우지 않습니다.`);
-    console.log('  예전 버전으로 만든 상품이라면 `node src/cli.js purge-legacy --dry-run`으로 근거를 확인할 수 있어요.');
+    console.log(`  예전 버전으로 만든 상품이라면 \`${CMD} purge-legacy --dry-run\`으로 근거를 확인할 수 있어요.`);
     for (const p of un.items.slice(0, 5)) console.log(`  - ${p.product_no} ${p.custom_product_code} ${p.product_name}`);
   }
   if (un.truncated) console.log('⚠️  상품이 많아 끝까지 조회하지 못했습니다. 위 목록이 전부가 아닐 수 있습니다.');
@@ -304,7 +306,7 @@ async function cmdReviews(values) {
   }
   const r = await postReviews(ctx, board, requests);
   console.log(`\n\n완료: 후기 ${r.created}개 등록, 실패 ${r.failed}개${r.unknown ? `, 결과 불명 ${r.unknown}개` : ''}`);
-  console.log('지우기: node src/cli.js clear-reviews');
+  console.log(`지우기: ${CMD} clear-reviews`);
 }
 
 async function cmdClearReviews(values) {
@@ -419,7 +421,7 @@ async function cmdSetup(values) {
   console.log('   개발자센터 앱의 Redirect URI가 위 값과 글자 하나까지 같은지 확인하세요.');
   const token = readToken();
   if (token?.mall_id && token.mall_id !== mallId) console.log(`   쇼핑몰이 바뀌었습니다(${token.mall_id} → ${mallId}). \`login\`을 다시 하세요.`);
-  else console.log('   다음: node src/cli.js login');
+  else console.log(`   다음: ${CMD} login`);
 }
 
 function copyToClipboard(text) {
@@ -486,7 +488,7 @@ function cmdStatus() {
   console.log(`설정된 쇼핑몰: ${cfg.mallId || '(없음)'}\n`);
   const t = readToken();
   if (!t) {
-    console.log('로그인 정보 없음 — `node src/cli.js login`을 실행하세요.');
+    console.log(`로그인 정보 없음 — \`${CMD} login\`을 실행하세요.`);
     return;
   }
   const accessLeft = Math.round((t.access_expires_ms - Date.now()) / 60000);

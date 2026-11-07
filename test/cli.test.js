@@ -533,6 +533,11 @@ test('purge-legacy: 같은 쇼핑몰 로그 + 지금 상태가 같은 것만, �
     assert.match(wrong.stdout, /일치하지 않아 취소/);
     assert.ok(mock.state.products.has(11));
 
+    // -y만으로는 확인을 건너뛸 수 없다 (쇼핑몰 ID 입력 없이 끝나면 취소)
+    const yesOnly = await cli(['purge-legacy', '-y'], env);
+    assert.match(yesOnly.stdout, /일치하지 않아 취소/);
+    assert.ok(mock.state.products.has(11) && mock.state.articles.has(70));
+
     const ok = await cli(['purge-legacy', '--confirm-mall', 'testmall', '-y'], env);
     assert.match(ok.stdout, /삭제 완료: 후기 1개, 상품 1개, 실패 0개/);
     assert.ok(!mock.state.products.has(11) && !mock.state.articles.has(70));

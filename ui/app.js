@@ -409,7 +409,7 @@ function watchJob(job) {
 // ---------------------------------------------------------------- 시작
 
 if (!TOKEN) {
-  showBanner('세션 정보가 없어요. 터미널에서 `node src/cli.js ui`를 다시 실행해 열어 주세요.', 'err');
+  showBanner('세션 정보가 없어요. 터미널에서 처음 화면을 열었던 명령(끝이 `ui`)을 다시 실행해 열어 주세요.', 'err');
 } else {
   refreshState()
     .then((s) => {
