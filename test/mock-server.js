@@ -4,7 +4,7 @@ import http from 'node:http';
  * 카페24 Admin API를 흉내 내는 테스트용 서버.
  * 요청 형식(Bearer 토큰, shop_no/request 래퍼, 필수 필드)을 검사한다.
  */
-export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full' } = {}) {
+export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full', redirectTo = null } = {}) {
   const state = {
     products: new Map(),
     nextNo: 100,
@@ -40,8 +40,20 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
       res.end(JSON.stringify(body));
     };
 
+    // redirectTo: 모든 요청에 307로 다른 서버를 가리킴 (클라이언트가 따라가면 안 됨)
+    if (redirectTo) {
+      res.writeHead(307, { Location: `${redirectTo}${req.url}` });
+      return res.end();
+    }
+
     if (url.pathname === '/api/v2/oauth/token') {
       const params = new URLSearchParams(raw);
+      if (params.get('code') === 'no-refresh-code' || (params.get('grant_type') === 'refresh_token' && state.incompleteRefresh)) {
+        return send(200, { access_token: 'access-incomplete' }); // refresh_token 없는 불완전한 성공 응답
+      }
+      if (params.get('code') === 'leak-code') {
+        return send(400, { error: 'invalid_grant', error_description: 'LEAK-123 refresh_token=SECRETTOKEN' });
+      }
       if (!req.headers.authorization?.startsWith('Basic ')) return send(401, { error: 'invalid_client' });
       if (params.get('grant_type') === 'refresh_token' && params.get('refresh_token') === 'refresh-1') {
         state.refreshCount++;
@@ -55,7 +67,18 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
           shop_no: '1',
         });
       }
-      return send(400, { error: 'invalid_grant' });
+      if (params.get('grant_type') === 'authorization_code' && params.get('code') === 'good-code' && params.get('redirect_uri')) {
+        state.authCodeExchanges = (state.authCodeExchanges || 0) + 1;
+        return send(200, {
+          access_token: state.validToken,
+          refresh_token: 'refresh-1',
+          refresh_token_expires_at: '2026-11-21T12:00:00.000',
+          mall_id: 'testmall',
+          scopes: ['mall.read_product', 'mall.write_product'],
+          shop_no: '1',
+        });
+      }
+      return send(400, { error: 'invalid_grant', error_description: 'bad code' });
     }
 
     if (req.headers.authorization !== `Bearer ${state.validToken}`) {

@@ -1,10 +1,22 @@
 #!/usr/bin/env node
 import { parseArgs } from 'node:util';
-import { getConfig, DUMMY_CODE_PREFIX } from './config.js';
+import {
+  getConfig,
+  saveConfig,
+  parseMallId,
+  checkMallDns,
+  loadEnvFile,
+  readEnvFileKeys,
+  DUMMY_CODE_PREFIX,
+  DATA_DIR,
+  DATA_DIR_SOURCE,
+  ENV_FILE,
+  TOKEN_FILE,
+} from './config.js';
 import { login, readToken } from './auth.js';
 import { Cafe24Client } from './api.js';
 import { makeRunId } from './dummy.js';
-import { ask, confirm } from './prompt.js';
+import { ask, askHidden, confirm } from './prompt.js';
 import {
   categoryLabel,
   createContext,
@@ -31,6 +43,7 @@ const HELP = `카페24 테스트용 더미 데이터 도구
 사용법: node src/cli.js <명령> [옵션]
 
 명령:
+  setup                 연결 설정 입력 (쇼핑몰 주소, Client ID/Secret, Redirect URI)
   login                 카페24 OAuth 로그인 (토큰 저장)
   status                저장된 토큰 상태 확인
   categories            상품분류(카테고리) 번호 목록 보기
@@ -345,6 +358,67 @@ async function cmdPurgeLegacy(values) {
   if (d.skippedChanged) console.log(`⚠️  실행 직전 확인에서 달라진 ${d.skippedChanged}개는 건너뛰었습니다.`);
 }
 
+async function cmdSetup(values) {
+  // 환경변수로만 들어온 Secret과 설정 파일에 저장된 Secret을 구분한다.
+  const secretInEnvBeforeFile = Boolean(process.env.CAFE24_CLIENT_SECRET);
+  const fileKeys = readEnvFileKeys();
+  loadEnvFile();
+  const cur = {
+    mall: process.env.CAFE24_MALL_ID || '',
+    clientId: process.env.CAFE24_CLIENT_ID || '',
+    secretInFile: fileKeys.has('CAFE24_CLIENT_SECRET'),
+    secretEnvOnly: secretInEnvBeforeFile && !fileKeys.has('CAFE24_CLIENT_SECRET'),
+    redirect: process.env.CAFE24_REDIRECT_URI || '',
+  };
+  console.log(`설정 파일: ${ENV_FILE}`);
+  console.log(`(위치 기준: ${DATA_DIR_SOURCE})\n`);
+  console.log('카페24 개발자센터(https://developers.cafe24.com) > 앱 > 개발 정보에서 값을 확인하세요.\n');
+
+  const mallInput = values.mall ?? ((await ask(`쇼핑몰 주소 또는 ID${cur.mall ? ` [${cur.mall}]` : ''}: `)) || cur.mall);
+  const mallId = parseMallId(mallInput);
+  if (!values['no-dns-check']) {
+    const d = await checkMallDns(mallId);
+    if (!d.ok) {
+      console.log(`⚠️  ${d.message}`);
+      if (!values.force && !(await confirm('그래도 이 쇼핑몰 ID로 저장할까요?'))) {
+        console.log('저장하지 않았습니다.');
+        return;
+      }
+    }
+  }
+  const clientId = values['client-id'] ?? ((await ask(`Client ID${cur.clientId ? ` [${cur.clientId}]` : ''}: `)) || cur.clientId);
+  const keepHint = cur.secretInFile ? ' [Enter = 저장된 값 유지]' : cur.secretEnvOnly ? ' [Enter = 환경변수 값 사용, 파일에는 저장 안 함]' : '';
+  const secret = await askHidden(`Client Secret (입력해도 화면에 안 보여요)${keepHint}: `);
+  if (!secret && !cur.secretInFile && !cur.secretEnvOnly) throw new Error('Client Secret이 필요합니다.');
+  const defaultRedirect = cur.redirect && mallId === cur.mall ? cur.redirect : `https://${mallId}.cafe24.com`;
+  const redirect = values['redirect-uri'] ?? ((await ask(`Redirect URI [${defaultRedirect}]: `)) || defaultRedirect);
+  // 인증 코드는 카페24가 브라우저를 이 주소로 보내면서 전달된다 (OAuth 방식). 쇼핑몰 자신의 주소가 가장 안전하다.
+  try {
+    if (new URL(redirect).hostname !== `${mallId}.cafe24.com`) {
+      console.log(`⚠️  로그인할 때 인증 코드가 ${new URL(redirect).hostname} 으로 전달됩니다. 직접 관리하는 주소가 아니라면 https://${mallId}.cafe24.com 을 쓰세요.`);
+    }
+  } catch {
+    /* 형식 오류는 아래 저장 단계에서 안내 */
+  }
+
+  const { file } = saveConfig({
+    CAFE24_MALL_ID: mallId,
+    CAFE24_CLIENT_ID: clientId,
+    CAFE24_CLIENT_SECRET: secret || undefined, // 비우면 기존 값 유지
+    CAFE24_REDIRECT_URI: redirect,
+  });
+  console.log(`\n✅ 저장했습니다: ${file} (나만 읽을 수 있는 권한 600)`);
+  if (!secret && cur.secretEnvOnly) {
+    console.log('   ⚠️  Client Secret은 환경변수(CAFE24_CLIENT_SECRET)에만 있어 설정 파일에는 저장하지 않았습니다.');
+    console.log('      환경변수 없이 쓰려면 setup을 다시 실행해 Secret을 입력하세요.');
+  }
+  console.log(`   쇼핑몰: ${mallId} / Redirect URI: ${redirect}`);
+  console.log('   개발자센터 앱의 Redirect URI가 위 값과 글자 하나까지 같은지 확인하세요.');
+  const token = readToken();
+  if (token?.mall_id && token.mall_id !== mallId) console.log(`   쇼핑몰이 바뀌었습니다(${token.mall_id} → ${mallId}). \`login\`을 다시 하세요.`);
+  else console.log('   다음: node src/cli.js login');
+}
+
 async function cmdCategories() {
   const ctx = context();
   const cats = await ctx.client.listCategories();
@@ -363,6 +437,10 @@ async function cmdCategories() {
 
 function cmdStatus() {
   const cfg = getConfig({ requireOAuth: false });
+  console.log(`설정 위치: ${DATA_DIR} (${DATA_DIR_SOURCE})`);
+  console.log(`설정 파일: ${ENV_FILE}${process.env.CAFE24_CLIENT_SECRET ? ' (Client Secret 설정됨)' : ''}`);
+  console.log(`토큰 파일: ${TOKEN_FILE}`);
+  console.log(`설정된 쇼핑몰: ${cfg.mallId || '(없음)'}\n`);
   const t = readToken();
   if (!t) {
     console.log('로그인 정보 없음 — `node src/cli.js login`을 실행하세요.');
@@ -393,6 +471,11 @@ async function main() {
       group: { type: 'string' },
       board: { type: 'string' },
       'confirm-mall': { type: 'string' },
+      mall: { type: 'string' },
+      'client-id': { type: 'string' },
+      'redirect-uri': { type: 'string' },
+      'no-dns-check': { type: 'boolean' },
+      force: { type: 'boolean' },
       yes: { type: 'boolean', short: 'y' },
       help: { type: 'boolean', short: 'h' },
     },
@@ -402,6 +485,7 @@ async function main() {
   if (values.help || command === '-h' || command === '--help') return console.log(HELP);
 
   const commands = {
+    setup: cmdSetup,
     login: async () => void (await login(getConfig())),
     status: cmdStatus,
     categories: cmdCategories,

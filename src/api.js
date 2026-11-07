@@ -77,6 +77,7 @@ export class Cafe24Client {
           headers,
           body: body ? JSON.stringify(body) : undefined,
           signal: AbortSignal.timeout(this.timeoutMs),
+          redirect: 'error', // 토큰이 다른 서버로 가지 않도록 리다이렉트를 따라가지 않는다
         });
       } catch (e) {
         if (idempotent && errorRetries < 3) {

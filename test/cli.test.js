@@ -9,11 +9,13 @@ import { fileURLToPath } from 'node:url';
 import { startMockServer } from './mock-server.js';
 import { buildDummyProduct, dummyCode, makeRunId, isDummyCode } from '../src/dummy.js';
 import { makeDummyImage } from '../src/image.js';
-import { parseCodeInput, buildAuthorizeUrl } from '../src/auth.js';
+import { parseRedirect, startLogin, buildAuthorizeUrl } from '../src/auth.js';
 import { buildReviews, isDummyReview } from '../src/review.js';
 
 const run = promisify(execFile);
-const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'src', 'cli.js');
+// 목 서버 주소를 코드로 지정하는 테스트 전용 실행기를 통해 CLI를 실행한다 (실제 CLI는 환경변수로 API 주소를 바꿀 수 없음)
+const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), 'run-cli.js');
+const REAL_CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'src', 'cli.js');
 
 function setup(base, { expired = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-'));
@@ -30,7 +32,7 @@ function setup(base, { expired = false } = {}) {
     CAFE24_CLIENT_ID: 'cid',
     CAFE24_CLIENT_SECRET: 'secret',
     CAFE24_REDIRECT_URI: 'https://example.com/callback',
-    CAFE24_API_BASE: base,
+    TEST_MOCK_API_BASE: base, // test/run-cli.js만 읽는 값
     CAFE24_TOKEN_FILE: tokenFile,
     CAFE24_LOG_DIR: path.join(dir, 'logs'),
     CAFE24_MIN_INTERVAL_MS: '1',
@@ -77,14 +79,32 @@ test('더미 이미지: 올바른 PNG 시그니처와 크기', () => {
   assert.ok(png.length < 200_000, `이미지가 너무 큼: ${png.length}`);
 });
 
-test('OAuth: 인증 URL과 붙여넣은 리다이렉트 URL 해석', () => {
-  const url = new URL(buildAuthorizeUrl({ apiBase: 'https://m.cafe24api.com', clientId: 'cid', redirectUri: 'https://e.com/cb' }, 'st'));
+test('OAuth: 인증 URL, 그리고 붙여넣은 URL은 전체 주소·같은 Redirect URI·같은 state·만료 전·1회만', () => {
+  const cfg = { apiBase: 'https://m.cafe24api.com', clientId: 'cid', redirectUri: 'https://e.com/cb' };
+  const url = new URL(buildAuthorizeUrl(cfg, 'st'));
   assert.equal(url.pathname, '/api/v2/oauth/authorize');
   assert.equal(url.searchParams.get('scope'), 'mall.read_product mall.write_product mall.read_category mall.read_community mall.write_community');
-  assert.equal(parseCodeInput('https://e.com/cb?code=abc&state=st', 'st'), 'abc');
-  assert.equal(parseCodeInput('  rawcode  ', 'st'), 'rawcode');
-  assert.throws(() => parseCodeInput('https://e.com/cb?code=abc&state=bad', 'st'), /state/);
-  assert.throws(() => parseCodeInput('https://e.com/cb?error=access_denied', 'st'), /access_denied/);
+
+  const now = 1_000_000;
+  const at = startLogin(cfg, { now });
+  const ok = `https://e.com/cb?code=abc&state=${at.state}`;
+  assert.equal(parseRedirect(ok, at, { now }), 'abc');
+  assert.equal(parseRedirect(`https://e.com/cb/?code=abc&state=${at.state}`, at, { now }), 'abc', '끝의 / 차이는 허용');
+  const bad = (input, re, extra = {}) => assert.throws(() => parseRedirect(input, extra.attempt ?? at, { now: extra.now ?? now }), re);
+  bad('abc', /주소창 URL 전체/); // code만 붙여넣기 거부
+  bad(`https://e.com/cb?code=abc&state=other`, /state 불일치/);
+  bad(`https://e.com/cb?code=abc`, /state 불일치/);
+  bad(`https://evil.com/cb?code=abc&state=${at.state}`, /Redirect URI와 다른 주소/);
+  bad(`https://e.com/other?code=abc&state=${at.state}`, /Redirect URI와 다른 주소/);
+  bad(`https://e.com/cb?error=access_denied&state=${at.state}`, /승인이 거부/);
+  bad(ok, /만료/, { now: now + 11 * 60 * 1000 });
+  bad(ok, /이미 처리한/, { attempt: { ...at, used: true } });
+  // 오류 메시지에 붙여넣은 값(코드)을 다시 보여 주지 않는다
+  try {
+    parseRedirect('https://e.com/cb?code=SECRETCODE123&state=x', at, { now });
+  } catch (e) {
+    assert.doesNotMatch(e.message, /SECRETCODE123/);
+  }
 });
 
 test('create → list → delete 전체 흐름 (목 서버)', async () => {
@@ -1052,4 +1072,340 @@ test('후속: 메인진열 응답에 확인된 것과 결과 불명이 섞였을
     delete process.env.CAFE24_OWNED_DIR;
     await mock.close();
   }
+});
+
+// ---------------------------------------------------------------- 2단계: 설정·로그인
+
+import * as config from '../src/config.js';
+import { spawn } from 'node:child_process';
+
+test('설정 위치 우선순위: CAFE24_HOME > 도구 폴더 .env(예전 호환) > 사용자 폴더', () => {
+  const r = (env, exists) => config.resolveDataDir({ env, rootDir: '/tool', homeDir: '/home/u', exists: () => exists });
+  assert.equal(r({ CAFE24_HOME: '/custom' }, true).dir, '/custom');
+  assert.equal(r({}, true).dir, '/tool');
+  assert.equal(r({}, false).dir, path.join('/home/u', '.config', 'cafe24-dummy'));
+});
+
+test('API 주소: 실제 실행은 항상 카페24 주소, 환경변수로 바꿀 수 없음 (목 서버는 코드에서만, localhost만)', () => {
+  assert.equal(config.resolveApiBase('myshop'), 'https://myshop.cafe24api.com');
+  assert.throws(() => config.resolveApiBase('my.shop'), /형식이 올바르지 않습니다/);
+  const saved = { ...process.env };
+  try {
+    process.env.CAFE24_API_BASE = 'http://127.0.0.1:1';
+    process.env.CAFE24_ALLOW_TEST_API_BASE = '1';
+    process.env.CAFE24_MALL_ID = 'myshop';
+    assert.equal(config.getConfig({ requireOAuth: false }).apiBase, 'https://myshop.cafe24api.com', '예전 테스트 환경변수는 무시');
+  } finally {
+    for (const k of ['CAFE24_API_BASE', 'CAFE24_ALLOW_TEST_API_BASE', 'CAFE24_MALL_ID']) {
+      if (k in saved) process.env[k] = saved[k];
+      else delete process.env[k];
+    }
+  }
+  assert.throws(() => config.__setTestApiBase('https://evil.com'), /localhost/);
+  config.__setTestApiBase('http://127.0.0.1:9/x');
+  assert.equal(config.resolveApiBase('myshop'), 'http://127.0.0.1:9');
+  config.__setTestApiBase(null);
+  assert.equal(config.resolveApiBase('myshop'), 'https://myshop.cafe24api.com');
+});
+
+test('쇼핑몰 ID·Redirect URI 입력 해석과 안내', () => {
+  for (const s of ['myshop', 'MyShop', 'myshop.cafe24.com', 'https://myshop.cafe24.com/admin', 'myshop.cafe24api.com']) assert.equal(config.parseMallId(s), 'myshop', s);
+  assert.throws(() => config.parseMallId('https://www.myshop.com/?token=SECRET'), (e) => /카페24 주소/.test(e.message) && !/SECRET/.test(e.message));
+  assert.throws(() => config.parseMallId(''), /비어 있습니다/);
+  assert.throws(() => config.parseMallId('my_shop'), /카페24 주소|형식/);
+  assert.equal(config.validateRedirectUri('https://myshop.cafe24.com'), 'https://myshop.cafe24.com');
+  assert.throws(() => config.validateRedirectUri('http://myshop.cafe24.com'), /https/);
+  assert.throws(() => config.validateRedirectUri('https://1.2.3.4/cb'), /IP/);
+  assert.throws(() => config.validateRedirectUri('https://a.com/cb#x'), /#/);
+});
+
+test('쇼핑몰 DNS 확인: 없는 주소는 안내, 일시 오류는 재시도 안내', async () => {
+  const notFound = await config.checkMallDns('myaccount', { lookup: async () => { throw Object.assign(new Error('x'), { code: 'ENOTFOUND' }); } });
+  assert.equal(notFound.kind, 'notfound');
+  assert.match(notFound.message, /개발자센터 계정 ID와 다를 수 있고/);
+  const flaky = await config.checkMallDns('myshop', { lookup: async () => { throw Object.assign(new Error('x'), { code: 'EAI_AGAIN' }); } });
+  assert.equal(flaky.kind, 'error');
+  assert.ok((await config.checkMallDns('myshop', { lookup: async () => ({}) })).ok);
+});
+
+test('설정 저장: 처음 설치(폴더 없음)·다른 줄 보존·600 권한·잘못된 값은 저장 안 함·실패해도 기존 그대로', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-cfg-'));
+  const file = path.join(dir, 'new', 'deep', '.env');
+  const before = { ...process.env };
+  try {
+    const r = config.saveConfig({ CAFE24_MALL_ID: 'https://myshop.cafe24.com', CAFE24_CLIENT_ID: 'clientid123', CAFE24_CLIENT_SECRET: 'secretvalue123', CAFE24_REDIRECT_URI: 'https://myshop.cafe24.com' }, { file });
+    assert.deepEqual(r.changed.sort(), ['CAFE24_CLIENT_ID', 'CAFE24_CLIENT_SECRET', 'CAFE24_MALL_ID', 'CAFE24_REDIRECT_URI']);
+    assert.ok(!JSON.stringify(r).includes('secretvalue123'), '반환값에 비밀값 없음');
+    assert.equal(fs.statSync(file).mode & 0o777, 0o600);
+    assert.equal(fs.statSync(path.dirname(file)).mode & 0o777, 0o700);
+    assert.match(fs.readFileSync(file, 'utf8'), /CAFE24_MALL_ID=myshop\n/);
+
+    fs.appendFileSync(file, '# 내 메모\nMY_OTHER_SETTING=keep\n');
+    config.saveConfig({ CAFE24_CLIENT_ID: 'newclientid1' }, { file });
+    const text = fs.readFileSync(file, 'utf8');
+    assert.match(text, /# 내 메모/);
+    assert.match(text, /MY_OTHER_SETTING=keep/);
+    assert.match(text, /CAFE24_CLIENT_ID=newclientid1/);
+    assert.match(text, /CAFE24_CLIENT_SECRET=secretvalue123/, '비운 값은 유지');
+
+    // 줄바꿈 주입 → 저장 안 함, 파일·환경변수 그대로
+    const snapshot = fs.readFileSync(file, 'utf8');
+    const envBefore = process.env.CAFE24_CLIENT_ID;
+    assert.throws(() => config.saveConfig({ CAFE24_CLIENT_ID: 'abc\nCAFE24_API_BASE=https://evil.com' }, { file }), /Client ID 형식/);
+    assert.throws(() => config.saveConfig({ CAFE24_REDIRECT_URI: 'https://a.com/x\nCAFE24_API_BASE=https://evil.com' }, { file }));
+    assert.equal(fs.readFileSync(file, 'utf8'), snapshot);
+    assert.equal(process.env.CAFE24_CLIENT_ID, envBefore);
+
+    // 쓰기 실패 (폴더 읽기 전용) → 오류, 기존 파일·환경변수 그대로, 임시 파일 안 남음
+    fs.chmodSync(path.dirname(file), 0o500);
+    assert.throws(() => config.saveConfig({ CAFE24_CLIENT_ID: 'otherclient9' }, { file }), /설정 파일 저장에 실패했습니다.*기존 설정 파일은 바뀌지 않았습니다/s);
+    fs.chmodSync(path.dirname(file), 0o700);
+    assert.equal(fs.readFileSync(file, 'utf8'), snapshot);
+    assert.equal(process.env.CAFE24_CLIENT_ID, envBefore);
+    assert.deepEqual(fs.readdirSync(path.dirname(file)).filter((f) => f.endsWith('.tmp')), []);
+  } finally {
+    for (const k of Object.keys(process.env)) if (!(k in before)) delete process.env[k];
+    Object.assign(process.env, before);
+  }
+});
+
+test('설정 파일보다 환경변수가 우선한다', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-prec-'));
+  const envFile = path.join(dir, '.env');
+  fs.writeFileSync(envFile, 'CAFE24_MALL_ID=fileshop\nCAFE24_SHOP_NO=1\n');
+  const out = await run('node', [CLI, 'status'], { env: { PATH: process.env.PATH, CAFE24_ENV_FILE: envFile, CAFE24_TOKEN_FILE: path.join(dir, 't.json'), CAFE24_MALL_ID: 'envshop' } });
+  assert.match(out.stdout, /설정된 쇼핑몰: envshop/);
+});
+
+test('setup: 옵션으로 저장하고 Secret은 화면에 나오지 않는다 (Enter = 기존 Secret 유지)', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-setup-'));
+  const envFile = path.join(dir, 'cfg', '.env');
+  fs.mkdirSync(path.dirname(envFile));
+  fs.writeFileSync(envFile, 'CAFE24_CLIENT_SECRET=existingsecret99\n');
+  const env = { PATH: process.env.PATH, CAFE24_ENV_FILE: envFile, CAFE24_TOKEN_FILE: path.join(dir, 't.json') };
+  const out = await cli(['setup', '--mall', 'https://myshop.cafe24.com/admin', '--client-id', 'clientid123', '--redirect-uri', 'https://myshop.cafe24.com', '--no-dns-check'], env);
+  assert.match(out.stdout, /저장했습니다/);
+  assert.doesNotMatch(out.stdout + out.stderr, /existingsecret99/);
+  const text = fs.readFileSync(envFile, 'utf8');
+  assert.match(text, /CAFE24_MALL_ID=myshop/);
+  assert.match(text, /CAFE24_CLIENT_SECRET=existingsecret99/);
+  const st = await cli(['status'], env);
+  assert.doesNotMatch(st.stdout, /existingsecret99/);
+  assert.match(st.stdout, /Client Secret 설정됨/);
+});
+
+test('login: 토큰 폴더가 없어도 저장되고, 틀린 URL은 다시 받으며, 코드는 출력에 남지 않는다', async () => {
+  const mock = await startMockServer();
+  try {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-login-'));
+    const tokenFile = path.join(dir, 'not', 'yet', 'token.json');
+    const env = {
+      PATH: process.env.PATH,
+      CAFE24_ENV_FILE: path.join(dir, 'none.env'),
+      CAFE24_TOKEN_FILE: tokenFile,
+      CAFE24_MALL_ID: 'testmall',
+      CAFE24_CLIENT_ID: 'clientid123',
+      CAFE24_CLIENT_SECRET: 'secretvalue123',
+      CAFE24_REDIRECT_URI: 'https://testmall.cafe24.com',
+      TEST_MOCK_API_BASE: mock.base,
+    };
+    const child = spawn('node', [CLI, 'login'], { env });
+    const killer = setTimeout(() => child.kill('SIGKILL'), 30_000);
+    let out = '';
+    let step = 0;
+    child.stdout.on('data', (d) => {
+      out += d;
+      const m = /state=([0-9a-f]{32})/.exec(out);
+      if (step === 0 && m && /붙여넣기: $/.test(out)) {
+        step = 1; // 다른 시도의 URL → 거부되고 다시 물어야 함
+        child.stdin.write('https://testmall.cafe24.com/?code=good-code&state=deadbeefdeadbeefdeadbeefdeadbeef\n');
+      } else if (step === 1 && /state 불일치[\s\S]*붙여넣기: $/.test(out)) {
+        step = 2;
+        child.stdin.write(`https://testmall.cafe24.com/?code=good-code&state=${m[1]}\n`);
+        child.stdin.end();
+      }
+    });
+    const code = await new Promise((r) => child.on('close', r));
+    clearTimeout(killer);
+    assert.equal(code, 0, out);
+    assert.match(out, /state 불일치/);
+    assert.match(out, /로그인 완료/);
+    assert.equal((out.match(/good-code/g) || []).length, 0, '코드는 출력에 없음');
+    assert.equal(fs.statSync(tokenFile).mode & 0o777, 0o600);
+    assert.equal(mock.state.authCodeExchanges, 1);
+  } finally {
+    await mock.close();
+  }
+});
+
+// ---------------------------------------------------------------- 2단계 Codex 검수 회귀 테스트
+
+import http from 'node:http';
+import * as auth from '../src/auth.js';
+
+async function startEvilServer() {
+  const hits = [];
+  const server = http.createServer((req, res) => {
+    let body = '';
+    req.on('data', (d) => (body += d));
+    req.on('end', () => {
+      hits.push({ method: req.method, url: req.url, body, auth: req.headers.authorization });
+      res.end('{}');
+    });
+  });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  return { hits, base: `http://127.0.0.1:${server.address().port}`, close: () => new Promise((r) => server.close(r)) };
+}
+
+test('회귀: 토큰 요청과 API 요청은 리다이렉트를 따라가지 않는다 (토큰·코드가 다른 서버로 안 감)', async () => {
+  const evil = await startEvilServer();
+  const mock = await startMockServer({ redirectTo: evil.base });
+  try {
+    // 1) 토큰 갱신 요청 (refresh token이 본문에 있음)
+    const a = setup(mock.base, { expired: true });
+    const out1 = await cli(['create', '-n', '1', '--no-image'], a.env);
+    assert.match(out1.stdout, /권한 오류로 중단/);
+    // 2) 일반 API 요청 (Authorization 헤더에 토큰이 있음)
+    const b = setup(mock.base);
+    await assert.rejects(cli(['list'], b.env));
+    assert.equal(evil.hits.length, 0, `다른 서버로 간 요청: ${JSON.stringify(evil.hits)}`);
+  } finally {
+    await mock.close();
+    await evil.close();
+  }
+});
+
+test('회귀: 서버나 URL에서 온 오류 문구는 그대로 출력하지 않는다', async () => {
+  const mock = await startMockServer();
+  try {
+    const cfg = { apiBase: mock.base, mallId: 'testmall', clientId: 'clientid123', clientSecret: 'secretvalue123', redirectUri: 'https://testmall.cafe24.com' };
+    const at = auth.startLogin(cfg);
+    // ?error= 값
+    assert.throws(() => auth.parseRedirect(`https://testmall.cafe24.com/?error=LEAKVALUE-code-abc&state=${at.state}`, at), (e) => /승인이 거부/.test(e.message) && !/LEAKVALUE/.test(e.message));
+    // 토큰 서버의 오류 설명 (토큰처럼 보이는 값이 들어 있음)
+    await assert.rejects(auth.completeLogin(cfg, `https://testmall.cafe24.com/?code=leak-code&state=${at.state}`, at), (e) =>
+      /만료됐거나 이미 사용됐습니다/.test(e.message) && !/LEAK-123|SECRETTOKEN|leak-code/.test(e.message));
+  } finally {
+    await mock.close();
+  }
+});
+
+test('회귀: 새 로그인을 시작하면 이전 로그인 시도의 URL은 더 이상 통하지 않는다', () => {
+  const cfg = { apiBase: 'https://m.cafe24api.com', clientId: 'cid', redirectUri: 'https://e.com/cb' };
+  const first = auth.startLogin(cfg);
+  const second = auth.startLogin(cfg);
+  assert.throws(() => auth.parseRedirect(`https://e.com/cb?code=a&state=${first.state}`, first), /새 로그인 시도가 시작돼서/);
+  assert.equal(auth.parseRedirect(`https://e.com/cb?code=a&state=${second.state}`, second), 'a');
+});
+
+test('회귀: 실제 CLI(src/cli.js)는 예전 테스트 환경변수가 있어도 목 서버로 요청하지 않는다', async () => {
+  const mock = await startMockServer();
+  try {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-real-'));
+    const out = await run('node', [REAL_CLI, 'status'], {
+      env: { PATH: process.env.PATH, CAFE24_ENV_FILE: path.join(dir, 'none.env'), CAFE24_TOKEN_FILE: path.join(dir, 't.json'), CAFE24_MALL_ID: 'testmall', CAFE24_API_BASE: mock.base, CAFE24_ALLOW_TEST_API_BASE: '1' },
+    });
+    assert.match(out.stdout, /설정된 쇼핑몰: testmall/);
+    const cfgOut = await run('node', ['--input-type=module', '-e', `import { getConfig } from ${JSON.stringify(path.join(path.dirname(REAL_CLI), 'config.js'))}; console.log(getConfig({ requireOAuth: false }).apiBase);`], {
+      env: { PATH: process.env.PATH, CAFE24_ENV_FILE: path.join(dir, 'none.env'), CAFE24_MALL_ID: 'testmall', CAFE24_API_BASE: mock.base, CAFE24_ALLOW_TEST_API_BASE: '1' },
+    });
+    assert.equal(cfgOut.stdout.trim(), 'https://testmall.cafe24api.com');
+    assert.equal(mock.state.calls.length, 0);
+  } finally {
+    await mock.close();
+  }
+});
+
+// ---------------------------------------------------------------- 2단계 Codex 재검수 회귀 테스트
+
+function driveLogin(env, code) {
+  return new Promise((resolve) => {
+    const child = spawn('node', [CLI, 'login'], { env });
+    const killer = setTimeout(() => child.kill('SIGKILL'), 30_000);
+    let out = '';
+    let sent = false;
+    const onData = (d) => {
+      out += d;
+      const m = /state=([0-9a-f]{32})/.exec(out);
+      if (!sent && m && /붙여넣기: $/.test(out)) {
+        sent = true;
+        child.stdin.write(`https://testmall.cafe24.com/?code=${code}&state=${m[1]}\n`);
+        child.stdin.end();
+      }
+    };
+    child.stdout.on('data', onData);
+    child.stderr.on('data', (d) => (out += d));
+    child.on('close', (exit) => {
+      clearTimeout(killer);
+      resolve({ exit, out });
+    });
+  });
+}
+
+const loginEnv = (mock, dir) => ({
+  PATH: process.env.PATH,
+  CAFE24_ENV_FILE: path.join(dir, 'none.env'),
+  CAFE24_TOKEN_FILE: path.join(dir, 'token.json'),
+  CAFE24_MALL_ID: 'testmall',
+  CAFE24_CLIENT_ID: 'clientid123',
+  CAFE24_CLIENT_SECRET: 'secretvalue123',
+  CAFE24_REDIRECT_URI: 'https://testmall.cafe24.com',
+  TEST_MOCK_API_BASE: mock.base,
+});
+
+test('회귀: refresh token이 빠진 성공 응답은 저장하지 않는다 (로그인·갱신 모두, 기존 토큰 유지)', async () => {
+  const mock = await startMockServer();
+  try {
+    // 로그인: 토큰 파일이 만들어지지 않아야 함
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-inc-'));
+    const r = await driveLogin(loginEnv(mock, dir), 'no-refresh-code');
+    assert.notEqual(r.exit, 0);
+    assert.match(r.out, /필요한 값이 빠져 있어 저장하지 않았습니다/);
+    assert.ok(!fs.existsSync(path.join(dir, 'token.json')));
+
+    // 갱신: 기존 토큰 파일이 그대로여야 함
+    const { env, tokenFile } = setup(mock.base, { expired: true });
+    const before = fs.readFileSync(tokenFile, 'utf8');
+    mock.state.incompleteRefresh = true;
+    const out = await cli(['create', '-n', '1', '--no-image'], env);
+    assert.match(out.stdout, /필요한 값이 빠져 있어 저장하지 않았습니다/);
+    assert.equal(fs.readFileSync(tokenFile, 'utf8'), before, '기존 refresh token을 잃지 않음');
+    assert.ok(!mock.state.calls.some((c) => c.method === 'POST' && c.path === '/api/v2/admin/products'));
+  } finally {
+    await mock.close();
+  }
+});
+
+test('회귀: 깨진 토큰 파일의 내용(토큰 일부)은 오류 메시지에 나오지 않는다', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-broken-'));
+  const tokenFile = path.join(dir, 'token.json');
+  fs.writeFileSync(tokenFile, '{"access_token":"SECRETTOK123abc", "refresh_token": "REFRESHSECRET9');
+  const out = await cli(['status'], { PATH: process.env.PATH, CAFE24_ENV_FILE: path.join(dir, 'none.env'), CAFE24_TOKEN_FILE: tokenFile }).catch((e) => e);
+  const text = `${out.stdout}${out.stderr}`;
+  assert.match(text, /토큰 파일을 읽을 수 없습니다 \(내용이 깨져 있음\)/);
+  assert.doesNotMatch(text, /SECRETTOK123|REFRESHSECRET9/);
+});
+
+test('회귀: setup — Secret이 환경변수에만 있으면 파일에 저장하지 않았다고 분명히 알리고, 쇼핑몰 주소가 아닌 Redirect URI는 경고한다', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-envsecret-'));
+  const envFile = path.join(dir, '.env');
+  const env = { PATH: process.env.PATH, CAFE24_ENV_FILE: envFile, CAFE24_TOKEN_FILE: path.join(dir, 't.json'), CAFE24_CLIENT_SECRET: 'envonlysecret77' };
+  const out = await cli(['setup', '--mall', 'myshop', '--client-id', 'clientid123', '--redirect-uri', 'https://other-domain.example/cb', '--no-dns-check'], env);
+  assert.match(out.stdout, /환경변수\(CAFE24_CLIENT_SECRET\)에만 있어 설정 파일에는 저장하지 않았습니다/);
+  assert.match(out.stdout, /인증 코드가 other-domain\.example 으로 전달됩니다/);
+  assert.doesNotMatch(fs.readFileSync(envFile, 'utf8'), /CAFE24_CLIENT_SECRET/);
+  assert.doesNotMatch(out.stdout, /envonlysecret77/);
+
+  // 쇼핑몰 자신의 주소면 경고 없음
+  const ok = await cli(['setup', '--mall', 'myshop', '--client-id', 'clientid123', '--redirect-uri', 'https://myshop.cafe24.com', '--no-dns-check'], env);
+  assert.doesNotMatch(ok.stdout, /인증 코드가 .* 으로 전달됩니다/);
+});
+
+test('후속: 같은 키가 여러 번 있으면 Secret 판단도 실제로 읽는 값(첫 번째)과 같다', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-dup-'));
+  const file = path.join(dir, '.env');
+  fs.writeFileSync(file, 'CAFE24_CLIENT_SECRET=\nCAFE24_CLIENT_SECRET=later\nCAFE24_CLIENT_ID=first\nCAFE24_CLIENT_ID=second\n');
+  const keys = config.readEnvFileKeys(file);
+  assert.ok(!keys.has('CAFE24_CLIENT_SECRET'), '첫 번째 값이 비어 있으면 없음');
+  assert.ok(keys.has('CAFE24_CLIENT_ID'));
 });

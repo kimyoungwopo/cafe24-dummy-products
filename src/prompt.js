@@ -29,3 +29,28 @@ export async function confirm(question) {
   const answer = String((await ask(`${question} (y/N): `)) ?? '').trim().toLowerCase();
   return answer === 'y' || answer === 'yes';
 }
+
+/** 입력 내용이 화면에 보이지 않게 받는다 (Client Secret 등). 터미널이 아니면 일반 입력과 같다. */
+export function askHidden(question) {
+  if (!stdin.isTTY) return ask(question);
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({ input: stdin, output: stdout, terminal: true });
+    let muted = false;
+    let settled = false;
+    rl._writeToOutput = (s) => {
+      if (!muted) rl.output.write(s);
+    };
+    const finish = (v) => {
+      if (settled) return;
+      settled = true;
+      rl.close();
+      resolve(v);
+    };
+    rl.on('close', () => finish(''));
+    rl.question(question, (answer) => {
+      rl.output.write('\n');
+      finish(answer);
+    });
+    muted = true;
+  });
+}

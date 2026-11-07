@@ -20,7 +20,7 @@
 1. [카페24 개발자센터](https://developers.cafe24.com)에서 앱을 만듭니다.
 2. 앱 설정에서 다음을 확인·설정합니다.
    - **Client ID / Client Secret**
-   - **Redirect URI**: 본인이 관리하는 도메인의 https 주소 하나 (예: `https://내도메인/cafe24/callback`). 그 경로에 실제 페이지가 없어도 됩니다. 승인 후 주소창의 URL만 복사하면 됩니다
+   - **Redirect URI**: 쇼핑몰 자신의 주소 `https://<쇼핑몰ID>.cafe24.com`을 권장합니다 (`setup`의 기본값). 로그인 승인 후 카페24가 이 주소로 인증 코드를 붙여 보내므로, 직접 관리하지 않는 주소는 쓰지 마세요. 그 주소에 별도 페이지가 없어도 되고, 승인 후 주소창의 URL만 복사하면 됩니다
    - **권한(Scope)**: 상품 읽기·쓰기(`mall.read_product`, `mall.write_product`), 상품분류 읽기(`mall.read_category`), 상품후기를 쓰려면 게시판 읽기·쓰기(`mall.read_community`, `mall.write_community`)
 3. 테스트할 쇼핑몰에 앱을 설치(테스트 실행)할 수 있는 상태인지 확인합니다.
 
@@ -28,10 +28,24 @@
 
 ```bash
 cd cafe24-dummy-products
-cp .env.example .env
+node src/cli.js setup
 ```
 
-`.env`를 열어 `CAFE24_MALL_ID`, `CAFE24_CLIENT_ID`, `CAFE24_CLIENT_SECRET`, `CAFE24_REDIRECT_URI`를 채웁니다.
+질문에 차례로 답하면 설정 파일이 만들어집니다.
+
+- **쇼핑몰 주소 또는 ID**: `myshop`, `https://myshop.cafe24.com/admin` 모두 됩니다. 입력한 쇼핑몰이 실제로 있는지 바로 확인해서, 개발자센터 계정 ID를 넣는 실수를 알려 줘요.
+- **Client ID / Client Secret**: Secret은 입력해도 화면에 보이지 않고, Enter만 누르면 저장된 값을 그대로 둡니다.
+- **Redirect URI**: 기본값은 `https://<쇼핑몰ID>.cafe24.com`. 개발자센터 앱에 등록한 값과 글자 하나까지 같아야 합니다.
+
+설정 파일 위치 (`node src/cli.js status`로 확인):
+
+| 우선순위 | 위치 |
+| --- | --- |
+| 1 | `CAFE24_HOME` 환경변수로 지정한 폴더 |
+| 2 | 도구 폴더에 `.env`가 있으면 도구 폴더 (예전 버전 호환, 자동으로 옮기지 않음) |
+| 3 | `~/.config/cafe24-dummy` (기본) |
+
+같은 값이 환경변수와 설정 파일에 모두 있으면 **환경변수가 우선**합니다. 설정·토큰 파일은 나만 읽을 수 있는 권한(600)으로 저장되고, 저장 중에 실패해도 기존 파일은 그대로 남습니다. 직접 편집하고 싶다면 `.env.example`을 참고하세요.
 
 ## 3. 로그인
 
@@ -39,9 +53,16 @@ cp .env.example .env
 node src/cli.js login
 ```
 
-브라우저가 열리면 쇼핑몰 관리자로 로그인하고 권한을 승인합니다. Redirect URI로 이동하면(페이지가 안 열려도 괜찮습니다) **주소창의 URL 전체**를 복사해 터미널에 붙여넣습니다. 인증 코드는 1분 동안만 유효합니다.
+브라우저가 열리면 쇼핑몰 관리자로 로그인하고 권한을 승인합니다. Redirect URI로 이동하면(페이지가 안 열려도 괜찮습니다) **주소창의 URL 전체**를 복사해 터미널에 붙여넣고 Enter를 누릅니다. 붙여넣은 내용은 인증 코드가 들어 있어서 화면에 표시하지 않습니다.
 
-토큰은 `.cafe24-token.json`에 저장됩니다. Access Token(2시간)은 자동으로 갱신되고, Refresh Token(2주)이 만료되면 `login`을 다시 하면 됩니다.
+- 인증 코드는 1분, 로그인 시도 하나는 10분 동안 유효하고, 한 번만 쓸 수 있습니다.
+- 다른(예전) 로그인 창의 URL이나 Redirect URI가 다른 주소를 붙여넣으면 거부하고 다시 물어봅니다. 새 로그인을 시작하면 이전 시도의 URL은 더 이상 통하지 않습니다. 보안을 위해 `code` 값만 붙여넣는 방식은 받지 않습니다.
+- 붙여넣은 URL, 인증 코드, 카페24가 돌려준 오류 문구는 그대로 출력하지 않고 정해진 안내 문구로만 보여 줍니다.
+- 토큰 요청과 API 요청은 리다이렉트를 따라가지 않습니다 (코드·토큰이 다른 서버로 가지 않도록).
+
+Access Token(2시간)은 자동으로 갱신되고, Refresh Token(2주)이 만료되면 `login`을 다시 하면 됩니다.
+
+> API 주소는 항상 `https://<쇼핑몰ID>.cafe24api.com`이고 환경변수나 설정 파일로 바꿀 수 없습니다. 테스트는 `test/run-cli.js`(배포 패키지에 포함되지 않음)를 통해서만 내 컴퓨터의 목 서버를 씁니다.
 
 ## 4. 사용
 
