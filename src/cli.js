@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { parseArgs } from 'node:util';
+import { spawn } from 'node:child_process';
 import {
   getConfig,
   saveConfig,
@@ -13,7 +14,7 @@ import {
   ENV_FILE,
   TOKEN_FILE,
 } from './config.js';
-import { login, readToken } from './auth.js';
+import { login, readToken, openBrowser } from './auth.js';
 import { Cafe24Client } from './api.js';
 import { makeRunId } from './dummy.js';
 import { ask, askHidden, confirm } from './prompt.js';
@@ -43,6 +44,7 @@ const HELP = `카페24 테스트용 더미 데이터 도구
 사용법: node src/cli.js <명령> [옵션]
 
 명령:
+  ui                    브라우저 화면으로 쓰기 (연결 · 채우기 · 현황·정리)
   setup                 연결 설정 입력 (쇼핑몰 주소, Client ID/Secret, Redirect URI)
   login                 카페24 OAuth 로그인 (토큰 저장)
   status                저장된 토큰 상태 확인
@@ -419,6 +421,46 @@ async function cmdSetup(values) {
   else console.log('   다음: node src/cli.js login');
 }
 
+function copyToClipboard(text) {
+  const tools = { darwin: [['pbcopy', []]], win32: [['clip', []]], linux: [['wl-copy', []], ['xclip', ['-selection', 'clipboard']], ['xsel', ['--clipboard', '--input']]] }[process.platform] || [];
+  return (async () => {
+    for (const [cmd, args] of tools) {
+      const ok = await new Promise((resolve) => {
+        try {
+          const child = spawn(cmd, args, { stdio: ['pipe', 'ignore', 'ignore'] });
+          child.on('error', () => resolve(false));
+          child.on('close', (code) => resolve(code === 0));
+          child.stdin.end(text);
+        } catch {
+          resolve(false);
+        }
+      });
+      if (ok) return true;
+    }
+    return false;
+  })();
+}
+
+async function cmdUi(values) {
+  const { startServer } = await import('./server.js');
+  const port = values.port === undefined ? 0 : parseCount(values.port, undefined, 65535, '--port');
+  const s = await startServer({ port });
+  // 접속 주소에는 이번 실행에만 쓰는 비밀 토큰이 들어 있어 화면·로그에 출력하지 않는다.
+  if (!values['no-open']) openBrowser(s.url);
+  console.log(`UI 서버를 열었습니다: http://127.0.0.1:${s.port} (이 컴퓨터에서만 접속 가능)`);
+  if (values['copy-url']) {
+    console.log((await copyToClipboard(s.url)) ? '접속 주소를 클립보드에 복사했습니다. 브라우저 주소창에 붙여넣으세요 (다른 사람과 공유하지 마세요).' : '클립보드에 복사하지 못했습니다.');
+  } else {
+    console.log('브라우저가 안 열리면 --copy-url 옵션으로 다시 실행해 클립보드의 주소를 여세요.');
+  }
+  console.log('끝내려면 Ctrl+C');
+  await new Promise((resolve) => {
+    const stop = () => s.close().then(resolve);
+    process.once('SIGINT', stop);
+    process.once('SIGTERM', stop);
+  });
+}
+
 async function cmdCategories() {
   const ctx = context();
   const cats = await ctx.client.listCategories();
@@ -476,6 +518,9 @@ async function main() {
       'redirect-uri': { type: 'string' },
       'no-dns-check': { type: 'boolean' },
       force: { type: 'boolean' },
+      port: { type: 'string' },
+      'copy-url': { type: 'boolean' },
+      'no-open': { type: 'boolean' },
       yes: { type: 'boolean', short: 'y' },
       help: { type: 'boolean', short: 'h' },
     },
@@ -486,6 +531,7 @@ async function main() {
 
   const commands = {
     setup: cmdSetup,
+    ui: cmdUi,
     login: async () => void (await login(getConfig())),
     status: cmdStatus,
     categories: cmdCategories,

@@ -88,8 +88,9 @@ async function requestToken(cfg, params) {
   return saveToken(body, cfg.mallId);
 }
 
+// 토큰은 최소 8자 이상이어야 정상으로 본다 (너무 짧은 값은 응답 이상으로 보고 저장하지 않음)
 const isCompleteTokenResponse = (b) =>
-  typeof b?.access_token === 'string' && b.access_token.length > 0 && typeof b.refresh_token === 'string' && b.refresh_token.length > 0;
+  typeof b?.access_token === 'string' && b.access_token.length >= 8 && typeof b.refresh_token === 'string' && b.refresh_token.length >= 8;
 
 const TOKEN_ERRORS = {
   invalid_grant: '인증 코드나 refresh token이 만료됐거나 이미 사용됐습니다. 다시 로그인하세요 (인증 코드는 1분 안에, 한 번만).',

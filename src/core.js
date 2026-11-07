@@ -52,8 +52,8 @@ export function appendAll(manifest, records) {
   }
 }
 
-export function createContext(client, cfg, { log = noop, progress = noop } = {}) {
-  return { client, cfg, manifest: new Manifest(cfg.mallId, cfg.shopNo), log, progress };
+export function createContext(client, cfg, { log = noop, progress = noop, manifest } = {}) {
+  return { client, cfg, manifest: manifest ?? new Manifest(cfg.mallId, cfg.shopNo), log, progress };
 }
 
 export function validateRunId(runId) {

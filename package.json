@@ -22,6 +22,7 @@
   },
   "files": [
     "src",
+    "ui",
     ".env.example",
     "README.md",
     "LICENSE"

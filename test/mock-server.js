@@ -4,7 +4,7 @@ import http from 'node:http';
  * 카페24 Admin API를 흉내 내는 테스트용 서버.
  * 요청 형식(Bearer 토큰, shop_no/request 래퍼, 필수 필드)을 검사한다.
  */
-export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full', redirectTo = null } = {}) {
+export function startMockServer({ fail429Once = false, fail500OnPostOnce = false, articlesResponse = 'full', mainsResponse = 'full', redirectTo = null, echoAuthInErrors = false } = {}) {
   const state = {
     products: new Map(),
     nextNo: 100,
@@ -34,7 +34,7 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
     let raw = '';
     for await (const c of req) raw += c;
     const url = new URL(req.url, 'http://x');
-    state.calls.push({ method: req.method, path: url.pathname, query: Object.fromEntries(url.searchParams), raw });
+    state.calls.push({ method: req.method, path: url.pathname, query: Object.fromEntries(url.searchParams), raw, authorization: req.headers.authorization });
     const send = (status, body, headers = {}) => {
       res.writeHead(status, { 'Content-Type': 'application/json', 'X-Api-Call-Limit': '1/40', ...headers });
       res.end(JSON.stringify(body));
@@ -48,6 +48,10 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
 
     if (url.pathname === '/api/v2/oauth/token') {
       const params = new URLSearchParams(raw);
+      if (params.get('code') === 'len7-code' || params.get('code') === 'len8-code') {
+        const access = params.get('code') === 'len7-code' ? 'abcdefg' : 'abcdefgh';
+        return send(200, { access_token: access, refresh_token: 'refresh-1', mall_id: 'testmall', scopes: [], shop_no: '1' });
+      }
       if (params.get('code') === 'no-refresh-code' || (params.get('grant_type') === 'refresh_token' && state.incompleteRefresh)) {
         return send(200, { access_token: 'access-incomplete' }); // refresh_token 없는 불완전한 성공 응답
       }
@@ -198,6 +202,10 @@ export function startMockServer({ fail429Once = false, fail500OnPostOnce = false
       }
     }
 
+    if (echoAuthInErrors && req.method === 'GET' && url.pathname === '/api/v2/admin/categories') {
+      // 오류 문구에 받은 토큰을 그대로 되돌려 주는 서버 (클라이언트가 가려야 함)
+      return send(400, { error: { code: 400, message: `invalid request with ${req.headers.authorization} and key AbCdEfGhIjKlMnOpQrStUvWxYz012345` } });
+    }
     if (req.method === 'GET' && url.pathname === '/api/v2/admin/categories') {
       const cat = (no, depth, parent, name, path, names, useDisplay = 'T') => ({
         category_no: no,

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>카페24 더미 데이터</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="top-inner">
+        <h1>카페24 더미 데이터</h1>
+        <span id="shop-badge" class="badge">연결 확인 중…</span>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="connect" aria-selected="true">1. 연결</button>
+        <button role="tab" data-tab="seed" aria-selected="false">2. 채우기</button>
+        <button role="tab" data-tab="status" aria-selected="false">3. 현황·정리</button>
+      </nav>
+    </header>
+
+    <main>
+      <div id="banner" class="banner" hidden></div>
+
+      <!-- 1. 연결 -->
+      <section id="tab-connect" class="tab" role="tabpanel">
+        <div class="card">
+          <h2>연결 상태</h2>
+          <dl id="conn-summary" class="summary"></dl>
+        </div>
+
+        <div class="card">
+          <h2>앱 정보 입력</h2>
+          <p class="hint">
+            카페24 개발자센터(developers.cafe24.com) &gt; 앱 &gt; 개발 정보에서 확인하세요. 권한은 상품 읽기+쓰기, 상품분류 읽기가 필요해요.
+          </p>
+          <form id="config-form" class="form" autocomplete="off">
+            <label>쇼핑몰 주소 또는 ID
+              <input name="mall" required placeholder="myshop 또는 https://myshop.cafe24.com" spellcheck="false" />
+              <small>쇼핑몰 관리자 주소 https://&lt;쇼핑몰ID&gt;.cafe24.com/admin 의 ID예요. 개발자센터 계정 ID와 다를 수 있어요.</small>
+            </label>
+            <label>Client ID
+              <input name="clientId" required spellcheck="false" />
+            </label>
+            <label>Client Secret
+              <input name="clientSecret" type="password" spellcheck="false" />
+              <small id="secret-hint">입력한 값은 이 컴퓨터의 설정 파일에만 저장되고 다시 보여 주지 않아요.</small>
+            </label>
+            <label>Redirect URI
+              <input name="redirectUri" spellcheck="false" placeholder="https://myshop.cafe24.com" />
+              <small>개발자센터에 등록한 값과 글자 하나까지 같아야 해요. 쇼핑몰 자신의 주소를 권장해요.</small>
+            </label>
+            <div class="actions">
+              <button type="submit" class="primary">저장</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>카페24 로그인</h2>
+          <ol class="steps">
+            <li>
+              <button id="login-open" type="button" class="primary">카페24 로그인 준비</button>
+              <a id="login-link" class="button-link" target="_blank" rel="noopener noreferrer" hidden>승인 화면 열기 ↗</a>
+              <span class="hint" id="login-link-hint" hidden>새 창에서 카페24 관리자로 로그인하고 승인하세요.</span>
+            </li>
+            <li>승인 후 이동한 페이지의 <b>주소창 URL 전체</b>를 복사해 아래에 붙여넣으세요. (인증 코드는 1분 동안 유효)</li>
+          </ol>
+          <form id="login-form" class="form inline" autocomplete="off">
+            <input name="url" type="password" placeholder="https://myshop.cafe24.com/?code=…&amp;state=…" spellcheck="false" aria-label="리다이렉트된 URL" />
+            <button type="submit">로그인 완료</button>
+          </form>
+          <small class="hint">붙여넣은 내용에는 인증 코드가 있어서 화면에 표시하지 않아요.</small>
+        </div>
+      </section>
+
+      <!-- 2. 채우기 -->
+      <section id="tab-seed" class="tab" role="tabpanel" hidden>
+        <div class="card">
+          <h2>더미 상품 채우기</h2>
+          <form id="seed-form" class="form">
+            <label>상품 개수
+              <input name="count" type="number" min="1" max="500" value="24" required />
+            </label>
+            <fieldset>
+              <legend>상품분류</legend>
+              <label class="radio"><input type="radio" name="categoryMode" value="spread" checked /> 진열 중인 맨 아래 분류 전체에 고르게</label>
+              <label class="radio"><input type="radio" name="categoryMode" value="pick" /> 직접 고르기</label>
+              <label class="radio"><input type="radio" name="categoryMode" value="none" /> 분류 없이</label>
+              <div id="category-list" class="category-list" hidden></div>
+            </fieldset>
+            <fieldset>
+              <legend>옵션</legend>
+              <label class="check"><input type="checkbox" name="withOptions" checked /> 색상·사이즈 옵션 넣기</label>
+              <label class="check"><input type="checkbox" name="withImage" checked /> 번호가 찍힌 상품 이미지 올리기</label>
+              <label class="check"><input type="checkbox" name="hidden" /> 진열안함·판매안함으로 등록 (손님 화면에 안 보임)</label>
+            </fieldset>
+            <p id="seed-estimate" class="hint"></p>
+            <div class="actions">
+              <button type="submit" class="primary">채우기…</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 3. 현황·정리 -->
+      <section id="tab-status" class="tab" role="tabpanel" hidden>
+        <div class="card">
+          <div class="card-head">
+            <h2>이 도구가 만든 더미 데이터</h2>
+            <button id="batches-refresh" type="button">새로고침</button>
+          </div>
+          <p class="hint">정리는 이 도구가 만들었다고 기록된 것만, 지우기 직전에 현재 상태가 기록과 같은지 확인한 뒤에 해요.</p>
+          <div id="batches"></div>
+          <div class="actions">
+            <button id="cleanup-all" type="button" class="danger">전부 정리 미리보기…</button>
+          </div>
+          <ul id="batch-notes" class="notes"></ul>
+        </div>
+      </section>
+
+      <!-- 작업 진행 -->
+      <section id="job" class="card job" hidden>
+        <div class="card-head">
+          <h2 id="job-title">작업</h2>
+          <span id="job-status" class="badge"></span>
+        </div>
+        <div class="progress"><div id="job-bar"></div></div>
+        <p id="job-progress" class="hint"></p>
+        <pre id="job-log" class="log" aria-live="polite"></pre>
+        <p id="job-result"></p>
+      </section>
+    </main>
+
+    <dialog id="modal">
+      <form method="dialog" class="modal">
+        <h2 id="modal-title"></h2>
+        <div id="modal-body"></div>
+        <div class="actions">
+          <button value="cancel" type="submit">취소</button>
+          <button id="modal-ok" value="ok" type="submit" class="primary">확인</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

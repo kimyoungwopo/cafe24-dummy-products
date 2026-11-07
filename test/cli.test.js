@@ -1409,3 +1409,27 @@ test('후속: 같은 키가 여러 번 있으면 Secret 판단도 실제로 읽�
   assert.ok(!keys.has('CAFE24_CLIENT_SECRET'), '첫 번째 값이 비어 있으면 없음');
   assert.ok(keys.has('CAFE24_CLIENT_ID'));
 });
+
+test('회귀: 오류 문구에서 현재 토큰·Secret은 길이와 상관없이 모두 가린다', async () => {
+  const { redactSecrets } = await import('../src/api.js');
+  const out = redactSecrets('x abc y secretvalue123 z abcdef', ['abc', 'secretvalue123', '', null]);
+  assert.doesNotMatch(out, /abc|secretvalue123/);
+  assert.match(out, /\[가림\]/);
+  assert.ok(redactSecrets('a'.repeat(500)).length <= 201, '길이 제한');
+});
+
+test('후속: 토큰 길이 경계 — 7자는 저장하지 않고 8자는 저장한다', async () => {
+  const mock = await startMockServer();
+  try {
+    const d7 = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-len7-'));
+    const r7 = await driveLogin(loginEnv(mock, d7), 'len7-code');
+    assert.notEqual(r7.exit, 0);
+    assert.ok(!fs.existsSync(path.join(d7, 'token.json')));
+    const d8 = fs.mkdtempSync(path.join(os.tmpdir(), 'c24-len8-'));
+    const r8 = await driveLogin(loginEnv(mock, d8), 'len8-code');
+    assert.equal(r8.exit, 0, r8.out);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(d8, 'token.json'), 'utf8')).access_token, 'abcdefgh');
+  } finally {
+    await mock.close();
+  }
+});

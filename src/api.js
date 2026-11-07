@@ -2,6 +2,17 @@ import { getAccessToken } from './auth.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/** 문자열에서 비밀값(정확히 일치)과 토큰처럼 보이는 긴 영숫자 묶음을 가리고 200자로 자른다. */
+export function redactSecrets(text, secrets = []) {
+  let s = String(text ?? '');
+  // 비밀값은 길이와 상관없이 모두 가린다 (긴 것부터 가려서 일부만 남는 일이 없게)
+  for (const v of [...secrets].filter((x) => typeof x === 'string' && x.length > 0).sort((a, b) => b.length - a.length)) {
+    s = s.split(v).join('[가림]');
+  }
+  s = s.replace(/[A-Za-z0-9_-]{20,}/g, '[가림]');
+  return s.length > 200 ? `${s.slice(0, 200)}…` : s;
+}
+
 export class Cafe24ApiError extends Error {
   constructor(status, message, body) {
     super(message);
@@ -121,7 +132,10 @@ export class Cafe24Client {
         await sleep(delay);
         continue;
       }
-      const msg = data?.error?.message || data?.raw || res.statusText;
+      // 카페24가 준 오류 문구는 그대로 쓰지 않는다: 현재 토큰·Secret과 토큰처럼 긴 문자열을 가리고, 길이를 줄인다.
+      // (JSON이 아닌 응답 본문은 아예 싣지 않는다)
+      const upstream = typeof data?.error?.message === 'string' ? data.error.message : data?.raw ? '(응답 본문 생략)' : res.statusText;
+      const msg = redactSecrets(upstream, [token, this.cfg.clientSecret]);
       throw new Cafe24ApiError(res.status, `HTTP ${res.status} ${method} ${path}: ${msg}`, data);
     }
   }

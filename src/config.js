@@ -111,8 +111,14 @@ const VALIDATORS = {
 };
 export const CONFIG_KEYS = Object.keys(VALIDATORS);
 
+let dnsLookup = (host) => dns.promises.lookup(host);
+/** 테스트 전용: DNS 조회를 코드에서만 바꾼다 (test/run-cli.js). */
+export function __setDnsLookup(fn) {
+  dnsLookup = fn || ((host) => dns.promises.lookup(host));
+}
+
 /** 쇼핑몰 ID의 API 주소가 실제로 있는지 DNS로 확인한다. 진단용이며, 실패해도 저장 자체를 막지는 않는다. */
-export async function checkMallDns(mallId, { lookup = dns.promises.lookup } = {}) {
+export async function checkMallDns(mallId, { lookup = dnsLookup } = {}) {
   try {
     await lookup(`${mallId}.cafe24api.com`);
     return { ok: true };
