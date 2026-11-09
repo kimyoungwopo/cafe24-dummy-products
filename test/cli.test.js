@@ -1567,3 +1567,42 @@ test('회귀: seedWorkflow — 등록된 상품이 없으면 뒤 단계는 "건�
     await mock.close();
   }
 });
+
+test('6단계 CLI: --preset으로 업종을 고르고, dry-run과 실제 등록·후기가 같은 업종을 쓴다', async () => {
+  const mock = await startMockServer();
+  try {
+    const { env } = setup(mock.base);
+    const food = JSON.parse(fs.readFileSync(path.resolve('src/presets/food.json'), 'utf8'));
+    const foodItems = Object.values(food.groups).flat().map((x) => x.name);
+
+    const list = await cli(['presets'], env);
+    assert.match(list.stdout, /beauty\s+뷰티/);
+    assert.match(list.stdout, /fashion\s+패션 \(기본\)/);
+
+    const dry = await cli(['create', '-n', '3', '--preset', 'food', '--options', '--dry-run'], env);
+    assert.match(dry.stdout, /업종: 식품 \(food\)/);
+    const dryNames = [...dry.stdout.matchAll(/"product_name": "([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(dryNames.length, 3);
+    for (const n of dryNames) assert.ok(foodItems.some((it) => n.includes(it)), n);
+
+    // 없는 업종 / 받지 않는 명령이면 카페24에 아무것도 보내지 않는다
+    await assert.rejects(cli(['create', '-n', '1', '--preset', 'pets'], env), /없는 업종 프리셋입니다: pets/);
+    await assert.rejects(cli(['create', '-n', '1', '--preset', ''], env), /없는 업종 프리셋입니다/);
+    await assert.rejects(cli(['delete', '--preset', 'food', '-y'], env), /delete 명령은 --preset을 받지 않습니다/);
+    assert.ok(!mock.state.calls.some((c) => c.method !== 'GET'));
+
+    const real = await cli(['create', '-n', '3', '-p', 'food', '--no-image'], env);
+    assert.match(real.stdout, /성공 3개/);
+    const made = [...mock.state.products.values()].filter((p) => /^DUMMY-\d{15}-\d{3}$/.test(p.custom_product_code || ''));
+    assert.deepEqual(made.map((p) => p.product_name), dryNames.map((n) => n), 'dry-run과 같은 상품명 (같은 번호·업종)');
+
+    const rv = await cli(['reviews', '-n', '1', '--preset', 'food'], env);
+    assert.match(rv.stdout, /식품 문구/);
+    const bodies = Object.values(food.reviews.bodies).flat();
+    const posted = [...mock.state.articles.values()].filter((a) => made.some((p) => p.product_no === a.product_no));
+    assert.ok(posted.length >= 3);
+    for (const a of posted) assert.ok(bodies.some((b) => a.content.includes(b)), a.content);
+  } finally {
+    await mock.close();
+  }
+});

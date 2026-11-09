@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "id": "beauty",
+  "label": "뷰티",
+  "description": "스킨케어 · 메이크업 · 바디 · 헤어",
+  "adjectives": ["데일리", "순한", "촉촉한", "산뜻한", "프리미엄", "비건", "저자극", "시그니처", "에센셜", "클린", "미니", "대용량"],
+  "kinds": {
+    "skincare": {
+      "variantLabel": "주요 성분",
+      "variants": ["히알루론산", "시카", "세라마이드", "비타민C", "녹차", "어성초", "펩타이드", "콜라겐"],
+      "options": [{ "name": "용량", "values": ["30ml", "50ml", "100ml"] }]
+    },
+    "makeup": {
+      "variantLabel": "컬러 톤",
+      "variants": ["코랄", "로즈", "누드", "베이지", "피치", "말린장미"],
+      "options": [{ "name": "컬러", "values": ["01 코랄", "02 로즈", "03 누드", "04 베이지", "05 피치"], "take": 3 }]
+    },
+    "body": {
+      "variantLabel": "향",
+      "variants": ["라벤더", "시트러스", "머스크", "코튼", "우디", "플로럴"],
+      "options": [{ "name": "용량", "values": ["200ml", "300ml", "500ml"] }]
+    },
+    "hair": {
+      "variantLabel": "타입",
+      "variants": ["손상모용", "두피케어", "볼륨", "탈모완화", "약산성", "실키"],
+      "options": [{ "name": "용량", "values": ["300ml", "500ml", "1000ml"] }]
+    }
+  },
+  "groups": {
+    "skincare": [
+      { "name": "토너", "min": 15000, "max": 35000, "kind": "skincare" },
+      { "name": "세럼", "min": 22000, "max": 58000, "kind": "skincare" },
+      { "name": "수분 크림", "min": 19000, "max": 49000, "kind": "skincare" },
+      { "name": "클렌징 폼", "min": 9000, "max": 22000, "kind": "skincare" },
+      { "name": "선크림", "min": 14000, "max": 32000, "kind": "skincare" },
+      { "name": "시트 마스크", "min": 9000, "max": 25000, "kind": "skincare" }
+    ],
+    "makeup": [
+      { "name": "쿠션 파운데이션", "min": 25000, "max": 52000, "kind": "makeup" },
+      { "name": "립스틱", "min": 15000, "max": 38000, "kind": "makeup" },
+      { "name": "립 틴트", "min": 9000, "max": 22000, "kind": "makeup" },
+      { "name": "아이섀도 팔레트", "min": 22000, "max": 59000, "kind": "makeup" },
+      { "name": "블러셔", "min": 12000, "max": 32000, "kind": "makeup" }
+    ],
+    "body": [
+      { "name": "바디워시", "min": 9000, "max": 25000, "kind": "body" },
+      { "name": "바디로션", "min": 12000, "max": 32000, "kind": "body" },
+      { "name": "핸드크림", "min": 6000, "max": 18000, "kind": "body" }
+    ],
+    "hair": [
+      { "name": "샴푸", "min": 12000, "max": 35000, "kind": "hair" },
+      { "name": "트리트먼트", "min": 14000, "max": 38000, "kind": "hair" },
+      { "name": "헤어 오일", "min": 15000, "max": 42000, "kind": "hair" }
+    ]
+  },
+  "categoryRules": [
+    { "match": ["makeup", "메이크업", "lip", "립", "eye", "아이섀도", "base", "베이스", "cushion", "쿠션"], "groups": ["makeup"] },
+    { "match": ["body", "바디", "hand", "핸드"], "groups": ["body"] },
+    { "match": ["hair", "헤어", "샴푸", "shampoo"], "groups": ["hair"] },
+    { "match": ["skin", "스킨", "토너", "세럼", "크림", "cream", "cleans", "클렌징", "sun", "선케어", "mask", "마스크"], "groups": ["skincare"] }
+  ],
+  "text": { "name": "{adj} {variant} {item}", "simple": "{variant} {variantLabel}의 {adj} {item}", "styleLabel": "콘셉트" },
+  "reviews": {
+    "titles": {
+      "5": ["인생템 찾았어요", "재구매 각이에요", "피부가 편안해요", "선물했더니 반응 좋아요", "강력 추천합니다"],
+      "4": ["전체적으로 만족해요", "가격 대비 괜찮아요", "무난하게 잘 쓰고 있어요", "생각보다 좋네요"],
+      "3": ["보통이에요", "나쁘지 않아요", "기대만큼은 아니에요"],
+      "2": ["조금 아쉬워요", "제 피부에는 안 맞아요"],
+      "1": ["별로였어요", "배송이 너무 늦었어요"]
+    },
+    "bodies": {
+      "high": ["발림성이 부드럽고 흡수도 빨라요.", "향이 은은해서 부담 없어요.", "예민한 피부인데 자극 없이 잘 맞아요.", "하루 종일 촉촉함이 유지돼요.", "용기가 깔끔해서 쓰기 편해요.", "벌써 두 통째 쓰고 있어요."],
+      "mid": ["가격 생각하면 괜찮은 편이에요.", "향이 생각보다 조금 강해요.", "배송은 보통이었어요.", "효과는 좀 더 써 봐야 알 것 같아요."],
+      "low": ["제 피부에는 살짝 맞지 않았어요.", "용기가 조금 불편해요.", "배송이 예상보다 오래 걸렸어요."]
+    }
+  },
+  "image": { "label": "BEAUTY", "hueStart": 300, "hueSpan": 90 }
+}

@@ -80,6 +80,19 @@
         <div class="card">
           <h2>더미 상품 채우기</h2>
           <form id="seed-form" class="form">
+            <label>업종
+              <select name="preset" id="preset-select" aria-describedby="preset-desc"></select>
+              <small id="preset-desc">상품명·옵션·후기 문구·이미지가 업종에 맞게 바뀌어요.</small>
+            </label>
+            <div id="preset-preview" class="preset-preview" aria-live="polite" hidden>
+              <img id="preview-img" alt="예시 상품 이미지" width="88" height="88" />
+              <div class="preview-body">
+                <span class="preview-tag">예시</span>
+                <strong id="preview-name"></strong>
+                <div id="preview-price"></div>
+                <div id="preview-options" class="hint"></div>
+              </div>
+            </div>
             <label>상품 개수
               <input name="count" type="number" min="1" max="500" value="24" required />
             </label>

@@ -1,0 +1,4399 @@
+{
+ "runId": "261109120000123",
+ "products": [
+  {
+   "product_name": "[더미] 클래식 데님 후드 집업 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 60900,
+   "supply_price": 36500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "클래식 무드의 데님 후드 집업",
+   "description": "<h3>[더미] 클래식 데님 후드 집업 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "[더미] 오버핏 리넨 블렌드 그래픽 티셔츠 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 35900,
+   "supply_price": 21500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "오버핏 무드의 리넨 블렌드 그래픽 티셔츠",
+   "description": "<h3>[더미] 오버핏 리넨 블렌드 그래픽 티셔츠 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 울 라운드 니트 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 45900,
+   "supply_price": 27500,
+   "retail_price": 57000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "프리미엄 무드의 울 라운드 니트",
+   "description": "<h3>[더미] 프리미엄 울 라운드 니트 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "[더미] 빈티지 나일론 데님 스커트 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 42900,
+   "supply_price": 25700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "빈티지 무드의 나일론 데님 스커트",
+   "description": "<h3>[더미] 빈티지 나일론 데님 스커트 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 윈터 코튼 데님 팬츠 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 81900,
+   "supply_price": 49100,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "윈터 무드의 코튼 데님 팬츠",
+   "description": "<h3>[더미] 윈터 코튼 데님 팬츠 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 베이직 레더 텀블러 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 35900,
+   "supply_price": 21500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "베이직 무드의 레더 텀블러",
+   "description": "<h3><테스트 & \"접두어\"> 베이직 레더 텀블러 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "[더미] 데일리 나일론 플리츠 스커트 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 49900,
+   "supply_price": 29900,
+   "retail_price": 62000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "데일리 무드의 나일론 플리츠 스커트",
+   "description": "<h3>[더미] 데일리 나일론 플리츠 스커트 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 반팔 티셔츠 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 20900,
+   "supply_price": 12500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "클래식 무드의 데님 반팔 티셔츠",
+   "description": "<h3>[더미] 클래식 데님 반팔 티셔츠 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "[더미] 프리미엄 캔버스 로퍼 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 115900,
+   "supply_price": 69500,
+   "retail_price": 145000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "프리미엄 무드의 캔버스 로퍼",
+   "description": "<h3>[더미] 프리미엄 캔버스 로퍼 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "[더미] 빈티지 캔버스 머그컵 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 8900,
+   "supply_price": 5300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "빈티지 무드의 캔버스 머그컵",
+   "description": "<h3>[더미] 빈티지 캔버스 머그컵 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 윈터 코튼 블루종 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 101900,
+   "supply_price": 61100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "윈터 무드의 코튼 블루종",
+   "description": "<h3>[더미] 윈터 코튼 블루종 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>"
+  },
+  {
+   "product_name": "[더미] 썸머 리넨 블렌드 하프 코트 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 158900,
+   "supply_price": 95300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "썸머 무드의 리넨 블렌드 하프 코트",
+   "description": "<h3>[더미] 썸머 리넨 블렌드 하프 코트 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 내추럴 나일론 더블 블레이저 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 88900,
+   "supply_price": 53300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "내추럴 무드의 나일론 더블 블레이저",
+   "description": "<h3>[더미] 내추럴 나일론 더블 블레이저 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 내추럴</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 폴리 바람막이 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 74900,
+   "supply_price": 44900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "모던 무드의 폴리 바람막이",
+   "description": "<h3>[더미] 모던 폴리 바람막이 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 울 데님 자켓 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 125900,
+   "supply_price": 75500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "모던 무드의 울 데님 자켓",
+   "description": "<h3>[더미] 모던 울 데님 자켓 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 폴리 블루종 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 78900,
+   "supply_price": 47300,
+   "retail_price": 99000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "모던 무드의 폴리 블루종",
+   "description": "<h3>[더미] 모던 폴리 블루종 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 나일론 후드 집업 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 67900,
+   "supply_price": 40700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "빈티지 무드의 나일론 후드 집업",
+   "description": "<h3>[더미] 빈티지 나일론 후드 집업 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 린넨 가디건 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 81900,
+   "supply_price": 49100,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "빈티지 무드의 린넨 가디건",
+   "description": "<h3>[더미] 빈티지 린넨 가디건 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 빈티지 린넨 데님 자켓 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 111900,
+   "supply_price": 67100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "빈티지 무드의 린넨 데님 자켓",
+   "description": "<h3><테스트 & \"접두어\"> 빈티지 린넨 데님 자켓 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 코튼 데님 자켓 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 98900,
+   "supply_price": 59300,
+   "retail_price": 124000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "슬림 무드의 코튼 데님 자켓",
+   "description": "<h3>[더미] 슬림 코튼 데님 자켓 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 나일론 가디건 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 51900,
+   "supply_price": 31100,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "데일리 무드의 나일론 가디건",
+   "description": "<h3>[더미] 데일리 나일론 가디건 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 울 후드 집업 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 76900,
+   "supply_price": 46100,
+   "retail_price": 96000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "프리미엄 무드의 울 후드 집업",
+   "description": "<h3>[더미] 프리미엄 울 후드 집업 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 폴리 가디건 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 38900,
+   "supply_price": 23300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "프리미엄 무드의 폴리 가디건",
+   "description": "<h3>[더미] 프리미엄 폴리 가디건 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 울 바람막이 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 74900,
+   "supply_price": 44900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "프리미엄 무드의 울 바람막이",
+   "description": "<h3>[더미] 프리미엄 울 바람막이 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 코튼 가디건 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 63900,
+   "supply_price": 38300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "슬림 무드의 코튼 가디건",
+   "description": "<h3>[더미] 슬림 코튼 가디건 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 베이직 폴리 가디건 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 38900,
+   "supply_price": 23300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "베이직 무드의 폴리 가디건",
+   "description": "<h3>[더미] 베이직 폴리 가디건 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 리넨 블렌드 트러커 자켓 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 111900,
+   "supply_price": 67100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "썸머 무드의 리넨 블렌드 트러커 자켓",
+   "description": "<h3>[더미] 썸머 리넨 블렌드 트러커 자켓 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 캐시미어 블렌드 데님 자켓 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 125900,
+   "supply_price": 75500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "썸머 무드의 캐시미어 블렌드 데님 자켓",
+   "description": "<h3>[더미] 썸머 캐시미어 블렌드 데님 자켓 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 울 트러커 자켓 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 88900,
+   "supply_price": 53300,
+   "retail_price": 111000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "프리미엄 무드의 울 트러커 자켓",
+   "description": "<h3>[더미] 프리미엄 울 트러커 자켓 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 폴리 데님 자켓 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 101900,
+   "supply_price": 61100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "프리미엄 무드의 폴리 데님 자켓",
+   "description": "<h3>[더미] 프리미엄 폴리 데님 자켓 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 울 블루종 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 145900,
+   "supply_price": 87500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "프리미엄 무드의 울 블루종",
+   "description": "<h3>[더미] 프리미엄 울 블루종 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 프리미엄 울 데님 자켓 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 111900,
+   "supply_price": 67100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "프리미엄 무드의 울 데님 자켓",
+   "description": "<h3><테스트 & \"접두어\"> 프리미엄 울 데님 자켓 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 내추럴 린넨 데님 자켓 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 98900,
+   "supply_price": 59300,
+   "retail_price": 124000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "내추럴 무드의 린넨 데님 자켓",
+   "description": "<h3>[더미] 내추럴 린넨 데님 자켓 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 내추럴</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 폴리 블루종 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 91900,
+   "supply_price": 55100,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "모던 무드의 폴리 블루종",
+   "description": "<h3>[더미] 모던 폴리 블루종 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캐시미어 블렌드 데님 자켓 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 115900,
+   "supply_price": 69500,
+   "retail_price": 145000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "오버핏 무드의 캐시미어 블렌드 데님 자켓",
+   "description": "<h3>[더미] 오버핏 캐시미어 블렌드 데님 자켓 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 리넨 블렌드 블루종 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 68900,
+   "supply_price": 41300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "오버핏 무드의 리넨 블렌드 블루종",
+   "description": "<h3>[더미] 오버핏 리넨 블렌드 블루종 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캐시미어 블렌드 트러커 자켓 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 111900,
+   "supply_price": 67100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "오버핏 무드의 캐시미어 블렌드 트러커 자켓",
+   "description": "<h3>[더미] 오버핏 캐시미어 블렌드 트러커 자켓 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 내추럴 린넨 블루종 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 113900,
+   "supply_price": 68300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "내추럴 무드의 린넨 블루종",
+   "description": "<h3>[더미] 내추럴 린넨 블루종 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 내추럴</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 심플 리넨 블렌드 블루종 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 68900,
+   "supply_price": 41300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "심플 무드의 리넨 블렌드 블루종",
+   "description": "<h3>[더미] 심플 리넨 블렌드 블루종 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 심플</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 24,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 29,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 코튼 크롭 티셔츠 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 24900,
+   "supply_price": 14900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "슬림 무드의 코튼 크롭 티셔츠",
+   "description": "<h3>[더미] 슬림 코튼 크롭 티셔츠 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 리넨 블렌드 크롭 티셔츠 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 32900,
+   "supply_price": 19700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "오버핏 무드의 리넨 블렌드 크롭 티셔츠",
+   "description": "<h3>[더미] 오버핏 리넨 블렌드 크롭 티셔츠 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캐시미어 블렌드 반팔 티셔츠 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 17900,
+   "supply_price": 10700,
+   "retail_price": 22000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "오버핏 무드의 캐시미어 블렌드 반팔 티셔츠",
+   "description": "<h3>[더미] 오버핏 캐시미어 블렌드 반팔 티셔츠 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 리넨 블렌드 긴팔 티셔츠 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 30900,
+   "supply_price": 18500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "오버핏 무드의 리넨 블렌드 긴팔 티셔츠",
+   "description": "<h3>[더미] 오버핏 리넨 블렌드 긴팔 티셔츠 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캐시미어 블렌드 그래픽 티셔츠 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 38900,
+   "supply_price": 23300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "오버핏 무드의 캐시미어 블렌드 그래픽 티셔츠",
+   "description": "<h3>[더미] 오버핏 캐시미어 블렌드 그래픽 티셔츠 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 베이직 폴리 크롭 티셔츠 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 29900,
+   "supply_price": 17900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "베이직 무드의 폴리 크롭 티셔츠",
+   "description": "<h3><테스트 & \"접두어\"> 베이직 폴리 크롭 티셔츠 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 나일론 크롭 티셔츠 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 26900,
+   "supply_price": 16100,
+   "retail_price": 34000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "데일리 무드의 나일론 크롭 티셔츠",
+   "description": "<h3>[더미] 데일리 나일론 크롭 티셔츠 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 리넨 블렌드 그래픽 티셔츠 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 24900,
+   "supply_price": 14900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "썸머 무드의 리넨 블렌드 그래픽 티셔츠",
+   "description": "<h3>[더미] 썸머 리넨 블렌드 그래픽 티셔츠 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 긴팔 티셔츠 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 34900,
+   "supply_price": 20900,
+   "retail_price": 44000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "클래식 무드의 데님 긴팔 티셔츠",
+   "description": "<h3>[더미] 클래식 데님 긴팔 티셔츠 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 코튼 그래픽 티셔츠 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 18900,
+   "supply_price": 11300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "클래식 무드의 코튼 그래픽 티셔츠",
+   "description": "<h3>[더미] 클래식 코튼 그래픽 티셔츠 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 크롭 티셔츠 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 24900,
+   "supply_price": 14900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "클래식 무드의 데님 크롭 티셔츠",
+   "description": "<h3>[더미] 클래식 데님 크롭 티셔츠 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 베이직 울 그래픽 티셔츠 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 30900,
+   "supply_price": 18500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "베이직 무드의 울 그래픽 티셔츠",
+   "description": "<h3>[더미] 베이직 울 그래픽 티셔츠 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 윈터 코튼 그래픽 티셔츠 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 18900,
+   "supply_price": 11300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "윈터 무드의 코튼 그래픽 티셔츠",
+   "description": "<h3>[더미] 윈터 코튼 그래픽 티셔츠 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 25,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 32,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 36,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 39,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 플리츠 스커트 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 47900,
+   "supply_price": 28700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "클래식 무드의 데님 플리츠 스커트",
+   "description": "<h3>[더미] 클래식 데님 플리츠 스커트 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 코튼 롱 스커트 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 68900,
+   "supply_price": 41300,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "클래식 무드의 코튼 롱 스커트",
+   "description": "<h3>[더미] 클래식 코튼 롱 스커트 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 데님 스커트 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 31900,
+   "supply_price": 19100,
+   "retail_price": 40000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "클래식 무드의 데님 데님 스커트",
+   "description": "<h3>[더미] 클래식 데님 데님 스커트 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 코튼 플리츠 스커트 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 50900,
+   "supply_price": 30500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "클래식 무드의 코튼 플리츠 스커트",
+   "description": "<h3>[더미] 클래식 코튼 플리츠 스커트 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 롱 스커트 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 72900,
+   "supply_price": 43700,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "클래식 무드의 데님 롱 스커트",
+   "description": "<h3>[더미] 클래식 데님 롱 스커트 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 심플 리넨 블렌드 롱 스커트 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 62900,
+   "supply_price": 37700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "심플 무드의 리넨 블렌드 롱 스커트",
+   "description": "<h3><테스트 & \"접두어\"> 심플 리넨 블렌드 롱 스커트 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 심플</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 폴리 롱 스커트 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 56900,
+   "supply_price": 34100,
+   "retail_price": 71000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "모던 무드의 폴리 롱 스커트",
+   "description": "<h3>[더미] 모던 폴리 롱 스커트 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 코튼 롱 스커트 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 48900,
+   "supply_price": 29300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "슬림 무드의 코튼 롱 스커트",
+   "description": "<h3>[더미] 슬림 코튼 롱 스커트 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 나일론 플리츠 스커트 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 55900,
+   "supply_price": 33500,
+   "retail_price": 70000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "데일리 무드의 나일론 플리츠 스커트",
+   "description": "<h3>[더미] 데일리 나일론 플리츠 스커트 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 린넨 롱 스커트 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 38900,
+   "supply_price": 23300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "데일리 무드의 린넨 롱 스커트",
+   "description": "<h3>[더미] 데일리 린넨 롱 스커트 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 윈터 코튼 플리츠 스커트 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 47900,
+   "supply_price": 28700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "윈터 무드의 코튼 플리츠 스커트",
+   "description": "<h3>[더미] 윈터 코튼 플리츠 스커트 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 심플 캐시미어 블렌드 롱 스커트 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 58900,
+   "supply_price": 35300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "심플 무드의 캐시미어 블렌드 롱 스커트",
+   "description": "<h3>[더미] 심플 캐시미어 블렌드 롱 스커트 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 심플</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 린넨 롱 스커트 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 38900,
+   "supply_price": 23300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "빈티지 무드의 린넨 롱 스커트",
+   "description": "<h3>[더미] 빈티지 린넨 롱 스커트 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 27,
+     "recommend": "F",
+     "new": "F"
+    },
+    {
+     "category_no": 34,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 스웨이드 로퍼 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 91900,
+   "supply_price": 55100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "데일리 무드의 스웨이드 로퍼",
+   "description": "<h3>[더미] 데일리 스웨이드 로퍼 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 스웨이드 캔버스 스니커즈 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 106900,
+   "supply_price": 64100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "데일리 무드의 스웨이드 캔버스 스니커즈",
+   "description": "<h3>[더미] 데일리 스웨이드 캔버스 스니커즈 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "230",
+      "240",
+      "250",
+      "260",
+      "270"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 스웨이드 로퍼 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 68900,
+   "supply_price": 41300,
+   "retail_price": 86000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "데일리 무드의 스웨이드 로퍼",
+   "description": "<h3>[더미] 데일리 스웨이드 로퍼 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 스웨이드 캔버스 스니커즈 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 84900,
+   "supply_price": 50900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "데일리 무드의 스웨이드 캔버스 스니커즈",
+   "description": "<h3>[더미] 데일리 스웨이드 캔버스 스니커즈 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "230",
+      "240",
+      "250",
+      "260",
+      "270"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 윈터 레더 캔버스 스니커즈 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 115900,
+   "supply_price": 69500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "윈터 무드의 레더 캔버스 스니커즈",
+   "description": "<h3>[더미] 윈터 레더 캔버스 스니커즈 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 윈터 레더 캔버스 스니커즈 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 94900,
+   "supply_price": 56900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "윈터 무드의 레더 캔버스 스니커즈",
+   "description": "<h3><테스트 & \"접두어\"> 윈터 레더 캔버스 스니커즈 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 니트 캔버스 스니커즈 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 81900,
+   "supply_price": 49100,
+   "retail_price": 102000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "썸머 무드의 니트 캔버스 스니커즈",
+   "description": "<h3>[더미] 썸머 니트 캔버스 스니커즈 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 니트</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "230",
+      "240",
+      "250",
+      "260",
+      "270"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 레더 캔버스 스니커즈 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 65900,
+   "supply_price": 39500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "클래식 무드의 레더 캔버스 스니커즈",
+   "description": "<h3>[더미] 클래식 레더 캔버스 스니커즈 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 캔버스 캔버스 스니커즈 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 97900,
+   "supply_price": 58700,
+   "retail_price": 122000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "모던 무드의 캔버스 캔버스 스니커즈",
+   "description": "<h3>[더미] 모던 캔버스 캔버스 스니커즈 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 스웨이드 캔버스 스니커즈 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 44900,
+   "supply_price": 26900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "빈티지 무드의 스웨이드 캔버스 스니커즈",
+   "description": "<h3>[더미] 빈티지 스웨이드 캔버스 스니커즈 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "230",
+      "240",
+      "250",
+      "260",
+      "270"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 스웨이드 로퍼 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 91900,
+   "supply_price": 55100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "빈티지 무드의 스웨이드 로퍼",
+   "description": "<h3>[더미] 빈티지 스웨이드 로퍼 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 니트 캔버스 스니커즈 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 86900,
+   "supply_price": 52100,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "썸머 무드의 니트 캔버스 스니커즈",
+   "description": "<h3>[더미] 썸머 니트 캔버스 스니커즈 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 니트</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "230",
+      "240",
+      "250",
+      "260",
+      "270"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 내추럴 스웨이드 캔버스 스니커즈 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 44900,
+   "supply_price": 26900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "내추럴 무드의 스웨이드 캔버스 스니커즈",
+   "description": "<h3>[더미] 내추럴 스웨이드 캔버스 스니커즈 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스웨이드</li>\n<li>스타일: 내추럴</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 50,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "230",
+      "240",
+      "250",
+      "260",
+      "270"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 코튼 에코백 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 20900,
+   "supply_price": 12500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "모던 무드의 코튼 에코백",
+   "description": "<h3>[더미] 모던 코튼 에코백 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 레더 패브릭 파우치 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 23900,
+   "supply_price": 14300,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "모던 무드의 레더 패브릭 파우치",
+   "description": "<h3>[더미] 모던 레더 패브릭 파우치 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 세라믹 니트 비니 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 16900,
+   "supply_price": 10100,
+   "retail_price": 21000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "모던 무드의 세라믹 니트 비니",
+   "description": "<h3>[더미] 모던 세라믹 니트 비니 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 세라믹</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 캔버스 니트 비니 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 24900,
+   "supply_price": 14900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "빈티지 무드의 캔버스 니트 비니",
+   "description": "<h3>[더미] 빈티지 캔버스 니트 비니 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 빈티지 린넨 볼캡 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 34900,
+   "supply_price": 20900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "빈티지 무드의 린넨 볼캡",
+   "description": "<h3>[더미] 빈티지 린넨 볼캡 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 빈티지 캔버스 패브릭 파우치 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 20900,
+   "supply_price": 12500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "빈티지 무드의 캔버스 패브릭 파우치",
+   "description": "<h3><테스트 & \"접두어\"> 빈티지 캔버스 패브릭 파우치 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 빈티지</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 레더 패브릭 파우치 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 17900,
+   "supply_price": 10700,
+   "retail_price": 22000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "슬림 무드의 레더 패브릭 파우치",
+   "description": "<h3>[더미] 슬림 레더 패브릭 파우치 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 린넨 볼캡 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 20900,
+   "supply_price": 12500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "데일리 무드의 린넨 볼캡",
+   "description": "<h3>[더미] 데일리 린넨 볼캡 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 레더 니트 비니 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 27900,
+   "supply_price": 16700,
+   "retail_price": 35000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "프리미엄 무드의 레더 니트 비니",
+   "description": "<h3>[더미] 프리미엄 레더 니트 비니 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 세라믹 볼캡 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 14900,
+   "supply_price": 8900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "프리미엄 무드의 세라믹 볼캡",
+   "description": "<h3>[더미] 프리미엄 세라믹 볼캡 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 세라믹</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 코튼 에코백 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 20900,
+   "supply_price": 12500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "프리미엄 무드의 코튼 에코백",
+   "description": "<h3>[더미] 프리미엄 코튼 에코백 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 세라믹 볼캡 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 26900,
+   "supply_price": 16100,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "슬림 무드의 세라믹 볼캡",
+   "description": "<h3>[더미] 슬림 세라믹 볼캡 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 세라믹</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 베이직 세라믹 볼캡 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 14900,
+   "supply_price": 8900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "베이직 무드의 세라믹 볼캡",
+   "description": "<h3>[더미] 베이직 세라믹 볼캡 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 세라믹</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 51,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 캔버스 텀블러 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 28900,
+   "supply_price": 17300,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "썸머 무드의 캔버스 텀블러",
+   "description": "<h3>[더미] 썸머 캔버스 텀블러 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 린넨 머그컵 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 20900,
+   "supply_price": 12500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "썸머 무드의 린넨 머그컵",
+   "description": "<h3>[더미] 썸머 린넨 머그컵 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 레더 머그컵 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 10900,
+   "supply_price": 6500,
+   "retail_price": 14000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "프리미엄 무드의 레더 머그컵",
+   "description": "<h3>[더미] 프리미엄 레더 머그컵 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 레더</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 세라믹 쿠션 커버 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 21900,
+   "supply_price": 13100,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "프리미엄 무드의 세라믹 쿠션 커버",
+   "description": "<h3>[더미] 프리미엄 세라믹 쿠션 커버 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 세라믹</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 프리미엄 코튼 향초 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 40900,
+   "supply_price": 24500,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "프리미엄 무드의 코튼 향초",
+   "description": "<h3>[더미] 프리미엄 코튼 향초 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 프리미엄 세라믹 머그컵 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 17900,
+   "supply_price": 10700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "프리미엄 무드의 세라믹 머그컵",
+   "description": "<h3><테스트 & \"접두어\"> 프리미엄 세라믹 머그컵 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 세라믹</li>\n<li>스타일: 프리미엄</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 내추럴 린넨 머그컵 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 15900,
+   "supply_price": 9500,
+   "retail_price": 20000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "내추럴 무드의 린넨 머그컵",
+   "description": "<h3>[더미] 내추럴 린넨 머그컵 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 내추럴</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 모던 코튼 향초 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 22900,
+   "supply_price": 13700,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "모던 무드의 코튼 향초",
+   "description": "<h3>[더미] 모던 코튼 향초 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 모던</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 린넨 쿠션 커버 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 24900,
+   "supply_price": 14900,
+   "retail_price": 31000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "오버핏 무드의 린넨 쿠션 커버",
+   "description": "<h3>[더미] 오버핏 린넨 쿠션 커버 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 린넨</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 스테인리스 향초 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 14900,
+   "supply_price": 8900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "오버핏 무드의 스테인리스 향초",
+   "description": "<h3>[더미] 오버핏 스테인리스 향초 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스테인리스</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캔버스 텀블러 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 28900,
+   "supply_price": 17300,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "오버핏 무드의 캔버스 텀블러",
+   "description": "<h3>[더미] 오버핏 캔버스 텀블러 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캔버스</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 내추럴 스테인리스 향초 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 29900,
+   "supply_price": 17900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "내추럴 무드의 스테인리스 향초",
+   "description": "<h3>[더미] 내추럴 스테인리스 향초 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스테인리스</li>\n<li>스타일: 내추럴</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 심플 스테인리스 향초 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 14900,
+   "supply_price": 8900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "심플 무드의 스테인리스 향초",
+   "description": "<h3>[더미] 심플 스테인리스 향초 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 스테인리스</li>\n<li>스타일: 심플</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 52,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 슬림 코튼 라운드 니트 001",
+   "custom_product_code": "DUMMY-261109120000123-001",
+   "price": 60900,
+   "supply_price": 36500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #1",
+   "simple_description": "슬림 무드의 코튼 라운드 니트",
+   "description": "<h3>[더미] 슬림 코튼 라운드 니트 001</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 슬림</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 리넨 블렌드 크롭 티셔츠 002",
+   "custom_product_code": "DUMMY-261109120000123-002",
+   "price": 32900,
+   "supply_price": 19700,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #2",
+   "simple_description": "오버핏 무드의 리넨 블렌드 크롭 티셔츠",
+   "description": "<h3>[더미] 오버핏 리넨 블렌드 크롭 티셔츠 002</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캐시미어 블렌드 옥스포드 셔츠 003",
+   "custom_product_code": "DUMMY-261109120000123-003",
+   "price": 42900,
+   "supply_price": 25700,
+   "retail_price": 54000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #3",
+   "simple_description": "오버핏 무드의 캐시미어 블렌드 옥스포드 셔츠",
+   "description": "<h3>[더미] 오버핏 캐시미어 블렌드 옥스포드 셔츠 003</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 리넨 블렌드 스트라이프 셔츠 004",
+   "custom_product_code": "DUMMY-261109120000123-004",
+   "price": 50900,
+   "supply_price": 30500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #4",
+   "simple_description": "오버핏 무드의 리넨 블렌드 스트라이프 셔츠",
+   "description": "<h3>[더미] 오버핏 리넨 블렌드 스트라이프 셔츠 004</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 오버핏 캐시미어 블렌드 블라우스 005",
+   "custom_product_code": "DUMMY-261109120000123-005",
+   "price": 68900,
+   "supply_price": 41300,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #5",
+   "simple_description": "오버핏 무드의 캐시미어 블렌드 블라우스",
+   "description": "<h3>[더미] 오버핏 캐시미어 블렌드 블라우스 005</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 캐시미어 블렌드</li>\n<li>스타일: 오버핏</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "<테스트 & \"접두어\"> 베이직 폴리 크롭 티셔츠 007",
+   "custom_product_code": "DUMMY-261109120000123-007",
+   "price": 29900,
+   "supply_price": 17900,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #7",
+   "simple_description": "베이직 무드의 폴리 크롭 티셔츠",
+   "description": "<h3><테스트 & \"접두어\"> 베이직 폴리 크롭 티셔츠 007</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 폴리</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 데일리 나일론 크롭 티셔츠 012",
+   "custom_product_code": "DUMMY-261109120000123-012",
+   "price": 26900,
+   "supply_price": 16100,
+   "retail_price": 34000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #12",
+   "simple_description": "데일리 무드의 나일론 크롭 티셔츠",
+   "description": "<h3>[더미] 데일리 나일론 크롭 티셔츠 012</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 나일론</li>\n<li>스타일: 데일리</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "블랙",
+      "화이트",
+      "베이지"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 썸머 리넨 블렌드 블라우스 025",
+   "custom_product_code": "DUMMY-261109120000123-025",
+   "price": 44900,
+   "supply_price": 26900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #25",
+   "simple_description": "썸머 무드의 리넨 블렌드 블라우스",
+   "description": "<h3>[더미] 썸머 리넨 블렌드 블라우스 025</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 리넨 블렌드</li>\n<li>스타일: 썸머</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 스트라이프 셔츠 099",
+   "custom_product_code": "DUMMY-261109120000123-099",
+   "price": 55900,
+   "supply_price": 33500,
+   "retail_price": 70000,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #99",
+   "simple_description": "클래식 무드의 데님 스트라이프 셔츠",
+   "description": "<h3>[더미] 클래식 데님 스트라이프 셔츠 099</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 코튼 블라우스 100",
+   "custom_product_code": "DUMMY-261109120000123-100",
+   "price": 34900,
+   "supply_price": 20900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #100",
+   "simple_description": "클래식 무드의 코튼 블라우스",
+   "description": "<h3>[더미] 클래식 코튼 블라우스 100</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 클래식 데님 라운드 니트 101",
+   "custom_product_code": "DUMMY-261109120000123-101",
+   "price": 60900,
+   "supply_price": 36500,
+   "retail_price": 0,
+   "display": "T",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #101",
+   "simple_description": "클래식 무드의 데님 라운드 니트",
+   "description": "<h3>[더미] 클래식 데님 라운드 니트 101</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 데님</li>\n<li>스타일: 클래식</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 베이직 울 블라우스 250",
+   "custom_product_code": "DUMMY-261109120000123-250",
+   "price": 54900,
+   "supply_price": 32900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #250",
+   "simple_description": "베이직 무드의 울 블라우스",
+   "description": "<h3>[더미] 베이직 울 블라우스 250</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 울</li>\n<li>스타일: 베이직</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "F"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "화이트",
+      "베이지",
+      "네이비"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  },
+  {
+   "product_name": "[더미] 윈터 코튼 블라우스 500",
+   "custom_product_code": "DUMMY-261109120000123-500",
+   "price": 34900,
+   "supply_price": 20900,
+   "retail_price": 0,
+   "display": "F",
+   "selling": "T",
+   "product_condition": "N",
+   "summary_description": "스킨 테스트용 더미 상품 #500",
+   "simple_description": "윈터 무드의 코튼 블라우스",
+   "description": "<h3>[더미] 윈터 코튼 블라우스 500</h3>\n<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>\n<ul>\n<li>소재: 코튼</li>\n<li>스타일: 윈터</li>\n<li>배치 ID: 261109120000123</li>\n</ul>",
+   "add_category_no": [
+    {
+     "category_no": 53,
+     "recommend": "F",
+     "new": "T"
+    }
+   ],
+   "has_option": "T",
+   "options": [
+    {
+     "name": "색상",
+     "value": [
+      "베이지",
+      "네이비",
+      "그레이"
+     ]
+    },
+    {
+     "name": "사이즈",
+     "value": [
+      "S",
+      "M",
+      "L",
+      "XL"
+     ]
+    }
+   ]
+  }
+ ],
+ "reviews": [
+  [
+   {
+    "writer": "김민지",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1000,
+    "rating": 5,
+    "created_date": "2026-11-09T12:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "윤지민",
+    "title": "[더미] 사이즈가 애매해요",
+    "content": "<p>마감이 조금 아쉬웠어요. 배송이 예상보다 오래 걸렸어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1001,
+    "rating": 2,
+    "created_date": "2026-10-05T05:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "한지호",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1001,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1002,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "강서연",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>가족 것도 하나 더 주문하려고요. 색감이 화면이랑 거의 같아서 좋았어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1002,
+    "rating": 4,
+    "created_date": "2026-10-15T07:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "장하준",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1002,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "임수아",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1003,
+    "rating": 4,
+    "created_date": "2026-09-25T03:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "김민지",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1003,
+    "rating": 5,
+    "created_date": "2026-11-09T12:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "최하은",
+    "title": "[더미] 사진이랑 똑같아요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1003,
+    "rating": 5,
+    "created_date": "2026-10-25T09:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "조예준",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1003,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "정도윤",
+    "title": "[더미] 나쁘지 않아요",
+    "content": "<p>가격 생각하면 괜찮은 편이에요. 사진보다 색이 살짝 어두워요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1004,
+    "rating": 3,
+    "created_date": "2026-10-20T08:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "오유나",
+    "title": "[더미] 배송이 너무 늦었어요",
+    "content": "<p>배송이 예상보다 오래 걸렸어요. 사진과 느낌이 좀 달라요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1005,
+    "rating": 1,
+    "created_date": "2026-09-15T01:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1005,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "조예준",
+    "title": "[더미] 사진이랑 똑같아요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1006,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "이서준",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>마감이 깔끔하고 재질도 생각보다 탄탄해요. 배송도 빠르고 포장도 꼼꼼했어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1007,
+    "rating": 5,
+    "created_date": "2026-11-04T11:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "정도윤",
+    "title": "[더미] 나쁘지 않아요",
+    "content": "<p>가격 생각하면 괜찮은 편이에요. 사진보다 색이 살짝 어두워요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1007,
+    "rating": 3,
+    "created_date": "2026-10-20T08:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "윤지민",
+    "title": "[더미] 사이즈가 애매해요",
+    "content": "<p>마감이 조금 아쉬웠어요. 배송이 예상보다 오래 걸렸어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1007,
+    "rating": 2,
+    "created_date": "2026-10-05T05:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "한지호",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1007,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "장하준",
+    "title": "[더미] 재구매 의사 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1008,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "최하은",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1009,
+    "rating": 5,
+    "created_date": "2026-10-25T09:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "조예준",
+    "title": "[더미] 재구매 의사 있어요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1009,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "한지호",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1010,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "이서준",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>마감이 깔끔하고 재질도 생각보다 탄탄해요. 배송도 빠르고 포장도 꼼꼼했어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1010,
+    "rating": 5,
+    "created_date": "2026-11-04T11:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "강서연",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>가족 것도 하나 더 주문하려고요. 색감이 화면이랑 거의 같아서 좋았어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1011,
+    "rating": 4,
+    "created_date": "2026-10-15T07:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "장하준",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1011,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "오유나",
+    "title": "[더미] 배송이 너무 늦었어요",
+    "content": "<p>배송이 예상보다 오래 걸렸어요. 사진과 느낌이 좀 달라요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1011,
+    "rating": 1,
+    "created_date": "2026-09-15T01:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1011,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "김민지",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1012,
+    "rating": 5,
+    "created_date": "2026-11-09T12:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "윤지민",
+    "title": "[더미] 사이즈가 애매해요",
+    "content": "<p>마감이 조금 아쉬웠어요. 배송이 예상보다 오래 걸렸어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1013,
+    "rating": 2,
+    "created_date": "2026-10-05T05:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "한지호",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1013,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1014,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "강서연",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>가족 것도 하나 더 주문하려고요. 색감이 화면이랑 거의 같아서 좋았어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1014,
+    "rating": 4,
+    "created_date": "2026-10-15T07:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "장하준",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1014,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "임수아",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1015,
+    "rating": 4,
+    "created_date": "2026-09-25T03:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "김민지",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1015,
+    "rating": 5,
+    "created_date": "2026-11-09T12:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "최하은",
+    "title": "[더미] 재구매 의사 있어요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1015,
+    "rating": 5,
+    "created_date": "2026-10-25T09:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "조예준",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1015,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "정도윤",
+    "title": "[더미] 나쁘지 않아요",
+    "content": "<p>가격 생각하면 괜찮은 편이에요. 사진보다 색이 살짝 어두워요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1016,
+    "rating": 3,
+    "created_date": "2026-10-20T08:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "오유나",
+    "title": "[더미] 배송이 너무 늦었어요",
+    "content": "<p>배송이 예상보다 오래 걸렸어요. 사진과 느낌이 좀 달라요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1017,
+    "rating": 1,
+    "created_date": "2026-09-15T01:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1017,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "조예준",
+    "title": "[더미] 재구매 의사 있어요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1018,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "이서준",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>마감이 깔끔하고 재질도 생각보다 탄탄해요. 배송도 빠르고 포장도 꼼꼼했어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1019,
+    "rating": 5,
+    "created_date": "2026-11-04T11:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "정도윤",
+    "title": "[더미] 나쁘지 않아요",
+    "content": "<p>가격 생각하면 괜찮은 편이에요. 사진보다 색이 살짝 어두워요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1019,
+    "rating": 3,
+    "created_date": "2026-10-20T08:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "윤지민",
+    "title": "[더미] 사이즈가 애매해요",
+    "content": "<p>마감이 조금 아쉬웠어요. 배송이 예상보다 오래 걸렸어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1019,
+    "rating": 2,
+    "created_date": "2026-10-05T05:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "한지호",
+    "title": "[더미] 사진이랑 똑같아요",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1019,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "장하준",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1020,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "최하은",
+    "title": "[더미] 사진이랑 똑같아요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1021,
+    "rating": 5,
+    "created_date": "2026-10-25T09:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "조예준",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1021,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "한지호",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1022,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "이서준",
+    "title": "[더미] 사진이랑 똑같아요",
+    "content": "<p>마감이 깔끔하고 재질도 생각보다 탄탄해요. 배송도 빠르고 포장도 꼼꼼했어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1022,
+    "rating": 5,
+    "created_date": "2026-11-04T11:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "강서연",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>가족 것도 하나 더 주문하려고요. 색감이 화면이랑 거의 같아서 좋았어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1023,
+    "rating": 4,
+    "created_date": "2026-10-15T07:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "장하준",
+    "title": "[더미] 강력 추천합니다",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1023,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "오유나",
+    "title": "[더미] 배송이 너무 늦었어요",
+    "content": "<p>배송이 예상보다 오래 걸렸어요. 사진과 느낌이 좀 달라요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1023,
+    "rating": 1,
+    "created_date": "2026-09-15T01:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1023,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "김민지",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1024,
+    "rating": 5,
+    "created_date": "2026-11-09T12:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "윤지민",
+    "title": "[더미] 사이즈가 애매해요",
+    "content": "<p>마감이 조금 아쉬웠어요. 배송이 예상보다 오래 걸렸어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1025,
+    "rating": 2,
+    "created_date": "2026-10-05T05:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "한지호",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>여러 번 써 봤는데 아직까지 문제없어요. 가족 것도 하나 더 주문하려고요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1025,
+    "rating": 5,
+    "created_date": "2026-09-20T02:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1026,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "강서연",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>가족 것도 하나 더 주문하려고요. 색감이 화면이랑 거의 같아서 좋았어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1026,
+    "rating": 4,
+    "created_date": "2026-10-15T07:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "장하준",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1026,
+    "rating": 5,
+    "created_date": "2026-09-30T04:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "임수아",
+    "title": "[더미] 가격 대비 괜찮아요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1027,
+    "rating": 4,
+    "created_date": "2026-09-25T03:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "김민지",
+    "title": "[더미] 사진이랑 똑같아요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1027,
+    "rating": 5,
+    "created_date": "2026-11-09T12:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "최하은",
+    "title": "[더미] 정말 만족해요",
+    "content": "<p>평소 사이즈로 주문했는데 딱 맞아요. 여러 번 써 봤는데 아직까지 문제없어요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1027,
+    "rating": 5,
+    "created_date": "2026-10-25T09:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   },
+   {
+    "writer": "조예준",
+    "title": "[더미] 선물용으로도 좋아요",
+    "content": "<p>색감이 화면이랑 거의 같아서 좋았어요. 마감이 깔끔하고 재질도 생각보다 탄탄해요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1027,
+    "rating": 5,
+    "created_date": "2026-10-10T06:00:00+09:00",
+    "secret": "F",
+    "attach_file_urls": [
+     {
+      "name": "photo-review.png",
+      "url": "https://x/a.png"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "writer": "정도윤",
+    "title": "[더미] 나쁘지 않아요",
+    "content": "<p>가격 생각하면 괜찮은 편이에요. 사진보다 색이 살짝 어두워요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1028,
+    "rating": 3,
+    "created_date": "2026-10-20T08:00:00+09:00",
+    "secret": "F"
+   }
+  ],
+  [
+   {
+    "writer": "오유나",
+    "title": "[더미] 배송이 너무 늦었어요",
+    "content": "<p>배송이 예상보다 오래 걸렸어요. 사진과 느낌이 좀 달라요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1029,
+    "rating": 1,
+    "created_date": "2026-09-15T01:00:00+09:00",
+    "secret": "F"
+   },
+   {
+    "writer": "박지우",
+    "title": "[더미] 무난하게 잘 쓰고 있어요",
+    "content": "<p>배송도 빠르고 포장도 꼼꼼했어요. 평소 사이즈로 주문했는데 딱 맞아요.</p>",
+    "client_ip": "127.0.0.1",
+    "product_no": 1029,
+    "rating": 4,
+    "created_date": "2026-10-30T10:00:00+09:00",
+    "secret": "F"
+   }
+  ]
+ ],
+ "imagePixels": {
+  "1": "0e4d34689b05a6fe7fb1fcf63a015f431fdfb059c6b4c312e02687ef67ba63c7",
+  "2": "cb5b2c1f10d8515299538b6b8edce2406d2e645a6393d36e2d4cee4013a13690",
+  "3": "567ac8bb59d43818d844ebdb52270ffcda5d05ad14f66fd78842144991d2e822",
+  "10": "96cc2d780efafa7688c1a783cbd875d98a13e78ae085f1dc18882e608b0a2452",
+  "47": "efacae16bdc868c607d9166f482b3e141db60d10f7db1876374d1192a8b7b968",
+  "360": "8e58ce609627fb60133f445f1b51391ce99fe05fe548315e9832cca969877d11",
+  "999": "e97caeac6dd46f73b8246502bcf8d0757fb765ea62910e7f07e046faaeb33f44",
+  "small": "377aa50634df99d3ee6ec251dca09517d8371c16434dd67e5864cb541c9ea2bd"
+ },
+ "note": "imagePixels: 프리셋 도입 전 src/image.js가 만든 PNG의 헤더+압축 푼 이미지 데이터 sha256. PNG 압축 결과(zlib)는 Node 버전마다 달라질 수 있어 픽셀로 비교한다."
+}

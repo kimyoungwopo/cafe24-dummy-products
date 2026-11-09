@@ -1,0 +1,536 @@
+{
+  "version": 1,
+  "id": "fashion",
+  "label": "패션",
+  "description": "의류 · 신발 · 잡화",
+  "adjectives": [
+    "데일리",
+    "베이직",
+    "오버핏",
+    "슬림",
+    "빈티지",
+    "모던",
+    "심플",
+    "클래식",
+    "내추럴",
+    "프리미엄",
+    "썸머",
+    "윈터"
+  ],
+  "kinds": {
+    "wear": {
+      "variantLabel": "소재",
+      "variants": [
+        "코튼",
+        "린넨",
+        "울",
+        "캐시미어 블렌드",
+        "데님",
+        "나일론",
+        "폴리",
+        "리넨 블렌드"
+      ],
+      "options": [
+        {
+          "name": "색상",
+          "values": [
+            "블랙",
+            "화이트",
+            "베이지",
+            "네이비",
+            "그레이",
+            "카키"
+          ],
+          "take": 3
+        },
+        {
+          "name": "사이즈",
+          "values": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ]
+    },
+    "shoes": {
+      "variantLabel": "소재",
+      "variants": [
+        "레더",
+        "스웨이드",
+        "캔버스",
+        "니트"
+      ],
+      "options": [
+        {
+          "name": "색상",
+          "values": [
+            "블랙",
+            "화이트",
+            "베이지",
+            "네이비",
+            "그레이",
+            "카키"
+          ],
+          "take": 3
+        },
+        {
+          "name": "사이즈",
+          "values": [
+            "230",
+            "240",
+            "250",
+            "260",
+            "270"
+          ]
+        }
+      ]
+    },
+    "goods": {
+      "variantLabel": "소재",
+      "variants": [
+        "코튼",
+        "캔버스",
+        "세라믹",
+        "스테인리스",
+        "레더",
+        "린넨"
+      ],
+      "options": [
+        {
+          "name": "색상",
+          "values": [
+            "블랙",
+            "화이트",
+            "베이지",
+            "네이비",
+            "그레이",
+            "카키"
+          ],
+          "take": 3
+        }
+      ]
+    }
+  },
+  "groups": {
+    "jacket": [
+      {
+        "name": "데님 자켓",
+        "min": 59000,
+        "max": 149000,
+        "kind": "wear"
+      },
+      {
+        "name": "블루종",
+        "min": 69000,
+        "max": 159000,
+        "kind": "wear"
+      },
+      {
+        "name": "트러커 자켓",
+        "min": 79000,
+        "max": 169000,
+        "kind": "wear"
+      }
+    ],
+    "coat": [
+      {
+        "name": "싱글 코트",
+        "min": 129000,
+        "max": 299000,
+        "kind": "wear"
+      },
+      {
+        "name": "트렌치 코트",
+        "min": 119000,
+        "max": 259000,
+        "kind": "wear"
+      },
+      {
+        "name": "하프 코트",
+        "min": 99000,
+        "max": 219000,
+        "kind": "wear"
+      }
+    ],
+    "blazer": [
+      {
+        "name": "싱글 블레이저",
+        "min": 79000,
+        "max": 189000,
+        "kind": "wear"
+      },
+      {
+        "name": "더블 블레이저",
+        "min": 89000,
+        "max": 199000,
+        "kind": "wear"
+      }
+    ],
+    "outer": [
+      {
+        "name": "후드 집업",
+        "min": 39000,
+        "max": 99000,
+        "kind": "wear"
+      },
+      {
+        "name": "가디건",
+        "min": 39000,
+        "max": 89000,
+        "kind": "wear"
+      },
+      {
+        "name": "바람막이",
+        "min": 49000,
+        "max": 119000,
+        "kind": "wear"
+      }
+    ],
+    "tee": [
+      {
+        "name": "반팔 티셔츠",
+        "min": 15000,
+        "max": 39000,
+        "kind": "wear"
+      },
+      {
+        "name": "긴팔 티셔츠",
+        "min": 19000,
+        "max": 45000,
+        "kind": "wear"
+      },
+      {
+        "name": "그래픽 티셔츠",
+        "min": 19000,
+        "max": 42000,
+        "kind": "wear"
+      },
+      {
+        "name": "크롭 티셔츠",
+        "min": 17000,
+        "max": 39000,
+        "kind": "wear"
+      }
+    ],
+    "shirt": [
+      {
+        "name": "옥스포드 셔츠",
+        "min": 39000,
+        "max": 79000,
+        "kind": "wear"
+      },
+      {
+        "name": "스트라이프 셔츠",
+        "min": 35000,
+        "max": 69000,
+        "kind": "wear"
+      },
+      {
+        "name": "블라우스",
+        "min": 35000,
+        "max": 75000,
+        "kind": "wear"
+      }
+    ],
+    "knit": [
+      {
+        "name": "라운드 니트",
+        "min": 39000,
+        "max": 99000,
+        "kind": "wear"
+      },
+      {
+        "name": "브이넥 니트",
+        "min": 39000,
+        "max": 95000,
+        "kind": "wear"
+      }
+    ],
+    "dress": [
+      {
+        "name": "플레어 원피스",
+        "min": 49000,
+        "max": 129000,
+        "kind": "wear"
+      },
+      {
+        "name": "셔츠 원피스",
+        "min": 45000,
+        "max": 119000,
+        "kind": "wear"
+      },
+      {
+        "name": "슬립 원피스",
+        "min": 39000,
+        "max": 99000,
+        "kind": "wear"
+      }
+    ],
+    "skirt": [
+      {
+        "name": "데님 스커트",
+        "min": 29000,
+        "max": 59000,
+        "kind": "wear"
+      },
+      {
+        "name": "플리츠 스커트",
+        "min": 35000,
+        "max": 69000,
+        "kind": "wear"
+      },
+      {
+        "name": "롱 스커트",
+        "min": 39000,
+        "max": 79000,
+        "kind": "wear"
+      }
+    ],
+    "pants": [
+      {
+        "name": "와이드 팬츠",
+        "min": 32000,
+        "max": 79000,
+        "kind": "wear"
+      },
+      {
+        "name": "슬랙스",
+        "min": 35000,
+        "max": 79000,
+        "kind": "wear"
+      },
+      {
+        "name": "데님 팬츠",
+        "min": 39000,
+        "max": 89000,
+        "kind": "wear"
+      }
+    ],
+    "shoes": [
+      {
+        "name": "캔버스 스니커즈",
+        "min": 45000,
+        "max": 129000,
+        "kind": "shoes"
+      },
+      {
+        "name": "로퍼",
+        "min": 59000,
+        "max": 149000,
+        "kind": "shoes"
+      }
+    ],
+    "acc": [
+      {
+        "name": "볼캡",
+        "min": 15000,
+        "max": 39000,
+        "kind": "goods"
+      },
+      {
+        "name": "에코백",
+        "min": 12000,
+        "max": 35000,
+        "kind": "goods"
+      },
+      {
+        "name": "패브릭 파우치",
+        "min": 9000,
+        "max": 29000,
+        "kind": "goods"
+      },
+      {
+        "name": "니트 비니",
+        "min": 15000,
+        "max": 35000,
+        "kind": "goods"
+      }
+    ],
+    "living": [
+      {
+        "name": "머그컵",
+        "min": 9000,
+        "max": 25000,
+        "kind": "goods"
+      },
+      {
+        "name": "쿠션 커버",
+        "min": 12000,
+        "max": 32000,
+        "kind": "goods"
+      },
+      {
+        "name": "향초",
+        "min": 15000,
+        "max": 45000,
+        "kind": "goods"
+      },
+      {
+        "name": "텀블러",
+        "min": 18000,
+        "max": 49000,
+        "kind": "goods"
+      }
+    ]
+  },
+  "categoryRules": [
+    {
+      "regex": "jacket|자켓|재킷|점퍼|jumper",
+      "groups": [
+        "jacket"
+      ]
+    },
+    {
+      "regex": "coat|코트",
+      "groups": [
+        "coat"
+      ]
+    },
+    {
+      "regex": "blazer|블레이저",
+      "groups": [
+        "blazer"
+      ]
+    },
+    {
+      "regex": "\\btees?\\b|t-?shirt|티셔츠|sleeve|반팔|긴팔",
+      "groups": [
+        "tee"
+      ]
+    },
+    {
+      "regex": "shirt|셔츠|blouse|블라우스",
+      "groups": [
+        "shirt"
+      ]
+    },
+    {
+      "regex": "knit|니트|sweater|스웨터",
+      "groups": [
+        "knit"
+      ]
+    },
+    {
+      "regex": "dress|원피스",
+      "groups": [
+        "dress"
+      ]
+    },
+    {
+      "regex": "skirt|스커트|치마",
+      "groups": [
+        "skirt"
+      ]
+    },
+    {
+      "regex": "pant|팬츠|바지|trouser|slacks|슬랙스|jean|denim|데님",
+      "groups": [
+        "pants"
+      ]
+    },
+    {
+      "regex": "shoe|신발|sneaker|스니커즈",
+      "groups": [
+        "shoes"
+      ]
+    },
+    {
+      "regex": "outer|아우터",
+      "groups": [
+        "jacket",
+        "coat",
+        "outer"
+      ]
+    },
+    {
+      "regex": "top|상의",
+      "groups": [
+        "tee",
+        "shirt",
+        "knit"
+      ]
+    },
+    {
+      "regex": "bottom|하의",
+      "groups": [
+        "pants",
+        "skirt"
+      ]
+    },
+    {
+      "regex": "acc|잡화|bag|가방|hat|모자|cap",
+      "groups": [
+        "acc"
+      ]
+    },
+    {
+      "regex": "living|리빙|home|홈|kitchen|주방",
+      "groups": [
+        "living"
+      ]
+    }
+  ],
+  "text": {
+    "name": "{adj} {variant} {item}",
+    "simple": "{adj} 무드의 {variant} {item}",
+    "styleLabel": "스타일"
+  },
+  "reviews": {
+    "titles": {
+      "1": [
+        "별로였어요",
+        "배송이 너무 늦었어요"
+      ],
+      "2": [
+        "조금 아쉬워요",
+        "사이즈가 애매해요"
+      ],
+      "3": [
+        "보통이에요",
+        "나쁘지 않아요",
+        "기대만큼은 아니에요"
+      ],
+      "4": [
+        "전체적으로 만족해요",
+        "가격 대비 괜찮아요",
+        "무난하게 잘 쓰고 있어요",
+        "생각보다 좋네요"
+      ],
+      "5": [
+        "정말 만족해요",
+        "재구매 의사 있어요",
+        "사진이랑 똑같아요",
+        "선물용으로도 좋아요",
+        "강력 추천합니다"
+      ]
+    },
+    "bodies": {
+      "high": [
+        "색감이 화면이랑 거의 같아서 좋았어요.",
+        "마감이 깔끔하고 재질도 생각보다 탄탄해요.",
+        "배송도 빠르고 포장도 꼼꼼했어요.",
+        "평소 사이즈로 주문했는데 딱 맞아요.",
+        "여러 번 써 봤는데 아직까지 문제없어요.",
+        "가족 것도 하나 더 주문하려고요."
+      ],
+      "mid": [
+        "가격 생각하면 괜찮은 편이에요.",
+        "사진보다 색이 살짝 어두워요.",
+        "배송은 보통이었어요.",
+        "한 치수 크게 주문하는 걸 추천해요."
+      ],
+      "low": [
+        "사진과 느낌이 좀 달라요.",
+        "마감이 조금 아쉬웠어요.",
+        "배송이 예상보다 오래 걸렸어요."
+      ]
+    }
+  },
+  "image": {
+    "label": "DUMMY",
+    "hueStart": 0,
+    "hueSpan": 360
+  }
+}

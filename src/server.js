@@ -28,7 +28,20 @@ import {
   categoryLabel,
   validateRunId,
   acquireWriteLock,
+  planProduct,
 } from './core.js';
+import { getPreset, listPresets } from './presets.js';
+import { makeDummyImage, toDataUri } from './image.js';
+
+/** 요청 본문의 업종 id를 확인한다 (없으면 기본 패션) */
+function presetOrThrow(id) {
+  if (id !== undefined && typeof id !== 'string') throw new HttpError(400, '업종 값이 올바르지 않습니다.');
+  try {
+    return getPreset(id);
+  } catch (e) {
+    throw new HttpError(400, e.message);
+  }
+}
 
 /**
  * 로컬 UI 서버.
@@ -440,6 +453,7 @@ export async function startServer({ port = 0 } = {}) {
     }),
 
     'POST /api/jobs/seed': exclusive(async (body) => {
+      const preset = presetOrThrow(body.preset); // 작업을 시작하기 전에 한 번 정해 상품·후기에 같이 쓴다
       const cfg = configOrThrow();
       const token = loggedIn(cfg);
       const mains = body.mains?.enabled ? Number(body.mains.perGroup ?? 8) : 0;
@@ -474,9 +488,11 @@ export async function startServer({ port = 0 } = {}) {
             withImage: body.withImage !== false,
             mainsPerGroup: mains,
             reviewsMax: maxReviews,
+            preset,
           }),
         (o) => ({
           runId: o.runId,
+          preset: { id: preset.id, label: preset.label },
           stages: o.stages, // 단계별 상태: done | partial | stopped | skipped, counts, error(전체 메시지)
           created: o.stages.find((st) => st.key === 'products')?.counts?.created ?? 0, // 도중에 멈춰도 그때까지 등록한 수
         }),
@@ -484,6 +500,33 @@ export async function startServer({ port = 0 } = {}) {
     }),
 
     'GET /api/job': async () => ({ job: jobView(state.job, { withLogs: true }) }),
+
+    'GET /api/presets': async () => ({ presets: listPresets() }),
+
+    // 상품 하나 예시 (카페24에 요청하지 않음). 실제 등록과 같은 생성 함수를 쓴다.
+    'POST /api/preview': async (body) => {
+      const preset = presetOrThrow(body.preset);
+      const names = body.categoryNames;
+      if (names !== undefined && (!Array.isArray(names) || names.length > 6 || !names.every((n) => typeof n === 'string' && n.length <= 100))) {
+        throw new HttpError(400, '분류 이름이 올바르지 않습니다.');
+      }
+      const no = body.categoryNo;
+      if (no !== undefined && (!Number.isInteger(no) || no < 1 || no > 1e9)) throw new HttpError(400, '분류 번호가 올바르지 않습니다.');
+      // 실제 등록과 같은 분류 번호를 써야 첫 상품과 같은 예시가 나온다 (상품 선택이 분류 번호에도 달려 있음)
+      const category = names?.length ? { no: no ?? 1, names, path: [no ?? 1] } : undefined;
+      const { request } = planProduct(1, { runId: '000000000000000', categories: category ? [category] : [], prefix: '[더미] ', hidden: false, withOptions: Boolean(body.withOptions), preset });
+      return {
+        preset: { id: preset.id, label: preset.label },
+        sample: {
+          name: request.product_name,
+          price: request.price,
+          retailPrice: request.retail_price,
+          summary: request.simple_description,
+          options: (request.options ?? []).map((o) => ({ name: o.name, values: o.value })),
+          image: toDataUri(makeDummyImage(1, 240, preset.image)),
+        },
+      };
+    },
   };
 
   async function handle(req, res) {

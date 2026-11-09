@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "id": "digital",
+  "label": "디지털",
+  "description": "기기 · 액세서리 · 오디오",
+  "adjectives": ["프로", "미니", "울트라", "에어", "슬림", "포터블", "스마트", "프리미엄", "베이직", "듀얼", "라이트", "플러스"],
+  "kinds": {
+    "device": {
+      "variantLabel": "컬러",
+      "variants": ["그라파이트", "실버", "화이트", "미드나잇", "스페이스 그레이"],
+      "options": [{ "name": "색상", "values": ["그라파이트", "실버", "화이트", "미드나잇", "스페이스 그레이"], "take": 3 }, { "name": "용량", "values": ["128GB", "256GB", "512GB"] }]
+    },
+    "accessory": {
+      "variantLabel": "특징",
+      "variants": ["고속충전", "무선", "PD 지원", "자석 거치", "저소음"],
+      "options": [{ "name": "색상", "values": ["블랙", "화이트", "그레이", "네이비", "베이지"], "take": 3 }]
+    },
+    "audio": {
+      "variantLabel": "특징",
+      "variants": ["노이즈캔슬링", "블루투스 5.3", "저지연", "생활방수"],
+      "options": [{ "name": "색상", "values": ["블랙", "화이트", "실버", "네이비", "샌드"], "take": 3 }]
+    }
+  },
+  "groups": {
+    "device": [
+      { "name": "태블릿", "min": 290000, "max": 990000, "kind": "device" },
+      { "name": "스마트워치", "min": 159000, "max": 599000, "kind": "device" },
+      { "name": "미니 PC", "min": 349000, "max": 1290000, "kind": "device" }
+    ],
+    "accessory": [
+      { "name": "충전기", "min": 15000, "max": 69000, "kind": "accessory" },
+      { "name": "C타입 케이블", "min": 6000, "max": 25000, "kind": "accessory" },
+      { "name": "보조배터리", "min": 19000, "max": 79000, "kind": "accessory" },
+      { "name": "무선 마우스", "min": 15000, "max": 129000, "kind": "accessory" },
+      { "name": "기계식 키보드", "min": 49000, "max": 229000, "kind": "accessory" }
+    ],
+    "audio": [
+      { "name": "무선 이어폰", "min": 39000, "max": 359000, "kind": "audio" },
+      { "name": "헤드폰", "min": 59000, "max": 499000, "kind": "audio" },
+      { "name": "블루투스 스피커", "min": 29000, "max": 299000, "kind": "audio" }
+    ]
+  },
+  "categoryRules": [
+    { "match": ["audio", "오디오", "이어폰", "earphone", "headphone", "헤드폰", "speaker", "스피커", "sound", "사운드"], "groups": ["audio"] },
+    { "match": ["accessor", "액세서리", "악세사리", "충전", "charger", "cable", "케이블", "keyboard", "키보드", "mouse", "마우스"], "groups": ["accessory"] },
+    { "match": ["tablet", "태블릿", "watch", "워치", "computer", "컴퓨터", "laptop", "노트북", "phone", "폰", "device", "기기"], "groups": ["device"] }
+  ],
+  "text": { "name": "{adj} {variant} {item}", "simple": "{variant} {item} ({adj})", "styleLabel": "라인업" },
+  "reviews": {
+    "titles": {
+      "5": ["정말 만족해요", "재구매 의사 있어요", "성능 최고예요", "선물용으로도 좋아요", "강력 추천합니다"],
+      "4": ["전체적으로 만족해요", "가격 대비 괜찮아요", "무난하게 잘 쓰고 있어요", "생각보다 좋네요"],
+      "3": ["보통이에요", "나쁘지 않아요", "기대만큼은 아니에요"],
+      "2": ["조금 아쉬워요", "배터리가 아쉬워요"],
+      "1": ["별로였어요", "배송이 너무 늦었어요"]
+    },
+    "bodies": {
+      "high": ["연결이 빠르고 끊김이 없어요.", "마감이 깔끔하고 생각보다 가벼워요.", "배송도 빠르고 포장도 꼼꼼했어요.", "배터리가 오래가서 좋아요.", "한 달째 쓰는데 아직까지 문제없어요.", "가족 것도 하나 더 주문하려고요."],
+      "mid": ["가격 생각하면 괜찮은 편이에요.", "설명서가 조금 불친절해요.", "배송은 보통이었어요.", "기능은 좋은데 조금 무거워요."],
+      "low": ["연결이 가끔 끊겨요.", "마감이 조금 아쉬웠어요.", "배송이 예상보다 오래 걸렸어요."]
+    }
+  },
+  "image": { "label": "DIGITAL", "hueStart": 195, "hueSpan": 70 }
+}

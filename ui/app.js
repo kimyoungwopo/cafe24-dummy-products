@@ -179,6 +179,7 @@ $('#login-form').addEventListener('submit', async (e) => {
 let categories = null;
 
 async function loadCategories() {
+  loadPresets().catch((err) => showBanner(err.message, 'err'));
   if (categories || !current?.login) return;
   try {
     categories = (await api('GET', '/api/categories')).categories;
@@ -193,9 +194,49 @@ async function loadCategories() {
         ),
       ),
     );
+    updatePreview();
   } catch (err) {
     showBanner(err.message, 'err');
   }
+}
+
+// ---------------------------------------------------------------- 업종 프리셋
+
+let presets = [];
+async function loadPresets() {
+  if (presets.length) return;
+  presets = (await api('GET', '/api/presets')).presets;
+  $('#preset-select').replaceChildren(...presets.map((p) => el('option', { value: p.id, selected: p.default }, `${p.label} — ${p.description}`)));
+  updatePreview();
+}
+
+const won = (n) => `${Number(n).toLocaleString('ko-KR')}원`;
+let previewSeq = 0;
+let previewTimer = null;
+/** 고른 업종·옵션·분류로 상품 하나를 예시로 보여 준다 (카페24에 요청하지 않음) */
+function updatePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(async () => {
+    const f = $('#seed-form');
+    if (!f.preset.value) return;
+    const mode = f.categoryMode.value;
+    const pickedNo = Number(document.querySelector('#category-list input:checked')?.value);
+    const cat =
+      mode === 'pick' ? categories?.find((c) => c.no === pickedNo) : mode === 'spread' ? categories?.find((c) => c.leaf && c.displayed) : undefined;
+    const seq = ++previewSeq;
+    try {
+      const r = await api('POST', '/api/preview', { preset: f.preset.value, withOptions: f.withOptions.checked, categoryNames: cat?.names, categoryNo: cat?.no });
+      if (seq !== previewSeq) return; // 더 새로운 요청이 있으면 무시
+      const s = r.sample;
+      $('#preview-img').src = s.image;
+      $('#preview-name').textContent = s.name;
+      $('#preview-price').replaceChildren(...(s.retailPrice ? [el('span', { class: 'preview-price-old' }, won(s.retailPrice))] : []), won(s.price));
+      $('#preview-options').textContent = [s.summary, ...s.options.map((o) => `${o.name}: ${o.values.join(' / ')}`)].join(' · ');
+      $('#preset-preview').hidden = false;
+    } catch (err) {
+      showBanner(err.message, 'err');
+    }
+  }, 150);
 }
 
 const hasCommunity = () => ['mall.read_community', 'mall.write_community'].every((s) => current?.login?.scopes?.includes(s));
@@ -212,6 +253,9 @@ function updateSeedForm() {
   $('#seed-estimate').textContent = `카페24 호출 제한(초당 2회) 때문에 약 ${secs < 90 ? `${secs}초` : `${Math.ceil(secs / 60)}분`} 이상 걸려요.${f.hidden.checked ? '' : ' 진열 상태로 등록되어 손님 화면에도 보여요.'}`;
 }
 $('#seed-form').addEventListener('input', updateSeedForm);
+$('#seed-form').addEventListener('change', (e) => {
+  if (['preset', 'withOptions', 'categoryMode'].includes(e.target.name) || e.target.closest('#category-list')) updatePreview();
+});
 updateSeedForm();
 
 $('#seed-form').addEventListener('submit', async (e) => {
@@ -221,6 +265,7 @@ $('#seed-form').addEventListener('submit', async (e) => {
   const picked = [...document.querySelectorAll('#category-list input:checked')].map((i) => Number(i.value));
   if (mode === 'pick' && !picked.length) return showBanner('분류를 하나 이상 고르세요.', 'err');
   const body = {
+    preset: f.preset.value || undefined,
     count: Number(f.count.value),
     categoryMode: mode,
     categoryNos: picked,
@@ -236,6 +281,7 @@ $('#seed-form').addEventListener('submit', async (e) => {
       'ul',
       {},
       el('li', {}, `쇼핑몰: ${current?.config.mallId}`),
+      el('li', {}, `업종: ${presets.find((p) => p.id === body.preset)?.label ?? '패션'}`),
       el('li', {}, `상품 ${body.count}개, ${{ spread: '진열 중인 분류 전체에 고르게', pick: `고른 분류 ${picked.length}곳`, none: '분류 없이' }[mode]}`),
       el('li', {}, body.hidden ? '진열안함·판매안함 (손님 화면에 안 보임)' : '진열함·판매함 (손님 화면에 보임)'),
       body.mains.enabled ? el('li', {}, `메인진열: 메인분류마다 ${body.mains.perGroup}개${body.hidden ? ' (숨김 상품은 메인에 올리지 않아요)' : ''}`) : null,
@@ -371,7 +417,7 @@ function renderJob(job) {
       if (k.unknown) parts.push(`결과 불명 ${k.unknown}`);
       return parts.join(', ');
     };
-    text = `배치 ${r.runId}\n` + r.stages.map((st) => `· ${st.name}: ${label[st.status] || st.status}${c(st) ? ` (${c(st)})` : ''}${st.note ? ` — ${st.note}` : ''}${st.error ? `\n  ${st.error}` : ''}`).join('\n');
+    text = `배치 ${r.runId}${r.preset ? ` · ${r.preset.label}` : ''}\n` + r.stages.map((st) => `· ${st.name}: ${label[st.status] || st.status}${c(st) ? ` (${c(st)})` : ''}${st.note ? ` — ${st.note}` : ''}${st.error ? `\n  ${st.error}` : ''}`).join('\n');
     if (r.stages.some((st) => st.status !== 'done' && st.status !== 'skipped')) {
       text += '\n앞 단계에서 만든 것은 그대로 남아 있어요. "현황·정리"에서 이 배치를 정리하거나, 원인을 해결한 뒤 다시 채울 수 있어요.';
     }

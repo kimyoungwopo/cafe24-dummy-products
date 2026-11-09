@@ -41,6 +41,7 @@ import {
   verifyProducts,
   withWriteLock,
 } from './core.js';
+import { getPreset, listPresets } from './presets.js';
 
 const HELP = `카페24 테스트용 더미 데이터 도구
 
@@ -61,8 +62,10 @@ const HELP = `카페24 테스트용 더미 데이터 도구
   fill-mains            메인진열마다 더미 상품 채우기 (-n 개수, 기본 8 / --group 2,3 / --run)
   clear-mains           이 도구가 넣은 메인진열 항목만 빼기 (상품은 그대로, -y로 확인 생략)
 
+  presets               업종 프리셋 목록 (상품명·옵션·후기 문구·이미지를 업종에 맞춤)
+
   boards                게시판 목록
-  reviews               더미 상품에 상품후기 달기 (-n 상품당 최대 개수, 기본 3 / --board / --run)
+  reviews               더미 상품에 상품후기 달기 (-n 상품당 최대 개수, 기본 3 / --board / --run / --preset)
   clear-reviews         이 도구가 단 후기만 삭제
 
   purge-legacy          예전 버전(소유 기록 도입 전)으로 만든 데이터를 근거와 함께 보여 주고,
@@ -70,9 +73,10 @@ const HELP = `카페24 테스트용 더미 데이터 도구
 
 create 옵션:
   -n, --count <수>       등록할 개수 (기본 10, 최대 500)
+  -p, --preset <업종>    업종 프리셋: fashion(기본) · beauty · food · living · digital
   -c, --category <번호>  진열할 상품분류 번호. 여러 개는 쉼표로: -c 29,30,32 (번갈아 배정)
       --spread           진열 중인 맨 아래 분류 전체에 고르게 나눠 등록
-      --options          색상·사이즈 옵션 추가
+      --options          업종에 맞는 옵션 추가 (패션은 색상·사이즈, 뷰티는 용량·컬러 등)
       --hidden           진열안함·판매안함으로 등록
       --no-image         이미지 업로드 생략
       --prefix <문자열>  상품명 앞에 붙일 문구 (기본 "[더미] ")
@@ -130,12 +134,14 @@ function context(extra = {}) {
 // ---------------------------------------------------------------- 상품
 
 async function cmdCreate(values) {
+  const preset = getPreset(values.preset); // 잘못된 업종이면 아무것도 조회·등록하기 전에 멈춘다
   const count = parseCount(values.count, 10, 500, '--count');
   if (values.spread && values.category !== undefined) throw new Error('--spread와 --category는 함께 쓸 수 없습니다.');
   const nos = parseNumberList(values.category, '--category');
   const dryRun = Boolean(values['dry-run']);
   const withImage = !values['no-image'];
-  const opts = { prefix: values.prefix ?? '[더미] ', hidden: Boolean(values.hidden), withOptions: Boolean(values.options) };
+  const opts = { prefix: values.prefix ?? '[더미] ', hidden: Boolean(values.hidden), withOptions: Boolean(values.options), preset };
+  console.log(`업종: ${preset.label} (${preset.id})`);
 
   // dry-run이라도 로그인돼 있으면 분류 이름을 조회해 실제와 같은 상품명을 보여 준다.
   const cfg = dryRun ? getConfig({ requireOAuth: false }) : getConfig();
@@ -290,15 +296,23 @@ async function cmdBoards() {
   }
 }
 
+function cmdPresets() {
+  console.log('업종 프리셋 (create --preset <업종>, reviews --preset <업종>, 화면의 "업종" 선택)\n');
+  for (const p of listPresets()) console.log(`  ${p.id.padEnd(8)} ${p.label}${p.default ? ' (기본)' : ''} — ${p.description}`);
+  console.log('\n상품명 재료·가격대·옵션·후기 문구·이미지 색과 글자가 업종에 맞게 바뀝니다.');
+  console.log('자체상품코드(DUMMY-…)와 후기 표시는 업종과 상관없이 같아서, 정리 방법은 똑같습니다.');
+}
+
 async function cmdReviews(values) {
+  const preset = getPreset(values.preset); // 생략하면 패션 문구. 배치마다 업종을 기억하지 않으므로 필요하면 직접 지정
   const maxPerProduct = parseCount(values.count, 3, 20);
   const boardNo = values.board === undefined ? undefined : parseCount(values.board, undefined, 1e9, '--board');
   validateRunId(values.run);
   requireScopes(['mall.read_community', 'mall.write_community'], '상품후기 등록');
   const ctx = context({ progress: (d, t) => process.stdout.write(`\r  등록 중… ${d}/${t}`) });
   const board = await resolveReviewBoard(ctx.client, boardNo);
-  const { products, requests } = await planReviews(ctx, { maxPerProduct, runId: values.run });
-  console.log(`게시판: ${board.board_name}(${board.board_no}) — 더미 상품 ${products.length}개에 후기 ${requests.length}개 (상품당 1~${maxPerProduct}개)`);
+  const { products, requests } = await planReviews(ctx, { maxPerProduct, runId: values.run, preset });
+  console.log(`게시판: ${board.board_name}(${board.board_no}) — 더미 상품 ${products.length}개에 후기 ${requests.length}개 (상품당 1~${maxPerProduct}개, ${preset.label} 문구)`);
   if (values['dry-run']) {
     for (const r of requests.slice(0, 5)) console.log(JSON.stringify(r));
     console.log('\n(dry-run) 실제로는 등록하지 않았습니다.');
@@ -511,6 +525,7 @@ async function main() {
       hidden: { type: 'boolean' },
       'no-image': { type: 'boolean' },
       prefix: { type: 'string' },
+      preset: { type: 'string', short: 'p' },
       'dry-run': { type: 'boolean' },
       run: { type: 'string' },
       group: { type: 'string' },
@@ -546,6 +561,7 @@ async function main() {
     'clear-mains': cmdClearMains,
     boards: cmdBoards,
     reviews: cmdReviews,
+    presets: cmdPresets,
     'clear-reviews': cmdClearReviews,
     'purge-legacy': cmdPurgeLegacy,
     help: () => console.log(HELP),
@@ -559,6 +575,9 @@ async function main() {
   const DRY_RUN_COMMANDS = new Set(['create', 'fill-mains', 'reviews', 'purge-legacy']);
   if (values['dry-run'] && !DRY_RUN_COMMANDS.has(command)) {
     throw new Error(`${command} 명령은 --dry-run을 지원하지 않습니다. (지우기 전에 대상을 보여 주고 확인을 받으니, --yes 없이 실행해 확인하세요)`);
+  }
+  if (values.preset !== undefined && !['create', 'reviews'].includes(command)) {
+    throw new Error(`${command} 명령은 --preset을 받지 않습니다. (create, reviews에서 씁니다)`);
   }
   if (WRITE_COMMANDS.has(command) && !values['dry-run']) return withWriteLock(command, () => fn(values));
   return fn(values);

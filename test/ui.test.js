@@ -353,3 +353,64 @@ test('UI 4단계 회귀: 후기가 일부 등록된 뒤 권한 오류로 멈추�
     await mock.close();
   }
 });
+
+test('UI 6단계: 업종 목록·예시는 카페24에 요청하지 않고, 채우기는 고른 업종을 상품과 후기에 같이 쓴다', async () => {
+  const mock = await startMockServer();
+  const ui = await startUi(mock);
+  try {
+    // 세션 토큰 없이는 목록·예시도 못 본다
+    assert.equal((await fetch(`${ui.base}/api/presets`)).status, 401);
+    const list = await ui.call('GET', '/api/presets');
+    assert.deepEqual(list.data.presets.map((p) => p.id), ['fashion', 'beauty', 'food', 'living', 'digital']);
+
+    const before = mock.state.calls.length;
+    const pv = await ui.call('POST', '/api/preview', { preset: 'food', withOptions: true, categoryNames: ['신선식품', '과일'] });
+    assert.equal(pv.status, 200, pv.text);
+    assert.equal(pv.data.preset.label, '식품');
+    assert.match(pv.data.sample.name, /^\[더미\] .*(사과|감귤|방울토마토|한우 불고기) 001$/);
+    assert.ok(pv.data.sample.options.some((o) => o.name === '중량'));
+    assert.match(pv.data.sample.image, /^data:image\/png;base64,/);
+    assert.equal(mock.state.calls.length, before, '예시는 카페24에 요청하지 않음');
+    assert.equal((await ui.call('POST', '/api/preview', { preset: 'pets' })).status, 400);
+    assert.equal((await ui.call('POST', '/api/preview', { preset: '' })).status, 400, '빈 업종은 기본값으로 바꾸지 않음');
+    for (const categoryNo of [0, '9', 1.5, -1, null, 1e9 + 1]) {
+      assert.equal((await ui.call('POST', '/api/preview', { preset: 'beauty', categoryNames: ['Skincare'], categoryNo })).status, 400, `categoryNo ${categoryNo}`);
+    }
+    // 예시는 같은 분류 번호로 만든 실제 첫 상품과 같다
+    const { planProduct } = await import('../src/core.js');
+    const { getPreset } = await import('../src/presets.js');
+    for (const no of [1, 9, 37]) {
+      const pr = await ui.call('POST', '/api/preview', { preset: 'beauty', categoryNames: ['Skincare'], categoryNo: no });
+      const real = planProduct(1, { runId: '261109120000123', categories: [{ no, names: ['Skincare'], path: [no] }], prefix: '[더미] ', hidden: false, withOptions: false, preset: getPreset('beauty') }).request;
+      assert.equal(pr.data.sample.name, real.product_name, `분류 ${no}`);
+      assert.equal(pr.data.sample.price, real.price);
+    }
+    assert.equal((await ui.call('POST', '/api/preview', { preset: 'beauty', categoryNames: 'x' })).status, 400);
+
+    await connectAndLogin(ui);
+    // 없는 업종이면 작업을 시작하지 않는다
+    const bad = await ui.call('POST', '/api/jobs/seed', { preset: 'pets', count: 1, categoryMode: 'none', withImage: false });
+    assert.equal(bad.status, 400);
+    assert.equal((await ui.call('POST', '/api/jobs/seed', { preset: '', count: 1, categoryMode: 'none', withImage: false })).status, 400);
+    assert.match(bad.data.error, /없는 업종 프리셋입니다: pets/);
+    assert.ok(!mock.state.calls.some((c) => c.method === 'POST' && c.path === '/api/v2/admin/products'));
+
+    const seed = await ui.call('POST', '/api/jobs/seed', { preset: 'beauty', count: 3, categoryMode: 'none', withImage: true, withOptions: true, reviews: { enabled: true, maxPerProduct: 2 } });
+    assert.equal(seed.status, 200, seed.text);
+    const job = await waitJob(ui);
+    assert.equal(job.status, 'done', JSON.stringify(job));
+    assert.deepEqual(job.result.preset, { id: 'beauty', label: '뷰티' });
+    const created = [...mock.state.products.values()].filter((p) => /^DUMMY-\d{15}-\d{3}$/.test(p.custom_product_code || ''));
+    assert.equal(created.length, 3);
+    const beautyItems = ['토너', '세럼', '수분 크림', '클렌징 폼', '선크림', '시트 마스크', '쿠션 파운데이션', '립스틱', '립 틴트', '아이섀도 팔레트', '블러셔', '바디워시', '바디로션', '핸드크림', '샴푸', '트리트먼트', '헤어 오일'];
+    for (const p of created) assert.ok(beautyItems.some((n) => p.product_name.includes(n)), p.product_name);
+    const reviews = [...mock.state.articles.values()].filter((a) => created.some((p) => p.product_no === a.product_no));
+    assert.ok(reviews.length >= 3);
+    const beauty = JSON.parse(fs.readFileSync(new URL('../src/presets/beauty.json', import.meta.url), 'utf8'));
+    const beautyBodies = Object.values(beauty.reviews.bodies).flat();
+    for (const r of reviews) assert.ok(beautyBodies.some((b) => r.content.includes(b)), r.content);
+  } finally {
+    ui.stop();
+    await mock.close();
+  }
+});

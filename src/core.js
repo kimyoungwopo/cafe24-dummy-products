@@ -7,6 +7,7 @@ import { Manifest } from './manifest.js';
 import { buildDummyProduct, makeRunId, isDummyCode, RUN_ID_PATTERN } from './dummy.js';
 import { buildReviews, isDummyReview } from './review.js';
 import { makeDummyImage, toDataUri } from './image.js';
+import { getPreset } from './presets.js';
 
 /**
  * CLI와 UI가 함께 쓰는 실제 작업들.
@@ -125,7 +126,7 @@ export async function resolveCategories(client, { nos, spread }) {
 }
 
 /** i번째(1부터) 상품의 요청 본문. dry-run과 실제 등록이 같은 결과를 내도록 한 곳에서 만든다. */
-export function planProduct(i, { runId, categories, prefix, hidden, withOptions }) {
+export function planProduct(i, { runId, categories, prefix, hidden, withOptions, preset = getPreset() }) {
   const category = categories.length ? categories[(i - 1) % categories.length] : undefined;
   return {
     category,
@@ -135,6 +136,7 @@ export function planProduct(i, { runId, categories, prefix, hidden, withOptions 
       display: hidden ? 'F' : 'T',
       selling: hidden ? 'F' : 'T',
       withOptions,
+      preset,
       category,
       round: categories.length ? Math.floor((i - 1) / categories.length) : undefined,
     }),
@@ -143,19 +145,19 @@ export function planProduct(i, { runId, categories, prefix, hidden, withOptions 
 
 // ---------------------------------------------------------------- 상품 등록
 
-export async function createProducts(ctx, { count, categories = [], prefix = '[더미] ', hidden = false, withOptions = false, withImage = true, runId = makeRunId() }) {
+export async function createProducts(ctx, { count, categories = [], prefix = '[더미] ', hidden = false, withOptions = false, withImage = true, runId = makeRunId(), preset = getPreset() }) {
   const { client, manifest, log, progress } = ctx;
   manifest.ensureWritable();
   const result = { runId, created: [], failed: [], unknown: [], stoppedByAuth: false };
-  await keepPartial(result, () => createProductsLoop(ctx, result, { count, categories, prefix, hidden, withOptions, withImage, runId }));
+  await keepPartial(result, () => createProductsLoop(ctx, result, { count, categories, prefix, hidden, withOptions, withImage, runId, preset }));
   progress(result.created.length + result.failed.length + result.unknown.length, count);
   return result;
 }
 
-async function createProductsLoop(ctx, result, { count, categories, prefix, hidden, withOptions, withImage, runId }) {
+async function createProductsLoop(ctx, result, { count, categories, prefix, hidden, withOptions, withImage, runId, preset }) {
   const { client, manifest, log, progress } = ctx;
   for (let i = 1; i <= count; i++) {
-    const { category, request } = planProduct(i, { runId, categories, prefix, hidden, withOptions });
+    const { category, request } = planProduct(i, { runId, categories, prefix, hidden, withOptions, preset });
     const code = request.custom_product_code;
     const label = `[${i}/${count}] ${request.product_name}${category && categories.length > 1 ? `  (${category.names.at(-1) ?? category.no})` : ''}`;
     progress(i - 1, count, request.product_name);
@@ -191,7 +193,7 @@ async function createProductsLoop(ctx, result, { count, categories, prefix, hidd
 
     if (withImage) {
       try {
-        await client.uploadProductImage(productNo, toDataUri(makeDummyImage(i)));
+        await client.uploadProductImage(productNo, toDataUri(makeDummyImage(i, 600, preset.image)));
         entry.image = true;
       } catch (e) {
         entry.image = false;
@@ -559,7 +561,8 @@ async function fillMainsLoop(ctx, { groups, candidates, runOf, perGroup, dryRun,
  * - 오류 메시지는 자르지 않는다 (기록하지 못한 항목의 ID 등 복구 정보가 들어 있을 수 있음).
  * - 권한 오류나 소유 기록 쓰기 실패가 나면 다음 단계로 넘어가지 않는다.
  */
-export async function seedWorkflow(ctx, { count, categories = [], runId = makeRunId(), hidden = false, withOptions = false, withImage = true, mainsPerGroup = 0, reviewsMax = 0 }) {
+export async function seedWorkflow(ctx, { count, categories = [], runId = makeRunId(), hidden = false, withOptions = false, withImage = true, mainsPerGroup = 0, reviewsMax = 0, preset = getPreset() }) {
+  // 프리셋은 작업을 시작할 때 한 번 정하고, 상품과 후기에 같은 것을 쓴다
   const { log } = ctx;
   const requested = [['products', '상품 등록'], ...(mainsPerGroup ? [['mains', '메인진열 채우기']] : []), ...(reviewsMax ? [['reviews', '상품후기 달기']] : [])];
   const total = requested.length;
@@ -594,7 +597,7 @@ export async function seedWorkflow(ctx, { count, categories = [], runId = makeRu
   out.products = await stage(
     'products',
     '상품 등록',
-    () => createProducts(ctx, { count, categories, runId, hidden, withOptions, withImage }),
+    () => createProducts(ctx, { count, categories, runId, hidden, withOptions, withImage, preset }),
     (r) => {
       const imageFailed = imageFailedCount(r);
       return {
@@ -625,7 +628,7 @@ export async function seedWorkflow(ctx, { count, categories = [], runId = makeRu
       '상품후기 달기',
       async () => {
         const board = await resolveReviewBoard(ctx.client);
-        const { requests } = await planReviews(ctx, { maxPerProduct: reviewsMax, runId });
+        const { requests } = await planReviews(ctx, { maxPerProduct: reviewsMax, runId, preset });
         log(`게시판: ${board.board_name}(${board.board_no}) — 후기 ${requests.length}개`);
         return postReviews(ctx, board, requests);
       },
@@ -654,11 +657,11 @@ export async function resolveReviewBoard(client, boardNo) {
   return candidates[0];
 }
 
-export async function planReviews(ctx, { maxPerProduct = 3, runId } = {}) {
+export async function planReviews(ctx, { maxPerProduct = 3, runId, preset = getPreset() } = {}) {
   const { ok } = await verifyProducts(ctx, ownedProducts(ctx, runId));
   const products = ok.sort((a, b) => a.product_no - b.product_no);
   if (!products.length) throw new Error('후기를 달 더미 상품이 없습니다. 먼저 상품을 등록하세요.');
-  const requests = products.flatMap((p, i) => buildReviews({ ...p.current, product_no: p.product_no }, i, { maxPerProduct }));
+  const requests = products.flatMap((p, i) => buildReviews({ ...p.current, product_no: p.product_no }, i, { maxPerProduct, preset }));
   return { products, requests };
 }
 

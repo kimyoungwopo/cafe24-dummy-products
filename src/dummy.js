@@ -1,62 +1,17 @@
 import { DUMMY_CODE_PREFIX } from './config.js';
 
+import { getPreset, itemsForCategory as presetItems, fillTemplate } from './presets.js';
+
 // 스킨 테스트용으로 그럴듯한 한국어 상품명을 조합한다.
-// kind: wear(의류) / shoes(신발) / goods(잡화·리빙) — 소재와 옵션을 종류에 맞게 고른다.
-const it = (name, min, max, kind = 'wear') => ({ name, min, max, kind });
-const GROUPS = {
-  jacket: [it('데님 자켓', 59000, 149000), it('블루종', 69000, 159000), it('트러커 자켓', 79000, 169000)],
-  coat: [it('싱글 코트', 129000, 299000), it('트렌치 코트', 119000, 259000), it('하프 코트', 99000, 219000)],
-  blazer: [it('싱글 블레이저', 79000, 189000), it('더블 블레이저', 89000, 199000)],
-  outer: [it('후드 집업', 39000, 99000), it('가디건', 39000, 89000), it('바람막이', 49000, 119000)],
-  tee: [it('반팔 티셔츠', 15000, 39000), it('긴팔 티셔츠', 19000, 45000), it('그래픽 티셔츠', 19000, 42000), it('크롭 티셔츠', 17000, 39000)],
-  shirt: [it('옥스포드 셔츠', 39000, 79000), it('스트라이프 셔츠', 35000, 69000), it('블라우스', 35000, 75000)],
-  knit: [it('라운드 니트', 39000, 99000), it('브이넥 니트', 39000, 95000)],
-  dress: [it('플레어 원피스', 49000, 129000), it('셔츠 원피스', 45000, 119000), it('슬립 원피스', 39000, 99000)],
-  skirt: [it('데님 스커트', 29000, 59000), it('플리츠 스커트', 35000, 69000), it('롱 스커트', 39000, 79000)],
-  pants: [it('와이드 팬츠', 32000, 79000), it('슬랙스', 35000, 79000), it('데님 팬츠', 39000, 89000)],
-  shoes: [it('캔버스 스니커즈', 45000, 129000, 'shoes'), it('로퍼', 59000, 149000, 'shoes')],
-  acc: [it('볼캡', 15000, 39000, 'goods'), it('에코백', 12000, 35000, 'goods'), it('패브릭 파우치', 9000, 29000, 'goods'), it('니트 비니', 15000, 35000, 'goods')],
-  living: [it('머그컵', 9000, 25000, 'goods'), it('쿠션 커버', 12000, 32000, 'goods'), it('향초', 15000, 45000, 'goods'), it('텀블러', 18000, 49000, 'goods')],
-};
-const ITEMS = Object.values(GROUPS).flat(); // 분류를 모를 때 쓰는 전체 목록
+// 상품군·이름 재료·옵션·가격대는 업종 프리셋(src/presets/*.json)에서 가져온다. 기본은 패션.
 
-// 분류 이름 → 상품군. 위에서부터 먼저 맞는 규칙을 쓴다 (구체적인 것 먼저).
-const CATEGORY_RULES = [
-  [/jacket|자켓|재킷|점퍼|jumper/i, ['jacket']],
-  [/coat|코트/i, ['coat']],
-  [/blazer|블레이저/i, ['blazer']],
-  [/\btees?\b|t-?shirt|티셔츠|sleeve|반팔|긴팔/i, ['tee']],
-  [/shirt|셔츠|blouse|블라우스/i, ['shirt']],
-  [/knit|니트|sweater|스웨터/i, ['knit']],
-  [/dress|원피스/i, ['dress']],
-  [/skirt|스커트|치마/i, ['skirt']],
-  [/pant|팬츠|바지|trouser|slacks|슬랙스|jean|denim|데님/i, ['pants']],
-  [/shoe|신발|sneaker|스니커즈/i, ['shoes']],
-  [/outer|아우터/i, ['jacket', 'coat', 'outer']],
-  [/top|상의/i, ['tee', 'shirt', 'knit']],
-  [/bottom|하의/i, ['pants', 'skirt']],
-  [/acc|잡화|bag|가방|hat|모자|cap/i, ['acc']],
-  [/living|리빙|home|홈|kitchen|주방/i, ['living']],
-];
-
-/** 분류 경로 이름(상위 → 하위)에서 가장 구체적인 이름부터 맞춰 상품군을 고른다. */
-export function itemsForCategory(names = []) {
-  for (const name of [...names].reverse()) {
-    for (const [re, groups] of CATEGORY_RULES) {
-      if (re.test(name)) return groups.flatMap((g) => GROUPS[g]);
-    }
-  }
-  return ITEMS;
+/** 분류 경로 이름에 맞는 상품 후보 (프리셋을 생략하면 패션) */
+export function itemsForCategory(names = [], preset = getPreset()) {
+  return presetItems(preset, names);
 }
 
-const ADJECTIVES = ['데일리', '베이직', '오버핏', '슬림', '빈티지', '모던', '심플', '클래식', '내추럴', '프리미엄', '썸머', '윈터'];
-const MATERIALS = {
-  wear: ['코튼', '린넨', '울', '캐시미어 블렌드', '데님', '나일론', '폴리', '리넨 블렌드'],
-  shoes: ['레더', '스웨이드', '캔버스', '니트'],
-  goods: ['코튼', '캔버스', '세라믹', '스테인리스', '레더', '린넨'],
-};
-const COLORS = ['블랙', '화이트', '베이지', '네이비', '그레이', '카키'];
-const SIZES = { wear: ['S', 'M', 'L', 'XL'], shoes: ['230', '240', '250', '260', '270'] };
+/** 상품 설명 HTML에 넣는 글자는 이스케이프한다 (접두어 등 사용자 입력이 섞일 수 있음) */
+const escapeHtml = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 function pick(arr, n) {
   return arr[n % arr.length];
@@ -105,18 +60,21 @@ export function buildDummyProduct(index, {
   display = 'T',
   selling = 'T',
   withOptions = false,
+  preset = getPreset(),
 } = {}) {
   // 번호마다 다른 조합이 나오도록 서로 다른 보폭으로 섞는다.
-  const pool = itemsForCategory(category?.names);
+  const pool = presetItems(preset, category?.names);
   const item = pick(pool, round !== undefined ? round + Number(category?.no ?? 0) : index * 5 + 3);
-  const adj = pick(ADJECTIVES, index * 7 + (round ?? 0) * 5);
-  const material = pick(MATERIALS[item.kind], index * 3 + 1 + (round ?? 0));
+  const kind = preset.kinds[item.kind];
+  const adj = pick(preset.adjectives, index * 7 + (round ?? 0) * 5);
+  const material = pick(kind.variants, index * 3 + 1 + (round ?? 0));
+  const vars = { adj, variant: material, item: item.name, variantLabel: kind.variantLabel };
   const spread = ((index * 37) % 100) / 100;
   const price = roundTo(item.min + (item.max - item.min) * spread, 1000) - 100; // 예: 28,900원
   const supply = roundTo(price * 0.6, 100);
   const retail = index % 3 === 0 ? roundTo(price * 1.25, 1000) : 0; // 3개 중 1개는 할인가 표시용 소비자가
 
-  const productName = `${namePrefix}${adj} ${material} ${item.name} ${String(index).padStart(3, '0')}`;
+  const productName = `${namePrefix}${fillTemplate(preset.text.name, vars)} ${String(index).padStart(3, '0')}`;
 
   const request = {
     product_name: productName.slice(0, 250),
@@ -128,14 +86,14 @@ export function buildDummyProduct(index, {
     selling,
     product_condition: 'N',
     summary_description: `스킨 테스트용 더미 상품 #${index}`,
-    simple_description: `${adj} 무드의 ${material} ${item.name}`,
+    simple_description: fillTemplate(preset.text.simple, vars),
     description: [
-      `<h3>${productName}</h3>`,
+      `<h3>${escapeHtml(productName)}</h3>`,
       '<p>이 상품은 쇼핑몰 스킨/디자인 테스트를 위해 자동 생성된 <strong>더미 상품</strong>입니다.</p>',
       '<ul>',
-      `<li>소재: ${material}</li>`,
-      `<li>스타일: ${adj}</li>`,
-      `<li>배치 ID: ${runId}</li>`,
+      `<li>${escapeHtml(kind.variantLabel)}: ${escapeHtml(material)}</li>`,
+      `<li>${escapeHtml(preset.text.styleLabel)}: ${escapeHtml(adj)}</li>`,
+      `<li>배치 ID: ${escapeHtml(runId)}</li>`,
       '</ul>',
     ].join('\n'),
   };
@@ -150,10 +108,10 @@ export function buildDummyProduct(index, {
     }));
   }
 
-  if (withOptions) {
+  if (withOptions && kind.options.length) {
     request.has_option = 'T';
-    request.options = [{ name: '색상', value: COLORS.slice(index % 3, (index % 3) + 3) }];
-    if (SIZES[item.kind]) request.options.push({ name: '사이즈', value: SIZES[item.kind] });
+    // take가 있으면 (번호 % take) 위치부터 take개, 없으면 전부
+    request.options = kind.options.map((o) => ({ name: o.name, value: o.take ? o.values.slice(index % o.take, (index % o.take) + o.take) : [...o.values] }));
   }
 
   return request;

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "id": "living",
+  "label": "리빙",
+  "description": "주방 · 침구/패브릭 · 인테리어 소품 · 수납",
+  "adjectives": ["데일리", "모던", "내추럴", "북유럽", "미니멀", "빈티지", "프리미엄", "심플", "클래식", "코지", "베이직", "시그니처"],
+  "kinds": {
+    "kitchen": {
+      "variantLabel": "소재",
+      "variants": ["스테인리스", "세라믹", "유리", "원목", "실리콘", "도자기"],
+      "options": [{ "name": "색상", "values": ["화이트", "아이보리", "블랙", "그레이", "세이지"], "take": 3 }]
+    },
+    "fabric": {
+      "variantLabel": "소재",
+      "variants": ["코튼", "린넨", "극세사", "모달", "워싱 코튼"],
+      "options": [{ "name": "사이즈", "values": ["싱글", "슈퍼싱글", "퀸", "킹"] }, { "name": "색상", "values": ["화이트", "아이보리", "베이지", "그레이", "네이비"], "take": 3 }]
+    },
+    "deco": {
+      "variantLabel": "소재",
+      "variants": ["우드", "라탄", "패브릭", "메탈", "유리"],
+      "options": [{ "name": "색상", "values": ["내추럴", "화이트", "블랙", "브라운", "골드"], "take": 3 }]
+    },
+    "storage": {
+      "variantLabel": "소재",
+      "variants": ["PP", "라탄", "패브릭", "원목", "철제"],
+      "options": [{ "name": "크기", "values": ["S", "M", "L"] }]
+    }
+  },
+  "groups": {
+    "kitchen": [
+      { "name": "머그컵", "min": 9000, "max": 25000, "kind": "kitchen" },
+      { "name": "접시 세트", "min": 19000, "max": 59000, "kind": "kitchen" },
+      { "name": "텀블러", "min": 15000, "max": 45000, "kind": "kitchen" },
+      { "name": "도마", "min": 12000, "max": 39000, "kind": "kitchen" }
+    ],
+    "fabric": [
+      { "name": "이불 커버", "min": 39000, "max": 129000, "kind": "fabric" },
+      { "name": "베개 커버", "min": 12000, "max": 32000, "kind": "fabric" },
+      { "name": "쿠션 커버", "min": 12000, "max": 29000, "kind": "fabric" },
+      { "name": "러그", "min": 39000, "max": 159000, "kind": "fabric" }
+    ],
+    "deco": [
+      { "name": "향초", "min": 15000, "max": 45000, "kind": "deco" },
+      { "name": "디퓨저", "min": 19000, "max": 49000, "kind": "deco" },
+      { "name": "액자", "min": 12000, "max": 39000, "kind": "deco" },
+      { "name": "무드등", "min": 25000, "max": 79000, "kind": "deco" }
+    ],
+    "storage": [
+      { "name": "수납 바구니", "min": 9000, "max": 32000, "kind": "storage" },
+      { "name": "정리함", "min": 7000, "max": 25000, "kind": "storage" },
+      { "name": "옷걸이 세트", "min": 9000, "max": 22000, "kind": "storage" }
+    ]
+  },
+  "categoryRules": [
+    { "match": ["kitchen", "주방", "키친", "식기", "tableware", "cup", "컵"], "groups": ["kitchen"] },
+    { "match": ["bedding", "침구", "fabric", "패브릭", "이불", "쿠션", "rug", "러그"], "groups": ["fabric"] },
+    { "match": ["storage", "수납", "정리"], "groups": ["storage"] },
+    { "match": ["deco", "데코", "인테리어", "interior", "조명", "lighting", "향"], "groups": ["deco"] }
+  ],
+  "text": { "name": "{adj} {variant} {item}", "simple": "{adj} 무드의 {variant} {item}", "styleLabel": "스타일" },
+  "reviews": {
+    "titles": {
+      "5": ["정말 만족해요", "재구매 의사 있어요", "집 분위기가 달라졌어요", "선물용으로도 좋아요", "강력 추천합니다"],
+      "4": ["전체적으로 만족해요", "가격 대비 괜찮아요", "무난하게 잘 쓰고 있어요", "생각보다 좋네요"],
+      "3": ["보통이에요", "나쁘지 않아요", "기대만큼은 아니에요"],
+      "2": ["조금 아쉬워요", "크기가 애매해요"],
+      "1": ["별로였어요", "배송이 너무 늦었어요"]
+    },
+    "bodies": {
+      "high": ["색감이 사진이랑 거의 같아서 좋았어요.", "마감이 깔끔하고 튼튼해요.", "배송도 빠르고 포장도 꼼꼼했어요.", "어디에 둬도 잘 어울려요.", "매일 쓰는데 아직까지 문제없어요.", "부모님 댁에도 하나 보내 드렸어요."],
+      "mid": ["가격 생각하면 괜찮은 편이에요.", "사진보다 색이 살짝 어두워요.", "배송은 보통이었어요.", "생각보다 크기가 조금 작아요."],
+      "low": ["사진과 느낌이 좀 달라요.", "마감이 조금 아쉬웠어요.", "배송이 예상보다 오래 걸렸어요."]
+    }
+  },
+  "image": { "label": "LIVING", "hueStart": 90, "hueSpan": 100 }
+}
