@@ -510,36 +510,89 @@ test('MCP 회귀: 같은 계획으로 정리 실행을 동시에 요청해도 �
   }
 });
 
-test('MCP 확인 화면: 3분이 지나 다시 열어도 이전 주소로 승인할 수 있고, 한 번 결정하면 모든 주소가 무효', async () => {
+/** 확인 화면 서버만 따로 띄워 시험한다 (계획은 직접 넣고, 시계는 주입) */
+async function confirmHarness() {
   const { createService } = await import('../src/service.js');
   const { createConfirmServer } = await import('../src/confirm.js');
   const { __setUrlSink } = await import('../src/http-guard.js');
   const urls = [];
   __setUrlSink((url, kind) => kind === 'confirm' && urls.push(url));
   const svc = createService({ source: 'mcp' });
-  const planId = 'a'.repeat(32);
-  svc.state.plans.set(planId, { plan: {}, view: { runId: null, counts: {} }, createdAt: Date.now(), mallId: 'm', shopNo: 1, requiresApproval: true, approval: 'pending' });
-  const confirm = createConfirmServer(svc);
-  const realNow = Date.now;
-  try {
-    assert.equal(await confirm.openFor(planId), 'opened');
-    assert.equal(await confirm.openFor(planId), 'already-open', '3분 안에는 다시 열지 않음');
-    Date.now = () => realNow() + 4 * 60 * 1000; // 4분 뒤 (계획 TTL 10분 안)
-    assert.equal(await confirm.openFor(planId), 'opened', '오래 지나면 새로 연다');
-    Date.now = realNow;
-    assert.equal(urls.length, 2);
-    const [a, b] = urls.map((u) => ({ base: new URL(u).origin, token: /#t=([0-9a-f]{64})$/.exec(u)[1] }));
-    const get = (x) => fetch(`${x.base}/api/confirm`, { headers: { 'X-Confirm-Token': x.token } });
-    assert.equal((await get(a)).status, 200, '이전 주소도 아직 유효');
-    assert.equal((await get(b)).status, 200);
-    const ok = await fetch(`${a.base}/api/confirm`, { method: 'POST', headers: { 'X-Confirm-Token': a.token, 'Content-Type': 'application/json' }, body: JSON.stringify({ decision: 'approve', irreversible: true }) });
-    assert.equal(ok.status, 200);
-    assert.equal(svc.livePlan(planId).approval, 'approved');
-    assert.equal((await get(a)).status, 404);
-    assert.equal((await get(b)).status, 404, '결정 뒤에는 다른 주소도 무효');
-  } finally {
-    Date.now = realNow;
+  const clock = { t: Date.now() };
+  const confirm = createConfirmServer(svc, { now: () => clock.t });
+  const addPlan = (planId, extra = {}) =>
+    svc.state.plans.set(planId, { plan: {}, view: { runId: null, counts: {} }, createdAt: Date.now(), mallId: 'm', shopNo: 1, requiresApproval: true, approval: 'pending', ...extra });
+  const parse = (u) => ({ base: new URL(u).origin, token: /#t=([0-9a-f]{64})$/.exec(u)[1] });
+  const get = (x) => fetch(`${x.base}/api/confirm`, { headers: { 'X-Confirm-Token': x.token } });
+  const post = (x, body) => fetch(`${x.base}/api/confirm`, { method: 'POST', headers: { 'X-Confirm-Token': x.token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const done = async () => {
     __setUrlSink(null);
     await confirm.close();
+  };
+  return { svc, confirm, clock, urls, addPlan, parse, get, post, done };
+}
+
+test('MCP 확인 화면: 3분이 지나 다시 열어도 이전 주소로 승인할 수 있고, 한 번 결정하면 모든 주소가 무효', async () => {
+  const h = await confirmHarness();
+  const planId = 'a'.repeat(32);
+  h.addPlan(planId);
+  try {
+    assert.equal(await h.confirm.openFor(planId), 'opened');
+    assert.equal(await h.confirm.openFor(planId), 'already-open', '3분 안에는 다시 열지 않음');
+    h.clock.t += 4 * 60 * 1000;
+    assert.equal(await h.confirm.openFor(planId), 'opened', '오래 지나면 새로 연다');
+    assert.equal(h.urls.length, 2);
+    const [a, b] = h.urls.map(h.parse);
+    assert.equal((await h.get(a)).status, 200, '이전 주소도 아직 유효');
+    assert.equal((await h.get(b)).status, 200);
+    assert.equal((await h.post(a, { decision: 'approve', irreversible: true })).status, 200);
+    assert.equal(h.svc.livePlan(planId).approval, 'approved');
+    assert.equal((await h.get(a)).status, 404);
+    assert.equal((await h.get(b)).status, 404, '결정 뒤에는 다른 주소도 무효');
+    assert.equal(h.confirm._tokenCount(), 0);
+  } finally {
+    await h.done();
+  }
+});
+
+test('MCP 확인 화면: 두 주소로 동시에 승인해도 한 번만 되고, 거절하면 모든 주소가 무효, 만료된 계획의 주소는 정리된다', async () => {
+  const h = await confirmHarness();
+  try {
+    // 동시 승인
+    const p1 = 'b'.repeat(32);
+    h.addPlan(p1);
+    await h.confirm.openFor(p1);
+    h.clock.t += 4 * 60 * 1000;
+    await h.confirm.openFor(p1);
+    const [a, b] = h.urls.map(h.parse);
+    const res = await Promise.all([h.post(a, { decision: 'approve', irreversible: true }), h.post(b, { decision: 'approve', irreversible: true })]);
+    assert.deepEqual(res.map((r) => r.status).sort(), [200, 404]);
+    assert.equal(h.svc.livePlan(p1).approval, 'approved');
+
+    // 거절
+    const p2 = 'c'.repeat(32);
+    h.addPlan(p2);
+    h.urls.length = 0;
+    await h.confirm.openFor(p2);
+    h.clock.t += 4 * 60 * 1000;
+    await h.confirm.openFor(p2);
+    const [c, d] = h.urls.map(h.parse);
+    assert.equal((await h.post(d, { decision: 'reject' })).status, 200);
+    assert.equal(h.svc.livePlan(p2), null, '거절하면 계획을 버림');
+    assert.equal((await h.get(c)).status, 404);
+    assert.equal((await h.post(c, { decision: 'approve', irreversible: true })).status, 404);
+
+    // 만료된 계획 (TTL 10분 초과)
+    const p3 = 'd'.repeat(32);
+    h.addPlan(p3);
+    h.urls.length = 0;
+    await h.confirm.openFor(p3);
+    const [e] = h.urls.map(h.parse);
+    h.svc.state.plans.get(p3).createdAt -= 11 * 60 * 1000;
+    assert.equal((await h.get(e)).status, 404);
+    assert.equal((await h.post(e, { decision: 'approve', irreversible: true })).status, 404);
+    assert.equal(h.confirm._tokenCount(), 0, '결정·거절·만료된 계획의 주소는 남지 않음');
+  } finally {
+    await h.done();
   }
 });

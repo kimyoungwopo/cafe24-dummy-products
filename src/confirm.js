@@ -24,7 +24,8 @@ const STATIC = {
   '/app.css': ['app.css', 'text/css; charset=utf-8'],
 };
 
-export function createConfirmServer(svc) {
+/** @param {{ now?: () => number }} [opts] now: 시계 (테스트에서 바꿀 수 있게) */
+export function createConfirmServer(svc, { now = () => Date.now() } = {}) {
   let server = null;
   let ready = null;
   let hosts;
@@ -56,7 +57,16 @@ export function createConfirmServer(svc) {
     return ready;
   }
 
+  /** 이미 결정됐거나 만료·삭제된 계획의 주소를 모두 지운다 */
+  function sweep() {
+    for (const [t, v] of tokens) {
+      const entry = svc.livePlan(v.planId);
+      if (!entry || entry.approval !== 'pending') tokens.delete(t);
+    }
+  }
+
   function planFor(req) {
+    sweep();
     const token = String(req.headers['x-confirm-token'] || '');
     const planId = token && tokens.get(token)?.planId;
     const entry = planId && svc.livePlan(planId);
@@ -113,13 +123,14 @@ export function createConfirmServer(svc) {
   };
 
   async function openForNow(planId) {
+    sweep();
     // 최근 3분 안에 열었으면 다시 열지 않는다. 그보다 오래됐으면(창을 닫았거나 못 열었을 수 있음) 새 주소로 다시 연다.
     // 이전 주소도 계획이 결정되기 전까지는 그대로 쓸 수 있다 (읽는 중에 무효가 되지 않도록). 승인은 계획당 한 번만 된다.
     const opened = [...tokens.values()].filter((v) => v.planId === planId);
-    if (opened.some((v) => Date.now() - v.openedAt < REOPEN_AFTER_MS)) return 'already-open';
+    if (opened.some((v) => now() - v.openedAt < REOPEN_AFTER_MS)) return 'already-open';
     const { port } = await ensureStarted();
     const token = crypto.randomBytes(32).toString('hex');
-    tokens.set(token, { planId, openedAt: Date.now() });
+    tokens.set(token, { planId, openedAt: now() });
     const url = `http://127.0.0.1:${port}/#t=${token}`;
     if (!emitUrl(url, 'confirm')) openBrowser(url);
     return 'opened';
@@ -130,6 +141,9 @@ export function createConfirmServer(svc) {
     for (const [t, v] of tokens) if (v.planId === planId) tokens.delete(t);
   }
 
+  /** 테스트용: 살아 있는 확인 주소 수 */
+  const _tokenCount = () => tokens.size;
+
   const close = () => (server ? new Promise((r) => server.close(() => r())) : Promise.resolve());
-  return { openFor, forget, close };
+  return { openFor, forget, close, _tokenCount };
 }
