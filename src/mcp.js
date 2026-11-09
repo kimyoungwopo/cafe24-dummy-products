@@ -28,6 +28,8 @@ const META_VERSION = 'io.modelcontextprotocol/protocolVersion';
 const META_CAPS = 'io.modelcontextprotocol/clientCapabilities';
 const META_SERVER = 'io.modelcontextprotocol/serverInfo';
 const MAX_LINE = 1024 * 1024;
+// 현재 방식(2026-07-28)에서 server/discover·tools/list 결과에 반드시 넣는 캐시 안내 (도구 목록은 이 버전 안에서 바뀌지 않음)
+const CACHE_HINT = { ttlMs: 60 * 60 * 1000, cacheScope: 'public' };
 
 const INSTRUCTIONS = [
   '카페24 쇼핑몰에 스킨 테스트용 더미 상품·메인진열·상품후기를 채우고, 이 도구가 만든 것만 정리하는 서버입니다.',
@@ -433,9 +435,9 @@ export function runMcpServer({ input = process.stdin, output = process.stdout, e
       case 'ping':
         return reply(resultFor(modern, {}));
       case 'server/discover':
-        return reply(resultFor(true, { supportedVersions: MODERN_VERSIONS, capabilities: { tools: {} }, instructions: INSTRUCTIONS }));
+        return reply(resultFor(true, { supportedVersions: MODERN_VERSIONS, capabilities: { tools: {} }, instructions: INSTRUCTIONS, ...CACHE_HINT }));
       case 'tools/list':
-        return reply(resultFor(modern, { tools: h.tools }));
+        return reply(resultFor(modern, { tools: h.tools, ...(modern ? CACHE_HINT : {}) }));
       case 'tools/call': {
         if (typeof params.name !== 'string' || (params.arguments !== undefined && (params.arguments === null || typeof params.arguments !== 'object' || Array.isArray(params.arguments)))) {
           return fail(-32602, 'Invalid params: name must be a string and arguments an object');

@@ -104,6 +104,10 @@ test('MCP 프로토콜: 예전(initialize)·현재(_meta) 방식 모두 받고, 
     const disc = await mcp.request('server/discover', { _meta: MODERN });
     assert.deepEqual(disc.result.supportedVersions, ['2026-07-28']);
     assert.equal(disc.result.resultType, 'complete');
+    // 2026-07-28 필수: 캐시 안내 (없으면 클라이언트가 결과를 버린다 — 실제 Claude Code에서 확인)
+    assert.ok(Number.isInteger(disc.result.ttlMs) && disc.result.ttlMs >= 0);
+    assert.ok(['public', 'private'].includes(disc.result.cacheScope));
+    assert.ok(disc.result.capabilities && Array.isArray(disc.result.supportedVersions));
     assert.equal(disc.result._meta['io.modelcontextprotocol/serverInfo'].name, 'cafe24-dummy-products');
     const unsupported = await mcp.request('tools/list', { _meta: { ...MODERN, 'io.modelcontextprotocol/protocolVersion': '1900-01-01' } });
     assert.equal(unsupported.error.code, -32022);
@@ -112,6 +116,10 @@ test('MCP 프로토콜: 예전(initialize)·현재(_meta) 방식 모두 받고, 
     assert.equal(noCaps.error.code, -32602);
     const list = await mcp.request('tools/list', { _meta: MODERN });
     assert.equal(list.result.resultType, 'complete');
+    assert.ok(Number.isInteger(list.result.ttlMs) && list.result.ttlMs >= 0);
+    assert.ok(['public', 'private'].includes(list.result.cacheScope));
+    for (const t of list.result.tools) assert.equal(t.inputSchema.type, 'object', t.name);
+    assert.equal((await mcp.request('ping', { _meta: MODERN })).result.resultType, 'complete');
     const names = list.result.tools.map((t) => t.name);
     assert.deepEqual(names, ['get_status', 'list_presets', 'list_categories', 'preview_products', 'start_seed', 'get_job', 'list_batches', 'plan_cleanup', 'execute_cleanup']);
     for (const t of list.result.tools) assert.equal(t.inputSchema.additionalProperties, false, t.name);
@@ -126,6 +134,7 @@ test('MCP 프로토콜: 예전(initialize)·현재(_meta) 방식 모두 받고, 
     const legacyList = await mcp.request('tools/list');
     assert.equal(legacyList.result.tools.length, 9);
     assert.equal(legacyList.result.resultType, undefined, '예전 방식에는 resultType을 넣지 않음');
+    assert.equal(legacyList.result.ttlMs, undefined);
     const future = await mcp.request('initialize', { protocolVersion: '2099-01-01', capabilities: {}, clientInfo: { name: 't', version: '1' } });
     assert.equal(future.result.protocolVersion, '2025-11-25', '모르는 버전이면 지원하는 최신 예전 버전');
 
