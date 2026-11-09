@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>정리 확인 · 카페24 더미 데이터</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="top-inner">
+        <h1>정리 확인</h1>
+        <span class="badge warn">AI가 요청한 삭제</span>
+      </div>
+    </header>
+    <main>
+      <div id="banner" class="banner" role="status" hidden></div>
+      <section class="card" id="plan-card" hidden>
+        <h2>이 더미 데이터를 지울까요?</h2>
+        <p class="hint">AI 도구(MCP)가 정리를 요청했어요. 아래 내용을 확인하고 직접 승인해야만 지워져요. 원하지 않으면 거절하세요.</p>
+        <dl id="plan-summary" class="summary"></dl>
+        <ul id="plan-samples" class="notes"></ul>
+        <ul id="plan-notes" class="notes"></ul>
+        <form id="confirm-form" class="form">
+          <label class="check"><input type="checkbox" name="irreversible" /> 카페24에서 지운 데이터는 되돌릴 수 없다는 것을 확인했어요</label>
+          <div class="actions">
+            <button type="button" id="reject">거절</button>
+            <button type="submit" class="danger" id="approve" disabled>승인하고 지우기 허용</button>
+          </div>
+        </form>
+      </section>
+      <section class="card" id="done-card" hidden>
+        <h2 id="done-title"></h2>
+        <p id="done-text"></p>
+      </section>
+    </main>
+    <script src="/confirm.js"></script>
+  </body>
+</html>

@@ -392,6 +392,11 @@ test('UI 6단계: 업종 목록·예시는 카페24에 요청하지 않고, 채�
     const bad = await ui.call('POST', '/api/jobs/seed', { preset: 'pets', count: 1, categoryMode: 'none', withImage: false });
     assert.equal(bad.status, 400);
     assert.equal((await ui.call('POST', '/api/jobs/seed', { preset: '', count: 1, categoryMode: 'none', withImage: false })).status, 400);
+    // 켠 "함께 채우기" 값이 0·문자·범위 밖이면 꺼짐으로 바꾸지 않고 거부
+    for (const extra of [{ mains: { enabled: true, perGroup: 0 } }, { mains: { enabled: true, perGroup: 'bad' } }, { mains: { enabled: true, perGroup: 51 } }, { reviews: { enabled: true, maxPerProduct: 0 } }, { reviews: { enabled: true, maxPerProduct: 11 } }]) {
+      const r = await ui.call('POST', '/api/jobs/seed', { count: 1, categoryMode: 'none', withImage: false, ...extra });
+      assert.equal(r.status, 400, JSON.stringify(extra));
+    }
     assert.match(bad.data.error, /없는 업종 프리셋입니다: pets/);
     assert.ok(!mock.state.calls.some((c) => c.method === 'POST' && c.path === '/api/v2/admin/products'));
 

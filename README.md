@@ -33,6 +33,7 @@
 | ⭐ **메인진열 · 상품후기** | 추천상품·신상품 같은 메인분류에 더미 상품을 올리고, 별점·작성일이 섞인 후기(포토후기 포함)를 달아요 |
 | 🧹 **만든 것만 정리** | 만든 항목을 쇼핑몰별 소유 기록에 남기고, 지우기 직전에 현재 상태를 다시 확인해 **기록과 같은 것만** 지워요 |
 | 🖥️ **화면으로 간편하게** | 터미널 명령 하나로 브라우저 화면이 열려요. 연결 → 채우기 → 현황·정리 세 단계면 끝 |
+| 🤖 **AI 앱에서 말로 (MCP)** | Claude 같은 MCP 앱에 연결하면 "뷰티 상품 20개 채워 줘"처럼 말로 쓸 수 있어요. 지울 때는 반드시 사람이 브라우저에서 직접 승인해요 |
 | 📦 **설치할 것 없음** | 외부 패키지 0개. Node.js 18.3 이상만 있으면 `npx`로 바로 실행돼요 |
 
 <br />
@@ -237,6 +238,73 @@ cafe24-dummy delete                         # 이 도구가 만든 것 전부 (�
 
 <br />
 
+<a id="mcp"></a>
+
+## 🤖 AI 앱에서 쓰기 (MCP)
+
+[MCP](https://modelcontextprotocol.io)를 지원하는 AI 앱(Claude Desktop, Claude Code 등)에 연결하면 말로 채우고 정리할 수 있어요.
+
+**1. 먼저 연결 설정과 로그인을 해 두세요.** 로그인과 Client Secret은 보안을 위해 MCP로 다루지 않아요.
+
+```bash
+npx github:kimyoungwopo/cafe24-dummy-products ui
+```
+
+**2. AI 앱에 서버를 추가해요.**
+
+<details>
+<summary>Claude Code</summary>
+
+```bash
+claude mcp add cafe24-dummy -- npx -y github:kimyoungwopo/cafe24-dummy-products mcp
+```
+
+</details>
+
+<details>
+<summary>Claude Desktop 및 다른 MCP 앱 (설정 파일)</summary>
+
+```json
+{
+  "mcpServers": {
+    "cafe24-dummy": {
+      "command": "npx",
+      "args": ["-y", "github:kimyoungwopo/cafe24-dummy-products", "mcp"]
+    }
+  }
+}
+```
+
+`-y`가 꼭 있어야 해요. MCP는 입출력을 앱과 주고받는 데 쓰기 때문에, 설치 확인 질문(`Ok to proceed?`)에 답할 수 없어요. 설정 폴더를 바꿨다면 `"env": { "CAFE24_HOME": "/설정/폴더" }`를 함께 넣으세요.
+
+</details>
+
+**3. 이렇게 말해 보세요.**
+
+- "연결 상태 확인해 줘"
+- "뷰티 업종으로 상품 20개, 메인분류마다 4개씩, 후기는 상품당 2개까지 채워 줘"
+- "식품 업종 상품 예시 하나 보여 줘"
+- "방금 만든 배치 정리해 줘"
+
+| 도구 | 하는 일 |
+| --- | --- |
+| `get_status` | 설정·로그인·권한·진행 중인 작업 확인 (토큰·Secret은 돌려주지 않음) |
+| `list_presets` · `list_categories` | 업종 목록 · 상품분류 목록 |
+| `preview_products` | 업종별 예시 상품 하나 (등록하지 않음) |
+| `start_seed` · `get_job` | 채우기 시작(바로 작업 ID를 돌려줌) · 진행과 단계별 결과 확인 |
+| `list_batches` | 이 도구가 만든 배치 목록 |
+| `plan_cleanup` · `execute_cleanup` | 정리 계획(10분 유효) · 정리 실행 (사람 승인 필요) |
+
+> [!IMPORTANT]
+> **지우기는 AI 혼자 할 수 없어요.** AI가 정리를 실행하려고 하면 이 컴퓨터의 브라우저에 **정리 확인 화면**이 열려요. 쇼핑몰, 배치, 지울 개수, 건너뛸 항목을 확인하고 "되돌릴 수 없다"에 체크한 뒤 직접 승인해야만 지워져요. 거절하면 그 계획은 버려지고 아무것도 지우지 않아요. 확인 화면 주소는 AI 앱이나 로그에 나오지 않아요.
+
+- 채우기·정리는 화면(`ui`)·터미널 명령과 같은 잠금을 써서 한 번에 하나만 실행돼요.
+- 작업 중에 AI 앱을 닫아도, 진행 중인 작업과 소유 기록을 끝까지 마친 뒤에 서버가 종료돼요. 강제로 종료되면(전원 차단 등) 마지막 상품이 "결과 불명"일 수 있으니 `list_batches`나 화면의 "현황·정리"로 확인하세요.
+- 상품명·분류명처럼 쇼핑몰에서 온 글은 AI에게 데이터로만 전달하고, 그 안의 지시를 따르지 말라고 서버가 안내해요.
+- 2025년 방식(`initialize`)과 2026년 방식(요청마다 버전 정보) MCP 앱을 모두 지원해요.
+
+<br />
+
 ## 🛡️ 지우는 기준 — "내가 만든 것만"
 
 ```
@@ -373,7 +441,11 @@ node src/cli.js ui
 ```
 src/
   cli.js       명령 진입점 (출력·확인 질문만 담당)
-  server.js    로컬 화면 서버 (127.0.0.1, 세션 토큰, Host/Origin 검사, 작업 1개씩)
+  server.js    로컬 화면 서버 (127.0.0.1, 세션 토큰, Host/Origin 검사)
+  service.js   화면·MCP 공통 작업 (입력 검사, 작업 1개씩, 정리 계획)
+  mcp.js       MCP 서버 (stdio, 2025·2026 방식 모두)
+  confirm.js   MCP 정리 확인 화면 서버 (사람 승인)
+  http-guard.js 로컬 화면 서버 보안 도우미
   core.js      실제 작업 (등록, 소유 확인, 정리, 메인진열, 후기, 예전 데이터) — 화면도 같이 씀
   manifest.js  소유 기록 (쇼핑몰별 JSONL, 추가 전용)
   lock.js      프로세스 사이 잠금 (쓰기 작업 1개씩, 토큰 갱신 1번)
@@ -385,13 +457,14 @@ src/
   review.js    더미 후기 생성 (문구는 프리셋, 표시·작성자는 고정)
   image.js     더미 PNG 이미지 생성 (의존성 없음)
   config.js    설정 위치, 입력 검사, 상수
-ui/            화면 (index.html, app.js, app.css — 외부 자원 없음)
+ui/            화면 (index.html, app.js, app.css, confirm.html/js — 외부 자원 없음)
 test/
   run-cli.js          테스트 전용 실행기 (목 서버 주소를 코드로 지정, 배포 패키지에 없음)
   mock-server.js      카페24 API 목 서버
   cli.test.js         명령·핵심 동작 테스트
   ui.test.js          화면 서버 보안·전체 흐름 테스트
   concurrency.test.js 동시 실행·잠금 테스트
+  mcp.test.js         MCP 프로토콜·도구·정리 승인 테스트 (실제 자식 프로세스)
   presets.test.js     업종 프리셋 (패션 결과가 예전과 똑같은지 포함)
   fixtures/           패션 기준 결과 (프리셋 도입 전에 저장)
 ```

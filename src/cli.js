@@ -49,6 +49,7 @@ const HELP = `카페24 테스트용 더미 데이터 도구
 
 명령:
   ui                    브라우저 화면으로 쓰기 (연결 · 채우기 · 현황·정리)
+  mcp                   MCP 서버로 실행 (Claude 등 AI 앱에서 말로 쓰기, stdio)
   setup                 연결 설정 입력 (쇼핑몰 주소, Client ID/Secret, Redirect URI)
   login                 카페24 OAuth 로그인 (토큰 저장)
   status                저장된 토큰 상태 확인
@@ -550,6 +551,12 @@ async function main() {
   const commands = {
     setup: cmdSetup,
     ui: cmdUi,
+    mcp: async () => {
+      // stdout은 MCP 메시지 전용. 입력이 닫히면(진행 중인 작업이 끝난 뒤) 종료한다.
+      const { runMcpServer } = await import('./mcp.js');
+      await runMcpServer();
+      process.exit(0);
+    },
     login: async () => void (await login(getConfig())),
     status: cmdStatus,
     categories: cmdCategories,
