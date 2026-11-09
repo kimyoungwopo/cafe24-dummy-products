@@ -30,7 +30,7 @@ export function createConfirmServer(svc) {
   let hosts;
   /** 확인 토큰 → { planId, openedAt } (결정하거나 만료되면 지움) */
   const tokens = new Map();
-  const REOPEN_AFTER_MS = 60 * 1000;
+  const REOPEN_AFTER_MS = 3 * 60 * 1000;
 
   async function ensureStarted() {
     if (ready) return ready;
@@ -94,7 +94,7 @@ export function createConfirmServer(svc) {
         throw new HttpError(400, '승인 또는 거절만 할 수 있습니다.');
       }
       svc.decideCleanupPlan(planId, body.decision);
-      tokens.delete(token); // 한 번 결정하면 이 주소는 더 쓸 수 없다
+      forget(planId); // 한 번 결정하면 이 계획의 모든 주소는 더 쓸 수 없다
       return sendJson(res, 200, { decision: body.decision });
     }
     throw new HttpError(405, '허용되지 않는 요청입니다.');
@@ -113,12 +113,10 @@ export function createConfirmServer(svc) {
   };
 
   async function openForNow(planId) {
-    for (const [t, v] of tokens) {
-      if (v.planId !== planId) continue;
-      // 방금 열었으면 다시 열지 않는다. 1분이 지났으면(창을 닫았거나 못 열었을 수 있음) 새 주소로 다시 열고 이전 주소는 무효로 한다.
-      if (Date.now() - v.openedAt < REOPEN_AFTER_MS) return 'already-open';
-      tokens.delete(t);
-    }
+    // 최근 3분 안에 열었으면 다시 열지 않는다. 그보다 오래됐으면(창을 닫았거나 못 열었을 수 있음) 새 주소로 다시 연다.
+    // 이전 주소도 계획이 결정되기 전까지는 그대로 쓸 수 있다 (읽는 중에 무효가 되지 않도록). 승인은 계획당 한 번만 된다.
+    const opened = [...tokens.values()].filter((v) => v.planId === planId);
+    if (opened.some((v) => Date.now() - v.openedAt < REOPEN_AFTER_MS)) return 'already-open';
     const { port } = await ensureStarted();
     const token = crypto.randomBytes(32).toString('hex');
     tokens.set(token, { planId, openedAt: Date.now() });
